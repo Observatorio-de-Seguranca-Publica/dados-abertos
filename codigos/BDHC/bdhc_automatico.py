@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from impala.dbapi import connect
 
-# Caminho do arquivo
+# Caminho do arquivo original
 arquivo = "C:/Users/x15501492/Downloads/BDHC.xlsx"
 
 # Lista de colunas a remover
@@ -32,11 +32,25 @@ colunas_excluir = [
 # Leitura da planilha
 df = pd.read_excel(arquivo, sheet_name="Vítimas")
 
-# Remover colunas
+# Remover colunas desnecessárias
 df = df.drop(columns=colunas_excluir, errors="ignore")
 
-# Exibir resumo do resultado
-print(f"Planilha carregada com {df.shape[0]} linhas e {df.shape[1]} colunas após a exclusão.")
+# Adicionar novas colunas conforme solicitado
+df["Descrição Subclasse Nat Principal"] = "HOMICIDIO"
+df["Tentado/Consumado Nat Principal"] = "CONSUMADO"
+df["Natureza Nomenclatura Banco"] = "Homicídio Consumado (Vitimas)"
+df["Mês Fato Resumido"] = ""  # Coluna vazia
+df["Faixa 6 Horas Fato"] = ""  # Coluna vazia
 
-# (Opcional) Salvar resultado em novo arquivo
-df.to_excel("C:/Users/x15501492/Downloads/BDHC_limpando.xlsx", index=False)
+# Coluna com junção do bairro e município
+df["BAIRRO - FATO FINAL -Município"] = df["BAIRRO - FATO FINAL"].fillna('') + ", " + df["Município - FATO"].fillna('')
+
+# Última coluna com valor fixo
+df["Tipo_Envolvimento_Lesão_Final"] = "VÍTIMA FATAL"
+
+# Exibir resumo do resultado
+print(f"Planilha agora tem {df.shape[1]} colunas após inclusão de novas variáveis.")
+
+# Salvar resultado final
+df.to_excel("C:/Users/x15501492/Downloads/BDHC_formatado.xlsx", index=False)
+
