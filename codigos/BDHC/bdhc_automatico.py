@@ -58,8 +58,24 @@ df["BAIRRO - FATO FINAL -Município"] = df["BAIRRO - FATO FINAL"].fillna('') + "
 # Última coluna com valor fixo
 df["Tipo_Envolvimento_Lesão_Final"] = "VÍTIMA FATAL"
 
-# Exibir resumo do resultado
-print(f"Planilha agora tem {df.shape[1]} colunas com os nomes ajustados.")
+# Reordenar colunas
+ordem_colunas = [
+    'Número REDS', 'Qtd Envolvidos', 'Descrição Subclasse Nat Principal', 'Tentado/Consumado Nat Principal',
+    'Natureza Principal Final', 'Natureza Nomenclatura Banco', 'Ano Fato', 'Mês Fato Resumido',
+    'Mês Numérico Fato', 'Data Fato', 'Dia da Semana Fato', 'Horário Fato', 'Faixa 1 Hora Fato',
+    'Faixa 6 Horas Fato', 'Causa Presumida', 'Desc Longa Meio Utilizado', 'Descrição Grupo Local Imediato',
+    'Descrição Local Imediato', 'Logradouro Ocorrência - Tipo', 'Bairro - FATO',
+    'Bairro Não Cadastrado - FATO', 'BAIRRO - FATO FINAL', 'BAIRRO - FATO FINAL -Município',
+    'Município - FATO', 'Município - Código - FATO', 'UF - Sigla - FATO', 'Unid Registro Nível 9',
+    'RISP', 'RMBH', 'Tipo_Envolvimento_Lesão_Final', 'Idade Aparente', 'Sexo', 'Cútis', 'Escolaridade',
+    'Relação Vítima/Autor', 'Tipo Logradouro Envolvido', 'Bairro Envolvido',
+    'Bairro Envolvido Não Cadastrado', 'Município Envolvido', 'UF Envolvido - Nome',
+    'Latitude', 'Longitude', 'REDS desconsiderado?'
+]
+
+# Reorganiza apenas se todas as colunas estiverem presentes
+colunas_finais = [col for col in ordem_colunas if col in df.columns]
+df = df[colunas_finais]
 
 # Salvar resultado final
 df.to_excel("C:/Users/x15501492/Downloads/BDHC_formatado.xlsx", index=False)
