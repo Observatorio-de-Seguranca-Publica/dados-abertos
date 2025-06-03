@@ -35,6 +35,16 @@ df = pd.read_excel(arquivo, sheet_name="Vítimas")
 # Remover colunas desnecessárias
 df = df.drop(columns=colunas_excluir, errors="ignore")
 
+# Renomear colunas conforme solicitado
+df = df.rename(columns={
+    'Número Envolvido/Ocorrência': 'Qtd Envolvidos',
+    'Natureza Principal Completa': 'Natureza Principal Final',
+    'Logradouro Ocorrência - Tipo - FATO': 'Logradouro Ocorrência - Tipo',
+    'RISP - FATO - Atual': 'RISP',
+    'Latitude Final': 'Latitude',
+    'Longitude Final': 'Longitude'
+})
+
 # Adicionar novas colunas conforme solicitado
 df["Descrição Subclasse Nat Principal"] = "HOMICIDIO"
 df["Tentado/Consumado Nat Principal"] = "CONSUMADO"
@@ -49,8 +59,7 @@ df["BAIRRO - FATO FINAL -Município"] = df["BAIRRO - FATO FINAL"].fillna('') + "
 df["Tipo_Envolvimento_Lesão_Final"] = "VÍTIMA FATAL"
 
 # Exibir resumo do resultado
-print(f"Planilha agora tem {df.shape[1]} colunas após inclusão de novas variáveis.")
+print(f"Planilha agora tem {df.shape[1]} colunas com os nomes ajustados.")
 
 # Salvar resultado final
 df.to_excel("C:/Users/x15501492/Downloads/BDHC_formatado.xlsx", index=False)
-
