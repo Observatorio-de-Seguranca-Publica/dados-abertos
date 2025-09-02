@@ -59,7 +59,7 @@ def bancos_de_dados():
 
 # Consulta ao banco (script do dbeaver: no exemplo abaixo há um join entre a tabela de ocorrências e envolvidos)
 try:
-    query = cte_sql + '''SELECT COUNT(oco.numero_ocorrencia) as "Registros",
+    query = '''SELECT COUNT(oco.numero_ocorrencia) as "Registros",
                       oco.natureza_descricao,
                       oco.nome_municipio as "Município",
                       oco.codigo_municipio as "Cód. IBGE",
