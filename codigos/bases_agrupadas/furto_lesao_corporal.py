@@ -59,35 +59,69 @@ def bancos_de_dados():
 
 # Consulta ao banco (script do dbeaver: no exemplo abaixo há um join entre a tabela de ocorrências e envolvidos)
 try:
-    query = '''SELECT COUNT(oco.numero_ocorrencia) as "Registros",
-                      oco.natureza_descricao,
-                      oco.nome_municipio as "Município",
-                      oco.codigo_municipio as "Cód. IBGE",
-                      MONTH (oco.data_hora_fato) as "Mês",
-                      YEAR (oco.data_hora_fato) as "Ano Fato",
-                      mun.risp_completa as "RISP",
-                      mun.rmbh as "RMBH"
-               FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
-               LEFT JOIN db_bisp_shared.tb_populacao_risp as mun
-                    ON oco.codigo_municipio = mun.codigo_ibge
-               LEFT JOIN db_bisp_shared.vw_dim_tempo as temp
-                    ON oco.sqtempo_fato = temp.sqtempo
-               LEFT JOIN mapeamento
-                    ON CAST(oco.local_imediato_codigo AS STRING) = mapeamento.codigo_local_imediato
-               WHERE oco.data_hora_fato >= '2024-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2025-08-01 00:00:00.000'
-               AND oco.ocorrencia_uf = 'MG'
-               AND oco.ind_estado IN ('F', 'R')
-               AND oco.natureza_consumado = 'CONSUMADO'
-               AND oco.natureza_codigo IN ('C01155', 'B01129')
-               GROUP BY MONTH (oco.data_hora_fato),
-               oco.natureza_descricao,
-               oco.nome_municipio,
-               oco.codigo_municipio,
-               MONTH (oco.data_hora_fato),
-               YEAR (oco.data_hora_fato),
-               mun.risp_completa,
-               mun.rmbh
+    query = '''         WITH 
+                        municipios as (
+                            SELECT DISTINCT oco.nome_municipio, oco.codigo_municipio
+                            FROM db_bisp_reds_reporting.tb_ocorrencia as oco
+                            WHERE oco.ocorrencia_uf = 'MG'
+                        ),
+                        periodos as (
+                            SELECT DISTINCT YEAR(data_hora_fato) as ano_fato, MONTH(data_hora_fato) as mes_fato
+                            FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
+                            WHERE oco.data_hora_fato >= '2012-01-01 00:00:00.000'
+                            AND oco.data_hora_fato < '2025-08-01 00:00:00.000' 
+                        ),
+                        naturezas AS (
+                            SELECT DISTINCT oco.natureza_descricao
+                            FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
+                            WHERE oco.natureza_codigo IN ('C01155', 'B01129')
+                        ),
+                        contagem AS (
+                            SELECT COUNT(oco.numero_ocorrencia) as registros,
+                                oco.natureza_descricao,
+                                oco.nome_municipio,
+                                oco.codigo_municipio,
+                                MONTH (oco.data_hora_fato) as mes_fato,
+                                YEAR (oco.data_hora_fato) as ano_fato,
+                                mun.risp_completa,
+                                mun.rmbh
+                            FROM db_bisp_reds_reporting.tb_ocorrencia as oco
+                            LEFT JOIN db_bisp_shared.tb_populacao_risp as mun
+                              ON oco.codigo_municipio = mun.codigo_ibge
+                            WHERE oco.data_hora_fato >= '2019-01-01 00:00:00.000'
+                            AND oco.data_hora_fato < '2025-08-01 00:00:00.000'
+                            AND oco.ocorrencia_uf = 'MG'
+                            AND oco.ind_estado IN ('F', 'R')
+                            AND oco.natureza_consumado = 'CONSUMADO'
+                            AND oco.natureza_codigo IN ('C01155', 'B01129')
+                            GROUP BY MONTH (oco.data_hora_fato),
+                                            oco.natureza_descricao,
+                                            oco.nome_municipio,
+                                            oco.codigo_municipio,
+                                            MONTH (oco.data_hora_fato),
+                                            YEAR (oco.data_hora_fato),
+                                            mun.risp_completa,
+                                            mun.rmbh
+                        )
+                        SELECT 
+                            p.ano_fato as "Ano Fato",
+                            p.mes_fato as "Mês",
+                            m.nome_municipio as "Município",
+                            m.codigo_municipio as "Cód. IBGE",
+                            n.natureza_descricao as "Natureza",
+                            COALESCE(c.registros, 0) as "Registros",
+                            pop.risp_completa as "RISP",
+                            pop.rmbh as "RMBH"
+                        FROM periodos p
+                        CROSS JOIN municipios m
+                        CROSS JOIN naturezas n
+                        LEFT JOIN contagem c
+                          ON c.ano_fato = p.ano_fato
+                        AND c.mes_fato = p.mes_fato
+                        AND c.nome_municipio = m.nome_municipio AND c.codigo_municipio = m.codigo_municipio
+                        AND c.natureza_descricao = n.natureza_descricao
+                        LEFT JOIN db_bisp_shared.tb_populacao_risp pop
+                          ON m.codigo_municipio = pop.codigo_ibge
                 '''
         
     df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
@@ -104,6 +138,6 @@ df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
 df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Downloads/da_furto_lesao_corporal.xlsx",index=False)
+df.to_excel("C:/Users/x15501492/Downloads/agrupado_furto_lesao_corporal.xlsx",index=False)
 
 print('FINALIZOU :)')
