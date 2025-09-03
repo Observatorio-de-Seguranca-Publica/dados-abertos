@@ -104,12 +104,12 @@ try:
                                             mun.rmbh
                         )
                         SELECT 
-                            p.ano_fato as "Ano Fato",
-                            p.mes_fato as "Mês",
-                            m.nome_municipio as "Município",
-                            m.codigo_municipio as "Cód. IBGE",
-                            n.natureza_descricao as "Natureza",
                             COALESCE(c.registros, 0) as "Registros",
+                            n.natureza_descricao as "Natureza",
+                            m.nome_municipio as "Municipio",
+                            m.codigo_municipio as "Cód. IBGE",
+                            p.mes_fato as "Mês",
+                            p.ano_fato as "Ano Fato",
                             pop.risp_completa as "RISP",
                             pop.rmbh as "RMBH"
                         FROM periodos p
@@ -126,16 +126,29 @@ try:
         
     df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
 
+# Ordenar pelas colunas "Ano Fato", "Mês", "Município" e "Natureza"
+    df.rename(columns={
+    "ano fato": "Ano Fato",
+    "mês": "Mês",
+    "municipio": "Município",
+    "natureza": "Natureza",
+    "cód. ibge": "Cód. IBGE",
+    "risp": "RISP",
+    "rmbh": "RMBH",
+    "registros": "Registros"
+    }, inplace=True)
+    
+# Ordenar pelas colunas "Ano Fato", "Mês", "Município" e "Natureza"
+    df = df.sort_values(
+    by=["Ano Fato", "Mês", "Natureza", "Município"],
+    ascending=[True, True, True, True]
+    ).reset_index(drop=True)
+
 except Exception as e:
     print(f"Erro ao consultar a tabela 'tb_ocorrencia': {e}")
 
 # Exibe as primeiras linhas do DataFrame
 df.head()
-
-df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
-
-# Corrige a capitalização
-df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
 
 # Exporta a base no computador no modelo desejado 
 df.to_excel("C:/Users/x15501492/Downloads/agrupado_furto_lesao_corporal.xlsx",index=False)
