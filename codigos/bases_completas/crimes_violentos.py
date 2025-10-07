@@ -152,6 +152,7 @@ try:
                       mapeamento.descricao_grupo_local_imediato AS "Descrição Grupo Local Imediato",
                       oco.local_imediato_longa as "Descrição Local Imediato",
                       oco.tipo_logradouro_descricao as "Logradouro Ocorrência - Tipo",
+                      oco.descricao_endereco as "Logradouro Ocorrência",
                       oco.nome_bairro as "Bairro - Fato Final",
                       oco.nome_bairro || ' ' || oco.nome_municipio as "Bairro - FATO FINAL - Municipio",
                       oco.nome_municipio as "Município",
@@ -161,8 +162,7 @@ try:
                       mun.risp_completa as "RISP",
                       mun.rmbh as "RMBH",
                       oco.numero_latitude as "Latitude",
-                      oco.numero_longitude as "Longitude",
-                      oco.descricao_endereco as "Logradouro Ocorrência"
+                      oco.numero_longitude as "Longitude"
                FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
                LEFT JOIN db_bisp_shared.tb_populacao_risp as mun
                     ON oco.codigo_municipio = mun.codigo_ibge
@@ -170,8 +170,8 @@ try:
                     ON oco.sqtempo_fato = temp.sqtempo
                LEFT JOIN mapeamento
                     ON CAST(oco.local_imediato_codigo AS STRING) = mapeamento.codigo_local_imediato
-               WHERE oco.data_hora_fato >= '2012-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2025-08-01 00:00:00.000'
+               WHERE oco.data_hora_fato >= '2022-01-01 00:00:00.000'
+               AND oco.data_hora_fato < '2025-09-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND oco.ind_estado IN ('F', 'R')
                AND (
@@ -199,6 +199,6 @@ df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
 df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Downloads/da_crimes_violentos.xlsx",index=False)
+df.to_excel("C:/Users/x15501492/Downloads/Crimes Violentos - Jan 2022 a Ago 2025.xlsx",index=False)
 
 print('FINALIZOU :)')
