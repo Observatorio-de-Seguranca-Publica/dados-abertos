@@ -100,6 +100,7 @@ try:
                       oco.qtd_ocorrencia as "Qtde Ocorrências",
                       oco.natureza_descricao as "Descrição Subclasse Nat Principal",
                       oco.natureza_consumado as "Tentado/Consumado Nat Principal",
+                      oco.natureza_descricao || ' ' || oco.natureza_consumado as "Natureza Principal Completa",
                       YEAR (oco.data_hora_fato) as "Ano Fato",
                       CASE MONTH (oco.data_hora_fato)
                         WHEN 1 THEN 'JAN'
@@ -152,7 +153,7 @@ try:
                         WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 12 AND 17 THEN 'De 12:00 a 17:59'
                         ELSE 'De 18:00 a 23:59'
                       END AS "Faixa 6 Horas Fato",
-                      alv.alvo as "Alvo Corrigido",
+                      alv.alvo as "Alvo",
                       oco.motivo_presumido_descricao_longa as "Causa Presumida",
                       oco.instrumento_utilizado_descricao_longa as "Desc Longa Meio Utilizado",
                       mapeamento.descricao_grupo_local_imediato AS "Descrição Grupo Local Imediato",
@@ -178,11 +179,11 @@ try:
                     ON CAST(oco.local_imediato_codigo AS STRING) = mapeamento.codigo_local_imediato
                LEFT JOIN alvo_corrigido as alv
                     ON CAST(oco.complemento_natureza_descricao_longa AS STRING) = alv.descricao_subgrupo_complemento_nat
-               WHERE oco.data_hora_fato >= '2015-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2025-08-01 00:00:00.000'
+               WHERE oco.data_hora_fato >= '2022-01-01 00:00:00.000'
+               AND oco.data_hora_fato < '2025-09-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND oco.ind_estado IN ('F', 'R')
-               AND oco.natureza_codigo IN ('C01155', 'C01157')
+               AND oco.natureza_codigo IN ('C01155')
                AND oco.natureza_consumado = 'CONSUMADO'
                 '''
         
@@ -200,6 +201,6 @@ df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
 df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Downloads/da_furto_roubo.xlsx",index=False)
+df.to_excel("C:/Users/x15501492/Downloads/Alvos - Furto - Jan 2022 a Ago 2025.xlsx",index=False)
 
 print('FINALIZOU :)')
