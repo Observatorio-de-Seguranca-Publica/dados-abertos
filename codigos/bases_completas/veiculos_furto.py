@@ -1,7 +1,9 @@
 import pandas as pd
 import geopandas as gpd
+from shapely.geometry import Point
 import numpy as np
 from impala.dbapi import connect
+import pyproj
 
 # Função para ler o arquivo de credenciais
 def get_credentials(file_path):
@@ -155,7 +157,7 @@ try:
                         ELSE 'De 18:00 a 23:59'
                       END AS "Faixa 6 Horas Fato",
                       vei.tipo_veiculo_descricao_longa as "Tipo Veículo",
-                      "Veículos" as "Alvo Corrigido",
+                      "Veículos" as "Alvo",
                       vei.situacao_placa_descricao_longa as "Situação Veículo",
                       oco.motivo_presumido_descricao_longa as "Causa Presumida",
                       oco.instrumento_utilizado_descricao_longa as "Descrição Meio Utilizado",
@@ -163,7 +165,7 @@ try:
                       oco.local_imediato_longa as "Descrição Local Imediato",
                       oco.tipo_logradouro_descricao as "Logradouro Ocorrência - Tipo",
                       oco.nome_bairro as "Bairro - Fato Final",
-                      oco.nome_bairro || ' ' || oco.nome_municipio as "Bairro - FATO FINAL - Municipio",
+                      oco.nome_bairro || ', ' || oco.nome_municipio as "Bairro - Fato Final - Municipio",
                       oco.nome_municipio as "Município",
                       oco.codigo_municipio as "Município - Código",
                       oco.ocorrencia_uf as "UF - Sigla",
@@ -184,10 +186,10 @@ try:
                LEFT JOIN db_bisp_reds_reporting.tb_veiculo_ocorrencia as vei
                     ON oco.numero_ocorrencia = vei.numero_ocorrencia     
                WHERE oco.data_hora_fato >= '2015-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2025-08-01 00:00:00.000'
+               AND oco.data_hora_fato < '2025-10-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND oco.ind_estado IN ('F', 'R')
-               AND oco.natureza_codigo IN ('C01155', 'C01157')
+               AND oco.natureza_codigo IN ('C01155')
                AND oco.natureza_consumado = 'CONSUMADO'
                AND vei.situacao_placa_descricao_longa IN ('FURTADO', 'ROUBADO')
                AND vei.tipo_veiculo_codigo IN ('0200', '0800', '1101', '0700', '0720', '0710', '0600', '0620', '0610', '1300', '1700', '1800', '1900', '2000', '9900', '2100', '2200', '2300', '2400', '2500', '2700', '2600', '2800', '2920', '2910', '2900')
@@ -206,7 +208,39 @@ df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
 # Corrige a capitalização
 df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
 
+url = "C:/Users/x15501492/Downloads/SAD69_1.GSB"
+
+# Define o pipeline de transformação
+transformer = pyproj.Transformer.from_pipeline(
+    f"+proj=pipeline +step +proj=axisswap +order=2,1 "
+    "+step +proj=unitconvert +xy_in=deg +xy_out=rad "
+    f"+step +proj=hgridshift +grids={url} "
+    "+step +proj=unitconvert +xy_in=rad +xy_out=deg "
+    "+step +proj=axisswap +order=2,1"
+)
+ 
+# Função para transformar coordenadas
+def transformar_coordenadas(lat, lon):
+    if pd.isna(lat) or pd.isna(lon):
+        return pd.Series(["", ""], index=['Latitude SIRGAS', 'Longitude SIRGAS'])
+    lat_sirgas, lon_sirgas = transformer.transform(lat, lon)
+    return pd.Series([lat_sirgas, lon_sirgas], index=['Latitude SIRGAS', 'Longitude SIRGAS'])
+ 
+# Criar novas colunas com as coordenadas transformadas no DataFrame retornado pela consulta SQL
+df[['Latitude SIRGAS', 'Longitude SIRGAS']] = df.apply(
+    lambda row: transformar_coordenadas(row['Latitude'], row['Longitude']),
+    axis=1
+)
+ 
+# Convertendo a coluna 'Valor' para string e substituindo ponto por vírgula
+df['Latitude SIRGAS'] = df['Latitude SIRGAS'].astype(str).str.replace("inf", '', regex=False)
+df['Longitude SIRGAS'] = df['Longitude SIRGAS'].astype(str).str.replace("inf", '', regex=False)
+df['Latitude SIRGAS'] = pd.to_numeric(df['Latitude SIRGAS'])
+df['Longitude SIRGAS'] = pd.to_numeric(df['Longitude SIRGAS'])
+ 
+# fim da dtransformação lat long
+
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Downloads/da_furto_roubo_veiculo_2.xlsx",index=False)
+df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/Bases completas/09 - Set/Veiculos - Furto - Jan 2015 a Set 2025.xlsx",index=False)
 
 print('FINALIZOU :)')

@@ -1,7 +1,9 @@
 import pandas as pd
 import geopandas as gpd
+from shapely.geometry import Point
 import numpy as np
 from impala.dbapi import connect
+import pyproj
 
 # Função para ler o arquivo de credenciais
 def get_credentials(file_path):
@@ -153,7 +155,7 @@ try:
                       oco.local_imediato_longa as "Descrição Local Imediato",
                       oco.tipo_logradouro_descricao as "Logradouro Ocorrência - Tipo",
                       oco.nome_bairro as "Bairro - Fato Final",
-                      oco.nome_bairro || ' ' || oco.nome_municipio as "Bairro - FATO FINAL - Municipio",
+                      oco.nome_bairro || ', ' || oco.nome_municipio as "Bairro - Fato Final - Municipio",
                       oco.nome_municipio as "Município",
                       oco.codigo_municipio as "Município - Código",
                       oco.ocorrencia_uf as "UF - Sigla",
@@ -170,12 +172,12 @@ try:
                     ON oco.sqtempo_fato = temp.sqtempo
                LEFT JOIN mapeamento
                     ON CAST(oco.local_imediato_codigo AS STRING) = mapeamento.codigo_local_imediato
-               WHERE oco.data_hora_fato >= '2012-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2025-08-01 00:00:00.000'
+               WHERE oco.data_hora_fato >= '2019-01-01 00:00:00.000'
+               AND oco.data_hora_fato < '2025-10-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND oco.ind_estado IN ('F', 'R')
                AND oco.natureza_consumado = 'CONSUMADO'
-               AND oco.natureza_codigo IN ('C01155', 'B01129')
+               AND oco.natureza_codigo IN ('B01129')
                 '''
         
     df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
@@ -191,7 +193,39 @@ df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
 # Corrige a capitalização
 df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
 
+url = "C:/Users/x15501492/Downloads/SAD69_1.GSB"
+
+# Define o pipeline de transformação
+transformer = pyproj.Transformer.from_pipeline(
+    f"+proj=pipeline +step +proj=axisswap +order=2,1 "
+    "+step +proj=unitconvert +xy_in=deg +xy_out=rad "
+    f"+step +proj=hgridshift +grids={url} "
+    "+step +proj=unitconvert +xy_in=rad +xy_out=deg "
+    "+step +proj=axisswap +order=2,1"
+)
+ 
+# Função para transformar coordenadas
+def transformar_coordenadas(lat, lon):
+    if pd.isna(lat) or pd.isna(lon):
+        return pd.Series(["", ""], index=['Latitude SIRGAS', 'Longitude SIRGAS'])
+    lat_sirgas, lon_sirgas = transformer.transform(lat, lon)
+    return pd.Series([lat_sirgas, lon_sirgas], index=['Latitude SIRGAS', 'Longitude SIRGAS'])
+ 
+# Criar novas colunas com as coordenadas transformadas no DataFrame retornado pela consulta SQL
+df[['Latitude SIRGAS', 'Longitude SIRGAS']] = df.apply(
+    lambda row: transformar_coordenadas(row['Latitude'], row['Longitude']),
+    axis=1
+)
+ 
+# Convertendo a coluna 'Valor' para string e substituindo ponto por vírgula
+df['Latitude SIRGAS'] = df['Latitude SIRGAS'].astype(str).str.replace("inf", '', regex=False)
+df['Longitude SIRGAS'] = df['Longitude SIRGAS'].astype(str).str.replace("inf", '', regex=False)
+df['Latitude SIRGAS'] = pd.to_numeric(df['Latitude SIRGAS'])
+df['Longitude SIRGAS'] = pd.to_numeric(df['Longitude SIRGAS'])
+ 
+# fim da dtransformação lat long
+
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Downloads/da_furto_lesao_corporal.xlsx",index=False)
+df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/Bases completas/09 - Set/Lesão Corporal - Jan 2019 a Set 2025.xlsx",index=False)
 
 print('FINALIZOU :)')
