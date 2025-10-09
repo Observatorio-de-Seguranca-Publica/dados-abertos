@@ -69,12 +69,12 @@ try:
                             SELECT DISTINCT YEAR(data_hora_fato) as ano_fato, MONTH(data_hora_fato) as mes_fato
                             FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
                             WHERE oco.data_hora_fato >= '2012-01-01 00:00:00.000'
-                            AND oco.data_hora_fato < '2025-08-01 00:00:00.000' 
+                            AND oco.data_hora_fato < '2025-10-01 00:00:00.000' 
                         ),
                         naturezas AS (
                             SELECT DISTINCT oco.natureza_descricao
                             FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
-                            WHERE oco.natureza_codigo IN ('C01155', 'B01129')
+                            WHERE oco.natureza_codigo = 'B01129'
                         ),
                         contagem AS (
                             SELECT COUNT(oco.numero_ocorrencia) as registros,
@@ -88,20 +88,19 @@ try:
                             FROM db_bisp_reds_reporting.tb_ocorrencia as oco
                             LEFT JOIN db_bisp_shared.tb_populacao_risp as mun
                               ON oco.codigo_municipio = mun.codigo_ibge
-                            WHERE oco.data_hora_fato >= '2019-01-01 00:00:00.000'
-                            AND oco.data_hora_fato < '2025-08-01 00:00:00.000'
+                            WHERE oco.data_hora_fato >= '2012-01-01 00:00:00.000'
+                            AND oco.data_hora_fato < '2025-10-01 00:00:00.000'
                             AND oco.ocorrencia_uf = 'MG'
                             AND oco.ind_estado IN ('F', 'R')
                             AND oco.natureza_consumado = 'CONSUMADO'
-                            AND oco.natureza_codigo IN ('C01155', 'B01129')
-                            GROUP BY MONTH (oco.data_hora_fato),
-                                            oco.natureza_descricao,
-                                            oco.nome_municipio,
-                                            oco.codigo_municipio,
-                                            MONTH (oco.data_hora_fato),
-                                            YEAR (oco.data_hora_fato),
-                                            mun.risp_completa,
-                                            mun.rmbh
+                            AND oco.natureza_codigo = 'B01129'
+                            GROUP BY oco.natureza_descricao,
+                                     oco.nome_municipio,
+                                     oco.codigo_municipio,
+                                     MONTH (oco.data_hora_fato),
+                                     YEAR (oco.data_hora_fato),
+                                     mun.risp_completa,
+                                     mun.rmbh
                         )
                         SELECT 
                             COALESCE(c.registros, 0) as "Registros",
@@ -151,6 +150,6 @@ except Exception as e:
 df.head()
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Downloads/agrupado_furto_lesao_corporal.xlsx",index=False)
+df.to_excel("C:/Users/x15501492/Downloads/agrupado_lesao_corporal.xlsx",index=False)
 
 print('FINALIZOU :)')
