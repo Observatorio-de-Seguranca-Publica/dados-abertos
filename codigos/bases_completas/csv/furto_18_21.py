@@ -1,0 +1,195 @@
+import pandas as pd
+import geopandas as gpd
+from shapely.geometry import Point
+import numpy as np
+from impala.dbapi import connect
+import pyproj
+
+# Função para ler o arquivo de credenciais
+def get_credentials(file_path):
+    credentials = {}
+    with open(file_path, 'r') as file:
+        for line in file:
+            key, value = line.strip().split('=')
+            credentials[key] = value
+    return credentials
+
+# Função para conectar ao banco de dados
+def get_conn_and_cursor(db='db_bisp_reds_reporting', credentials_file='C:/Users/x15501492/Downloads/Credenciamento Python.txt'):
+    credentials = get_credentials(credentials_file)
+    conn = connect(host='10.100.62.20', port=21051, use_ssl=True, auth_mechanism="PLAIN",
+                   user=credentials['username'], password=credentials['password'], database=db)
+    cursor = conn.cursor()
+    return conn, cursor
+
+# Função para executar query e retornar dataframe
+def executa_query_retorna_df(query, db='db_bisp_reds_reporting'):
+    conn, cursor = get_conn_and_cursor(db)  
+    cursor.execute(query)
+    results = cursor.fetchall()
+    columns = [c[0] for c in cursor.description]
+    df = pd.DataFrame(results, columns=columns)
+    conn.close()
+    return df
+
+# Função para listar tabelas no banco de dados
+def tabelas(filtro='', db='db_bisp_reds_reporting'):
+    conn, cursor = get_conn_and_cursor(db)
+    cursor.execute('SHOW TABLES')
+    tabelas_nomes = cursor.fetchall()    
+    conn.close()
+    tabelas_filtradas = [tupla_tabela[0] for tupla_tabela in tabelas_nomes if filtro in tupla_tabela[0]]
+    return tabelas_filtradas
+
+# Função para listar bancos de dados
+def bancos_de_dados():
+    conn, cursor = get_conn_and_cursor()
+    try:
+        cursor.execute("SHOW DATABASES")
+        databases = cursor.fetchall()
+        accessible_databases = []
+        for db in databases:
+            try:
+                cursor.execute(f"USE {db[0]}")
+                accessible_databases.append(db[0])
+            except:
+                pass
+        return accessible_databases
+    finally:
+        cursor.close()
+        conn.close()
+
+# Lê o Excel com o mapeamento
+df_mapeamento = pd.read_excel("C:/Users/x15501492/Documents/Sejusp/DIS/Consultas/GRUPO LOCAL IMEDIATO COM CODIGO.xlsx")
+
+# Garante que todos os dados são strings e escapa apóstrofos
+def esc(s):
+    return str(s).replace("'", "''")
+
+# Gera a CTE com os dados da planilha
+linhas = []
+for i, row in df_mapeamento.iterrows():
+    cod_local = esc(row['Código Local Imediato'])
+    desc_local = esc(row['Descrição Local Imediato'])
+    cod_grupo = esc(row['Código Grupo Local Imediato'])
+    desc_grupo = esc(row['Descrição Grupo Local Imediato'])
+
+    prefixo = "SELECT" if i == 0 else "UNION ALL SELECT"
+    linhas.append(f"{prefixo} '{cod_local}' AS codigo_local_imediato, "
+                  f"'{desc_local}' AS descricao_local_imediato, "
+                  f"'{cod_grupo}' AS codigo_grupo_local_imediato, "
+                  f"'{desc_grupo}' AS descricao_grupo_local_imediato")
+
+cte_sql = "WITH mapeamento AS (\n  " + "\n  ".join(linhas) + "\n)\n"
+
+# Consulta ao banco (script do dbeaver: no exemplo abaixo há um join entre a tabela de ocorrências e envolvidos)
+try:
+    query = cte_sql + '''SELECT oco.numero_ocorrencia as "Número REDS",
+                      oco.qtd_ocorrencia as "Qtde Ocorrências",
+                      oco.natureza_descricao || ' ' || oco.natureza_consumado as "Natureza Principal Completa",
+                      YEAR (oco.data_hora_fato) as "Ano Fato",
+                      CASE MONTH (oco.data_hora_fato)
+                        WHEN 1 THEN 'JAN'
+                        WHEN 2 THEN 'FEV'
+                        WHEN 3 THEN 'MAR'
+                        WHEN 4 THEN 'ABR'
+                        WHEN 5 THEN 'MAI'
+                        WHEN 6 THEN 'JUN'
+                        WHEN 7 THEN 'JUL'
+                        WHEN 8 THEN 'AGO'
+                        WHEN 9 THEN 'SET'
+                        WHEN 10 THEN 'OUT'
+                        WHEN 11 THEN 'NOV'
+                        WHEN 12 THEN 'DEZ'
+                        ELSE 'Mês Inválido'
+                      END AS "Mês Fato Resumido",
+                      MONTH (oco.data_hora_fato) as "Mês Numérico Fato",
+                      CAST (oco.data_hora_fato as date) as "Data Fato",
+                      temp.cddia_semana as "Dia da Semana Fato",
+                      SUBSTRING(CAST(oco.data_hora_fato AS STRING), 12, 8) as "Horário Fato",
+                      CASE
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 0 AND 1 THEN 'De 00:00 a 00:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 1 AND 2 THEN 'De 01:00 a 01:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 2 AND 3 THEN 'De 02:00 a 02:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 3 AND 4 THEN 'De 03:00 a 03:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 4 AND 5 THEN 'De 04:00 a 04:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 5 AND 6 THEN 'De 05:00 a 05:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 6 AND 7 THEN 'De 06:00 a 06:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 7 AND 8 THEN 'De 07:00 a 07:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 8 AND 9 THEN 'De 08:00 a 08:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 9 AND 10 THEN 'De 09:00 a 09:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 10 AND 11 THEN 'De 10:00 a 10:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 11 AND 12 THEN 'De 11:00 a 11:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 12 AND 13 THEN 'De 12:00 a 12:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 13 AND 14 THEN 'De 13:00 a 13:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 14 AND 15 THEN 'De 14:00 a 14:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 15 AND 16 THEN 'De 15:00 a 15:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 16 AND 17 THEN 'De 16:00 a 16:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 17 AND 18 THEN 'De 17:00 a 17:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 18 AND 19 THEN 'De 18:00 a 18:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 19 AND 20 THEN 'De 19:00 a 19:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 20 AND 21 THEN 'De 20:00 a 20:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 21 AND 22 THEN 'De 21:00 a 21:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 22 AND 23 THEN 'De 22:00 a 22:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 23 AND 24 THEN 'De 23:00 a 23:59'
+                      END AS "Faixa 1 Hora Fato",
+                      CASE
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 0 AND 5 THEN 'De 00:00 a 05:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 6 AND 11 THEN 'De 06:00 a 11:59'
+                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 12 AND 17 THEN 'De 12:00 a 17:59'
+                        ELSE 'De 18:00 a 23:59'
+                      END AS "Faixa 6 Horas Fato",
+                      oco.motivo_presumido_descricao_longa as "Causa Presumida",
+                      oco.instrumento_utilizado_descricao_longa as "Descrição Meio Utilizado",
+                      mapeamento.descricao_grupo_local_imediato AS "Descrição Grupo Local Imediato",
+                      oco.local_imediato_longa as "Descrição Local Imediato",
+                      oco.tipo_logradouro_descricao as "Logradouro Ocorrência - Tipo",
+                      oco.nome_bairro as "Bairro - Fato Final",
+                      oco.nome_bairro || ', ' || oco.nome_municipio as "Bairro - Fato Final - Municipio",
+                      oco.nome_municipio as "Município",
+                      oco.codigo_municipio as "Município - Código",
+                      oco.ocorrencia_uf as "UF - Sigla",
+                      mun.risp_completa as "RISP",
+                      mun.rmbh as "RMBH"
+               FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
+               LEFT JOIN db_bisp_shared.tb_populacao_risp as mun
+                    ON oco.codigo_municipio = mun.codigo_ibge
+               LEFT JOIN db_bisp_shared.vw_dim_tempo as temp
+                    ON oco.sqtempo_fato = temp.sqtempo
+               LEFT JOIN mapeamento
+                    ON CAST(oco.local_imediato_codigo AS STRING) = mapeamento.codigo_local_imediato
+               WHERE oco.data_hora_fato >= '2018-01-01 00:00:00.000'
+               AND oco.data_hora_fato < '2022-01-01 00:00:00.000'
+               AND oco.ocorrencia_uf = 'MG'
+               AND oco.ind_estado IN ('F', 'R')
+               AND oco.natureza_consumado = 'CONSUMADO'
+               AND oco.natureza_codigo = 'C01155'
+                '''
+        
+    df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
+
+except Exception as e:
+    print(f"Erro ao consultar a tabela 'tb_ocorrencia': {e}")
+
+# Exibe as primeiras linhas do DataFrame
+df.head()
+
+# Corrige a capitalização
+df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
+
+# Caminho de saída para CSV
+caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/09 - Set/CSV -Uso externo/Furto - Jan 2018 a Dez 2021.csv" 
+
+# Formatação regional
+df = df.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
+
+# Exporta com separador ";" e encoding compatível com Excel PT-BR
+df.to_csv(
+    caminho_csv,
+    sep=';',            # separador padrão BR
+    index=False,        # sem índice numérico
+    encoding='utf-8-sig'  # adiciona BOM, compatível com Excel
+)
+
+print("Arquivo CSV exportado com sucesso!")
+
