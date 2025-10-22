@@ -216,4 +216,4 @@ df.to_csv(
     encoding='utf-8-sig'  # adiciona BOM, compatível com Excel
 )
 
-print("Arquivo CSV exportado com sucesso!")
+print("Arquivo CSV exportado com sucesso.")
