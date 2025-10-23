@@ -113,6 +113,23 @@ if "Risp" in df.columns:
     df["Risp"] = df["Risp"].map(mapa_risp)
 else:
     df["Risp"] = None
+
+# dicionário dias
+mapa_dias = {
+    "SEGUNDA-FEIRA": "1", "TERÇA-FEIRA": "2", "QUARTA-FEIRA": "3", "QUINTA-FEIRA": "4", "SEXTA-FEIRA": "5", "SÁBADO": "6", "DOMINGO": "7"
+}
+
+# transforma dia da semana
+if "Dia da Semana Fato" in df.columns:
+    df["Dia da Semana Fato"] = df["Dia da Semana Fato"].astype(str).str.replace(r"\.0$", "", regex=True)
+    df["Dia da Semana Fato"] = df["Dia da Semana Fato"].map(mapa_dias)
+else:
+    df["Dia da Semana Fato"] = None
+    
+# --- Formatar 'Data Fato' ---
+if "Data Fato" in df.columns:
+    df["Data Fato"] = pd.to_datetime(df["Data Fato"], errors="coerce")  # converte para datetime
+    df["Data Fato"] = df["Data Fato"].dt.strftime("%d/%m/%Y")           # formata dd/mm/aaaa
     
 # dicionário rmbh
 mapa_rmbh = {
@@ -125,7 +142,8 @@ if "Rmbh" in df.columns:
     df["Rmbh"] = df["Rmbh"].map(mapa_rmbh)
 else:
     df["Rmbh"] = None
-
+    
+# trata coluna qtde ocorrencias
 if "Qtde Ocorrências" in df.columns:
     df["Qtde Ocorrências"] = 1
     df["Qtde Ocorrências"] = df["Qtde Ocorrências"].astype(int)
