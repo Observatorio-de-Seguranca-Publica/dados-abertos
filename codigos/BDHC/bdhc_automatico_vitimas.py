@@ -193,3 +193,28 @@ out2 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/10 - Out
 df.to_excel(out2, index=False)
 print("Salvo em:", out2)
 print("Linhas finais:", len(df))
+
+# Lista de colunas a remover
+colunas_excluir = [
+    "Descrição Subclasse Nat Principal", "Tentado/Consumado Nat Principal", "Natureza Nomenclatura Banco",
+    "Logradouro Ocorrência", "Unid Registro Nível 8", "Latitude", "Longitude"
+]
+
+# Remover colunas desnecessárias
+df_csv = df.drop(columns=colunas_excluir, errors="ignore")
+
+# Caminho de saída para CSV
+caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/10 - Out/CSV -Uso externo/Vítimas de Homicidio Consumado - Jan 2012 a Out 2025.csv" 
+
+# Formatação regional
+df_csv = df_csv.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
+
+# Exporta com separador ";" e encoding compatível com Excel PT-BR
+df_csv.to_csv(
+    caminho_csv,
+    sep=';',            # separador padrão BR
+    index=False,        # sem índice numérico
+    encoding='utf-8-sig'  # adiciona BOM, compatível com Excel
+)
+
+print("Arquivos CSV exportados com sucesso!")
