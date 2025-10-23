@@ -56,6 +56,8 @@ df = df.drop(columns=colunas_excluir, errors="ignore")
 
 # Renomear colunas
 df = df.rename(columns={
+    'Número REDS': 'Número Reds',
+    'Dia da Semana Fato': 'Dia Da Semana Fato',
     'Número Envolvido/Ocorrência': 'Qtde Ocorrências',
     'Logradouro Ocorrência - Tipo - FATO': 'Logradouro Ocorrência - Tipo',
     'BAIRRO - FATO FINAL': 'Bairro - Fato Final',
@@ -119,12 +121,12 @@ mapa_dias = {
     "SEGUNDA-FEIRA": "1", "TERÇA-FEIRA": "2", "QUARTA-FEIRA": "3", "QUINTA-FEIRA": "4", "SEXTA-FEIRA": "5", "SÁBADO": "6", "DOMINGO": "7"
 }
 
-# transforma dia da semana
-if "Dia da Semana Fato" in df.columns:
-    df["Dia da Semana Fato"] = df["Dia da Semana Fato"].astype(str).str.replace(r"\.0$", "", regex=True)
-    df["Dia da Semana Fato"] = df["Dia da Semana Fato"].map(mapa_dias)
+# transforma dia Da semana
+if "dia Da Semana Fato" in df.columns:
+    df["dia Da Semana Fato"] = df["dia Da Semana Fato"].astype(str).str.replace(r"\.0$", "", regex=True)
+    df["dia Da Semana Fato"] = df["dia Da Semana Fato"].map(mapa_dias)
 else:
-    df["Dia da Semana Fato"] = None
+    df["dia Da Semana Fato"] = None
     
 # --- Formatar 'Data Fato' ---
 if "Data Fato" in df.columns:
@@ -174,9 +176,9 @@ df["Faixa 6 Horas Fato"] = df["Horário Fato"].apply(classificar_faixa6)
 
 # Reordenar colunas
 ordem_colunas = [
-    'Número REDS', 'Qtde Ocorrências', 'Descrição Subclasse Nat Principal', 'Tentado/Consumado Nat Principal',
+    'Número Reds', 'Qtde Ocorrências', 'Descrição Subclasse Nat Principal', 'Tentado/Consumado Nat Principal',
     'Natureza Principal Completa', 'Natureza Nomenclatura Banco', 'Ano Fato', 'Mês Fato Resumido',
-    'Mês Numérico Fato', 'Data Fato', 'Dia da Semana Fato', 'Horário Fato', 'Faixa 1 Hora Fato',
+    'Mês Numérico Fato', 'Data Fato', 'Dia Da Semana Fato', 'Horário Fato', 'Faixa 1 Hora Fato',
     'Faixa 6 Horas Fato', 'Causa Presumida', 'Desc Longa Meio Utilizado', 'Descrição Grupo Local Imediato',
     'Descrição Local Imediato', 'Logradouro Ocorrência - Tipo', 'Logradouro Ocorrência', 'Bairro - Fato Final', 
     'Bairro - Fato Final - Municipio', 'Município', 'Município - Código', 'Uf - Sigla', 

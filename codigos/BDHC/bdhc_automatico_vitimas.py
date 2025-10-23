@@ -71,6 +71,7 @@ df["Natureza Nomenclatura Banco"] = "Homicídio Consumado (Vitimas)"
 df["Mês Fato Resumido"] = ""
 df["Faixa 6 Horas Fato"] = ""
 df["Tipo_Envolvimento_Lesão_Final"] = "VÍTIMA FATAL"
+df["Bairro - Fato Final - Municipio"] = df["Bairro - Fato Final"].fillna('') + ", " + df["Município"].fillna('')
 
 #Mês Fato Resumido (map seguro) ---
 mapa_meses = {
@@ -171,9 +172,9 @@ ordem_colunas = [
     'Mês Numérico Fato', 'Data Fato', 'Dia da Semana Fato', 'Horário Fato', 'Faixa 1 Hora Fato',
     'Faixa 6 Horas Fato', 'Causa Presumida', 'Desc Longa Meio Utilizado', 'Descrição Grupo Local Imediato',
     'Descrição Local Imediato', 'Logradouro Ocorrência - Tipo', 'Bairro - FATO',
-    'Bairro Não Cadastrado - FATO', 'BAIRRO - FATO FINAL', 'BAIRRO - FATO FINAL -Município',
-    'Município - FATO', 'Município - Código - FATO', 'UF - Sigla - FATO', 'Unid Registro Nível 9',
-    'RISP', 'RMBH', 'Tipo_Envolvimento_Lesão_Final', 'Idade Aparente', 'Sexo', 'Cútis', 'Escolaridade',
+    'Bairro Não Cadastrado - FATO', 'Bairro - Fato Final', 'Bairro - Fato Final - Municipio',
+    'Município', 'Município - Código', 'Uf - Sigla', 'Unid Registro Nível 9',
+    'Risp', 'Rmbh', 'Tipo_Envolvimento_Lesão_Final', 'Idade Aparente', 'Sexo', 'Cútis', 'Escolaridade',
     'Relação Vítima/Autor', 'Tipo Logradouro Envolvido', 'Bairro Envolvido',
     'Bairro Envolvido Não Cadastrado', 'Município Envolvido', 'UF Envolvido - Nome',
     'Latitude', 'Longitude'
@@ -182,7 +183,13 @@ colunas_finais = [c for c in ordem_colunas if c in df.columns]
 df = df[colunas_finais]
 
 # --- 9) Salvar resultado final ---
-out = "C:/Users/x15501492/Downloads/BDHC_formatado_vitimas.xlsx"
-df.to_excel(out, index=False)
-print("Salvo em:", out)
+out1 = "C:/Users/x15501492/Downloads/BDHC_formatado_vitimas.xlsx"
+df.to_excel(out1, index=False)
+print("Salvo em:", out1)
+print("Linhas finais:", len(df))
+
+# --- 10) Salvar em dados abertos ---
+out2 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/10 - Out/XLSX - Uso interno/Vítimas de Homicidio Consumado - Jan 2012 a Out 2025.xlsx"
+df.to_excel(out2, index=False)
+print("Salvo em:", out2)
 print("Linhas finais:", len(df))
