@@ -225,4 +225,3 @@ df_excel.to_csv(
 )
 
 print('FINALIZOU :)')
-

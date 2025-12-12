@@ -42,8 +42,8 @@ def norm_ibge(x):
         return None
 
 # 1. Lê a planilha
-arquivo = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/08 - Ago/XLSX - Uso interno/Vítimas de Homicidio Consumado - Jan 2012 a Ago 2025.xlsx"
-aba = "Vítimas"
+arquivo = "C:/Users/x15501492/Downloads/BDHC_formatado_vitimas.xlsx"
+aba = "Sheet1"
 df = pd.read_excel(arquivo, sheet_name=aba)
 
 # 2. Consulta lista completa de municípios de MG no banco
@@ -63,7 +63,7 @@ municipios = executa_query_retorna_df(query_municipios)
 municipios["Cod. IBGE"] = municipios["cod_ibge"].apply(norm_ibge)
 municipios.rename(columns={"municipio": "Município", "risp": "RISP", "rmbh": "RMBH"}, inplace=True)
 
-df["Cod. IBGE"] = df["Município - Código - FATO"].apply(norm_ibge)
+df["Cod. IBGE"] = df["Município - Código"].apply(norm_ibge)
 df["Mês"] = pd.to_numeric(df["Mês Numérico Fato"], errors="coerce").astype("Int64")
 df["Ano"] = pd.to_numeric(df["Ano Fato"], errors="coerce").astype("Int64")
 df["Natureza"] = df["Natureza Nomenclatura Banco"].astype(str)
@@ -104,7 +104,35 @@ res = res[["Registros", "Natureza", "Município", "Cod. IBGE", "Mês", "Ano", "R
 res = res.sort_values(["Ano", "Mês", "Natureza", "Município"]).reset_index(drop=True)
 
 # 10. Exportar para Excel
-saida = "C:/Users/x15501492/Documents/Sejusp/DIS/Dados abertos/Automatização/Agrupados/agrupado_vitimas_homicidio_consumado.xlsx" 
+saida = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/agrupado_vitimas_homicidio_consumado.xlsx" 
 res.to_excel(saida, index=False)
 
-print("Base agrupada gerada com sucesso em:", saida)
+# A
+# T
+# E
+# N         A partir daqui, o código exporta as bases para csv
+# Ç
+# Ã
+# O
+
+# Caminhos dos arquivos
+base_excel = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/agrupado_vitimas_homicidio_consumado.xlsx"
+
+# 1️⃣ Lê as bases
+df_excel = pd.read_excel(base_excel)
+
+# Caminho CSV
+caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Banco de Dados CSV/Banco Vítimas de Homicídio Consumado Novembro 2025.csv"
+
+# Formatação regional
+df_excel = df_excel.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
+
+# Exporta com separador ";" e encoding compatível com Excel PT-BR
+df_excel.to_csv(
+    caminho_csv,
+    sep=';',            # separador padrão BR
+    index=False,        # sem índice numérico
+    encoding='utf-8-sig'  # adiciona BOM, compatível com Excel
+)
+
+print('FINALIZOU :)')
