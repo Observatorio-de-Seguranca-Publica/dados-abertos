@@ -4,8 +4,8 @@ from impala.dbapi import connect
 
 # Caminhos dos arquivos
 bdhc_tratado = "C:/Users/x15501492/Downloads/BDHC_formatado_registros.xlsx"
-base_cv_12_21 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/10 - Out/XLSX - Uso interno/Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
-base_cv_22_25 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/10 - Out/XLSX - Uso interno/Crimes Violentos - Jan 2022 a Out 2025.xlsx"
+base_cv_12_21 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/11 - Nov/XLSX - Uso interno/Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
+base_cv_22_25 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/11 - Nov/XLSX - Uso interno/Crimes Violentos - Jan 2022 a Nov 2025.xlsx"
 
 # 1️⃣ Lê as bases
 df_bdhc = pd.read_excel(bdhc_tratado)
@@ -48,9 +48,9 @@ print(f"Total final após junção (2012–2021): {len(df_final_12_21)} registro
 print(f"Total final após junção (2022–2025): {len(df_final_22_25)} registros")
 
 # 8️⃣ Salva resultado
-saida_12_21 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/10 - Out/XLSX - Uso interno/Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
+saida_12_21 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/11 - Nov/XLSX - Uso interno/Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
 df_final_12_21.to_excel(saida_12_21, index=False)
-saida_22_25 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/10 - Out/XLSX - Uso interno/Crimes Violentos - Jan 2022 a Out 2025.xlsx"
+saida_22_25 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/11 - Nov/XLSX - Uso interno/Crimes Violentos - Jan 2022 a Nov 2025.xlsx"
 df_final_22_25.to_excel(saida_22_25, index=False)
 
 print(f"✅ Bases unificadas salvas em:\n{saida_12_21} e \n{saida_22_25}")
