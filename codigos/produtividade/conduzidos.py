@@ -70,7 +70,7 @@ try:
                LEFT JOIN db_bisp_reds_reporting.tb_envolvido_ocorrencia AS env
                     ON oco.numero_ocorrencia = env.numero_ocorrencia
                WHERE oco.data_hora_fato >= '2024-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2025-09-01 00:00:00.000'
+               AND oco.data_hora_fato < '2025-12-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND tipo_prisao_apreensao_descricao_longa IN ('FLAGRANTE DE ATO INFRACIONAL', 'FLAGRANTE DE CRIME / CONTRAVENCAO', 'MANDADO JUDICIAL', 'OUTRAS - PRISAO / APREENSAO', 'RECAPTURA')
                 '''
@@ -84,6 +84,6 @@ except Exception as e:
 df.head()
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Downloads/da_conduzidos.xlsx",index=False)
+df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/08 - Produtividade/2025/11 - Novembro/da_conduzidos.xlsx",index=False)
 
 print('FINALIZOU :)')
