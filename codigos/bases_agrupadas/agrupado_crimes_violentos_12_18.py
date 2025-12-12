@@ -194,6 +194,35 @@ except Exception as e:
 df.head()
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Downloads/12_18_crimes_violentos.xlsx",index=False)
+df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/12_18_crimes_violentos.xlsx",index=False)
+
+# A
+# T
+# E
+# N         A partir daqui, o código exporta as bases para csv
+# Ç
+# Ã
+# O
+
+# Caminhos dos arquivos
+base_excel = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/12_18_crimes_violentos.xlsx"
+
+# 1️⃣ Lê as bases
+df_excel = pd.read_excel(base_excel)
+
+# Caminho CSV
+caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Banco de Dados CSV/Banco Crimes Violentos 2012 a 2018 - Atualizado Novembro 2025.csv"
+
+# Formatação regional
+df_excel = df_excel.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
+
+# Exporta com separador ";" e encoding compatível com Excel PT-BR
+df_excel.to_csv(
+    caminho_csv,
+    sep=';',            # separador padrão BR
+    index=False,        # sem índice numérico
+    encoding='utf-8-sig'  # adiciona BOM, compatível com Excel
+)
 
 print('FINALIZOU :)')
+
