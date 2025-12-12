@@ -69,7 +69,7 @@ try:
                             SELECT DISTINCT YEAR(data_hora_fato) as ano_fato, MONTH(data_hora_fato) as mes_fato
                             FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
                             WHERE oco.data_hora_fato >= '2019-01-01 00:00:00.000'
-                            AND oco.data_hora_fato < '2025-09-01 00:00:00.000' 
+                            AND oco.data_hora_fato < '2025-12-01 00:00:00.000' 
                         ),
                         naturezas AS (
                             SELECT DISTINCT
@@ -82,15 +82,16 @@ try:
                                 WHEN oco.natureza_codigo = 'B01121' THEN 'HOMICIDIO'
                                 WHEN oco.natureza_codigo = 'C01157' THEN 'ROUBO'
                                 WHEN oco.natureza_codigo = 'B01148' THEN 'SEQUESTRO E CARCERE PRIVADO'
+                                WHEN oco.natureza_codigo = 'B01504' THEN 'FEMINICIDIO'
                                 ELSE oco.natureza_descricao
                                 END as natureza_descricao,
                                 CASE 
                                 WHEN oco.natureza_codigo IN ('C01159') THEN 'CONSUMADO'         -- só consumado
-                                WHEN oco.natureza_codigo IN ('B01121') THEN 'TENTADO'          -- só tentado (se for o caso)
+                                WHEN oco.natureza_codigo IN ('B01121','B01504') THEN 'TENTADO'          -- só tentado (se for o caso)
                                 ELSE NULL
                                 END AS only_status
                             FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
-                            WHERE oco.natureza_codigo IN ('D01213','D01217','C01158','C01159','C01157','B01148','B01121')
+                            WHERE oco.natureza_codigo IN ('D01213','D01217','C01158','C01159','C01157','B01148','B01121','B01504')
                         ),
                         naturezas_exploded as (
                                 SELECT natureza_codigo, natureza_descricao, 'CONSUMADO' AS status FROM naturezas WHERE (only_status IS NULL OR only_status='CONSUMADO')
@@ -103,7 +104,7 @@ try:
                                    oco.natureza_codigo,
                                    CASE 
                                    WHEN oco.natureza_codigo = 'C01159' THEN 'CONSUMADO'
-                                   WHEN oco.natureza_codigo = 'B01121' THEN 'TENTADO'
+                                   WHEN oco.natureza_codigo IN ('B01121','B01504') THEN 'TENTADO'
                                    ELSE oco.natureza_consumado
                                    END AS status,
                                    YEAR (oco.data_hora_fato) as "ano_fato",
@@ -118,7 +119,7 @@ try:
                             LEFT JOIN db_bisp_shared.vw_dim_tempo as temp
                               ON oco.sqtempo_fato = temp.sqtempo
                             WHERE oco.data_hora_fato >= '2019-01-01 00:00:00.000'
-                            AND oco.data_hora_fato < '2025-09-01 00:00:00.000'
+                            AND oco.data_hora_fato < '2025-12-01 00:00:00.000'
                             AND oco.ocorrencia_uf = 'MG'
                             AND oco.ind_estado IN ('F', 'R')
                             AND (
@@ -129,12 +130,13 @@ try:
                                 OR (oco.natureza_codigo = 'C01157' AND oco.natureza_consumado IN ('CONSUMADO', 'TENTADO'))
                                 OR (oco.natureza_codigo = 'B01148' AND oco.natureza_consumado IN ('CONSUMADO', 'TENTADO'))
                                 OR (oco.natureza_codigo = 'B01121' AND oco.natureza_consumado = 'TENTADO')
+                                OR (oco.natureza_codigo = 'B01504' AND oco.natureza_consumado = 'TENTADO')
                                 )
                             GROUP BY oco.natureza_descricao,
                                      oco.natureza_codigo,
                                      CASE 
                                      WHEN oco.natureza_codigo = 'C01159' THEN 'CONSUMADO'
-                                     WHEN oco.natureza_codigo = 'B01121' THEN 'TENTADO'
+                                     WHEN oco.natureza_codigo IN ('B01121','B01504') THEN 'TENTADO'
                                      ELSE oco.natureza_consumado
                                      END,
                                      oco.nome_municipio,
@@ -194,6 +196,34 @@ except Exception as e:
 df.head()
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Downloads/agrupado_crimes_violentos.xlsx",index=False)
+df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/agrupado_crimes_violentos.xlsx",index=False)
+
+# A
+# T
+# E
+# N         A partir daqui, o código exporta as bases para csv
+# Ç
+# Ã
+# O
+
+# Caminhos dos arquivos
+base_excel = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/agrupado_crimes_violentos.xlsx"
+
+# 1️⃣ Lê as bases
+df_excel = pd.read_excel(base_excel)
+
+# Caminho CSV
+caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Banco de Dados CSV/Banco Crimes Violentos 2019 a 2025 - Atualizado Novembro 2025.csv"
+
+# Formatação regional
+df_excel = df_excel.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
+
+# Exporta com separador ";" e encoding compatível com Excel PT-BR
+df_excel.to_csv(
+    caminho_csv,
+    sep=';',            # separador padrão BR
+    index=False,        # sem índice numérico
+    encoding='utf-8-sig'  # adiciona BOM, compatível com Excel
+)
 
 print('FINALIZOU :)')
