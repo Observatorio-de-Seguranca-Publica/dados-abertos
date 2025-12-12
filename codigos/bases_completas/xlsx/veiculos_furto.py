@@ -186,7 +186,7 @@ try:
                LEFT JOIN db_bisp_reds_reporting.tb_veiculo_ocorrencia as vei
                     ON oco.numero_ocorrencia = vei.numero_ocorrencia     
                WHERE oco.data_hora_fato >= '2015-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2025-10-01 00:00:00.000'
+               AND oco.data_hora_fato < '2025-12-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND oco.ind_estado IN ('F', 'R')
                AND oco.natureza_codigo IN ('C01155')
@@ -241,6 +241,6 @@ df['Longitude SIRGAS'] = pd.to_numeric(df['Longitude SIRGAS'])
 # fim da dtransformação lat long
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/Bases completas/09 - Set/Veiculos - Furto - Jan 2015 a Set 2025.xlsx",index=False)
+df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/Bases completas/XLSX - Uso interno/11 - Nov/Veiculos - Furto - Jan 2015 a Nov 2025.xlsx",index=False)
 
 print('FINALIZOU :)')
