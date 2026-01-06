@@ -69,7 +69,7 @@ try:
                LEFT JOIN db_bisp_reds_reporting.tb_veiculo_ocorrencia AS vei
                     ON oco.numero_ocorrencia = vei.numero_ocorrencia
                WHERE oco.data_hora_fato >= '2024-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2025-12-01 00:00:00.000'
+               AND oco.data_hora_fato < '2026-01-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND vei.situacao_placa_descricao = 'RECUPERADO'
                 '''
@@ -83,6 +83,6 @@ except Exception as e:
 df.head()
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/08 - Produtividade/2025/11 - Novembro/da_veiculos_recuperados.xlsx",index=False)
+df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/08 - Produtividade/2025/12 - Dezembro/da_veiculos_recuperados.xlsx",index=False)
 
 print('FINALIZOU :)')

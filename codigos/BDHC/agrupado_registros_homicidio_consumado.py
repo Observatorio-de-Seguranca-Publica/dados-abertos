@@ -133,7 +133,7 @@ res = res[["Registros", "Natureza", "Município", "Cód. IBGE", "Mês", "Ano Fat
 res = res.sort_values(["Ano Fato", "Mês", "Natureza", "Município"]).reset_index(drop=True)
 
 # 10. Exportar para Excel
-saida = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/agrupado_registros_homicidio_consumado.xlsx" 
+saida = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Excel/agrupado_registros_homicidio_consumado.xlsx" 
 res.to_excel(saida, index=False)
 
 print("Base agrupada gerada com sucesso em:", saida)
@@ -147,9 +147,9 @@ print("Base agrupada gerada com sucesso em:", saida)
 # O
 
 # Caminhos dos arquivos
-agg_hc = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/agrupado_registros_homicidio_consumado.xlsx" 
-agg_cv_12_18 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/12_18_crimes_violentos.xlsx" 
-agg_cv_19_25 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/agrupado_crimes_violentos.xlsx" 
+agg_hc = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Excel/agrupado_registros_homicidio_consumado.xlsx" 
+agg_cv_12_18 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Excel/12_18_crimes_violentos.xlsx" 
+agg_cv_19_25 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Excel/agrupado_crimes_violentos.xlsx" 
 
 # 1️⃣ Lê as bases
 df_hc = pd.read_excel(agg_hc)
@@ -232,19 +232,19 @@ print(f"Total final após junção (2019–2025): {len(df_final_19_25)} registro
 
 
 # 8️⃣ Salva resultado
-#saida_12_18 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/12_18_crimes_violentos.xlsx"
+#saida_12_18 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Excel/12_18_crimes_violentos.xlsx"
 #df_final_12_18.to_excel(saida_12_18, index=False)
 
-#saida_19_25 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/agrupado_crimes_violentos.xlsx"
+#saida_19_25 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Excel/agrupado_crimes_violentos.xlsx"
 #df_final_19_25.to_excel(saida_19_25, index=False)
 
 
 
 #print(f"✅ Bases unificadas salvas em:\n{saida_12_18} e \n{saida_19_25}")
 
-saida_12_18 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/12_18_crimes_violentos.xlsx"
-saida_19_24 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/agrupado_crimes_violentos_2019_2024.xlsx"
-saida_25_em_diante = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/agrupado_crimes_violentos_2025_em_diante.xlsx"
+saida_12_18 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Excel/12_18_crimes_violentos.xlsx"
+saida_19_24 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Excel/agrupado_crimes_violentos_2019_2024.xlsx"
+saida_25_em_diante = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Excel/agrupado_crimes_violentos_2025_em_diante.xlsx"
 
 df_final_12_18.to_excel(saida_12_18, index=False)
 df_final_19_24.to_excel(saida_19_24, index=False)
@@ -263,8 +263,8 @@ df_final_25_em_diante.to_excel(saida_25_em_diante, index=False)
 # O
 
 # Caminho de saída para CSV
-#caminho_csv_12_18 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Banco de Dados CSV/Banco Crimes Violentos 2012 a 2018 - Atualizado Novembro 2025.csv" 
-#caminho_csv_19_25 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Banco de Dados CSV/Banco Crimes Violentos 2019 a 2025 - Atualizado Novembro 2025.csv"
+#caminho_csv_12_18 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Banco de Dados CSV/Banco Crimes Violentos 2012 a 2018 - Atualizado Dezembro 2025.csv" 
+#caminho_csv_19_25 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Banco de Dados CSV/Banco Crimes Violentos 2019 a 2025 - Atualizado Dezembro 2025.csv"
 
 # Formatação regional
 #df_final_12_18 = df_final_12_18.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
@@ -289,9 +289,9 @@ df_final_25_em_diante.to_excel(saida_25_em_diante, index=False)
 #    encoding='utf-8-sig'  # adiciona BOM, compatível com Excel
 #)
 
-caminho_csv_12_18 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Banco de Dados CSV/Banco Crimes Violentos 2012 a 2018 - Atualizado Novembro 2025.csv" 
-caminho_csv_19_24 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Banco de Dados CSV/Banco Crimes Violentos 2019 a 2024 - Atualizado Novembro 2025.csv"
-caminho_csv_25_em_diante = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Banco de Dados CSV/Banco Crimes Violentos 2025 em diante - Atualizado Novembro 2025.csv"
+caminho_csv_12_18 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Banco de Dados CSV/Banco Crimes Violentos 2012 a 2018 - Atualizado Dezembro 2025.csv" 
+caminho_csv_19_24 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Banco de Dados CSV/Banco Crimes Violentos 2019 a 2024 - Atualizado Dezembro 2025.csv"
+caminho_csv_25_em_diante = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Banco de Dados CSV/Banco Crimes Violentos 2025 em diante - Atualizado Dezembro 2025.csv"
 
 # Função auxiliar para exportar com formatação BR
 def exporta_csv(df, caminho):

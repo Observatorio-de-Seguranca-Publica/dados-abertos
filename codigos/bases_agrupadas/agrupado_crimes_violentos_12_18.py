@@ -194,7 +194,7 @@ except Exception as e:
 df.head()
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/12_18_crimes_violentos.xlsx",index=False)
+df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Excel/12_18_crimes_violentos.xlsx",index=False)
 
 # A
 # T
@@ -205,13 +205,13 @@ df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação S
 # O
 
 # Caminhos dos arquivos
-base_excel = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/12_18_crimes_violentos.xlsx"
+base_excel = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Excel/12_18_crimes_violentos.xlsx"
 
 # 1️⃣ Lê as bases
 df_excel = pd.read_excel(base_excel)
 
 # Caminho CSV
-caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Banco de Dados CSV/Banco Crimes Violentos 2012 a 2018 - Atualizado Novembro 2025.csv"
+caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Banco de Dados CSV/Banco Crimes Violentos 2012 a 2018 - Atualizado Dezembro 2025.csv"
 
 # Formatação regional
 df_excel = df_excel.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)

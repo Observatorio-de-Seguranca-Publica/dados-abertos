@@ -104,7 +104,7 @@ res = res[["Registros", "Natureza", "Município", "Cod. IBGE", "Mês", "Ano", "R
 res = res.sort_values(["Ano", "Mês", "Natureza", "Município"]).reset_index(drop=True)
 
 # 10. Exportar para Excel
-saida = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/agrupado_vitimas_homicidio_consumado.xlsx" 
+saida = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Excel/agrupado_vitimas_homicidio_consumado.xlsx" 
 res.to_excel(saida, index=False)
 
 # A
@@ -116,13 +116,13 @@ res.to_excel(saida, index=False)
 # O
 
 # Caminhos dos arquivos
-base_excel = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/agrupado_vitimas_homicidio_consumado.xlsx"
+base_excel = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Excel/agrupado_vitimas_homicidio_consumado.xlsx"
 
 # 1️⃣ Lê as bases
 df_excel = pd.read_excel(base_excel)
 
 # Caminho CSV
-caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Banco de Dados CSV/Banco Vítimas de Homicídio Consumado Novembro 2025.csv"
+caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Banco de Dados CSV/Banco Vítimas de Homicídio Consumado Dezembro 2025.csv"
 
 # Formatação regional
 df_excel = df_excel.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)

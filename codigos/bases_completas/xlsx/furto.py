@@ -173,7 +173,7 @@ try:
                LEFT JOIN mapeamento
                     ON CAST(oco.local_imediato_codigo AS STRING) = mapeamento.codigo_local_imediato
                WHERE oco.data_hora_fato >= '2022-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2025-12-01 00:00:00.000'
+               AND oco.data_hora_fato < '2026-01-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND oco.ind_estado IN ('F', 'R')
                AND oco.natureza_consumado = 'CONSUMADO'

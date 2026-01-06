@@ -70,7 +70,7 @@ try:
                             SELECT DISTINCT YEAR(data_hora_fato) as ano_fato, MONTH(data_hora_fato) as mes_fato
                             FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
                             WHERE oco.data_hora_fato >= '2015-01-01 00:00:00.000'
-                            AND oco.data_hora_fato < '2025-12-01 00:00:00.000' 
+                            AND oco.data_hora_fato < '2026-01-01 00:00:00.000' 
                         ),
                         naturezas AS (
                             SELECT DISTINCT oco.natureza_descricao
@@ -94,7 +94,7 @@ try:
                             LEFT JOIN db_bisp_reds_reporting.tb_veiculo_ocorrencia as vei
                               ON oco.numero_ocorrencia = vei.numero_ocorrencia     
                             WHERE oco.data_hora_fato >= '2015-01-01 00:00:00.000'
-                            AND oco.data_hora_fato < '2025-12-01 00:00:00.000'
+                            AND oco.data_hora_fato < '2026-01-01 00:00:00.000'
                             AND oco.ocorrencia_uf = 'MG'
                             AND oco.ind_estado IN ('F', 'R')
                             AND oco.natureza_codigo IN ('C01155')
@@ -161,7 +161,7 @@ except Exception as e:
 df.head()
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/agrupado_furto_veiculos.xlsx",index=False)
+df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Excel/agrupado_furto_veiculos.xlsx",index=False)
 
 # A
 # T
@@ -172,13 +172,13 @@ df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação S
 # O
 
 # Caminhos dos arquivos
-base_excel = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Excel/agrupado_furto_veiculos.xlsx"
+base_excel = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Excel/agrupado_furto_veiculos.xlsx"
 
 # 1️⃣ Lê as bases
 df_excel = pd.read_excel(base_excel)
 
 # Caminho CSV
-caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/11 - Novembro/Banco de Dados CSV/Banco Veículos Furtados - Atualizado Novembro 2025.csv"
+caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2025/12 - Dezembro/Banco de Dados CSV/Banco Veículos Furtados - Atualizado Dezembro 2025.csv"
 
 # Formatação regional
 df_excel = df_excel.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
