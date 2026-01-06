@@ -3,7 +3,7 @@ import subprocess
 
 # Caminho da pasta onde estão os scripts
 #PASTA = "C:/Users/x15501492/Documents/02 - Publicações/Códigos/Agrupados"
-PASTA = "C:/Users/x15501492/Documents/Sejusp/DIS/Dados abertos/Automatização/Agrupados"
+PASTA = "C:/Users/x15501492/Downloads/code/observatorio/dados-abertos/codigos/bases_agrupadas"
 este_arquivo = os.path.basename(__file__)  # nome do script atual
 
 
