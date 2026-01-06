@@ -234,6 +234,6 @@ df['Longitude SIRGAS'] = pd.to_numeric(df['Longitude SIRGAS'])
 # fim da dtransformação lat long
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/Bases completas/12 - Dez/XLSX - Uso interno/XLSX - Uso interno/Crimes Violentos - Jan 2022 a Nov 2025.xlsx",index=False)
+df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/Bases completas/12 - Dez/XLSX - Uso interno/Crimes Violentos - Jan 2022 a Nov 2025.xlsx",index=False)
 
 print('FINALIZOU :)')
