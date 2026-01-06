@@ -13,7 +13,7 @@ df_cv_22_25 = pd.read_excel(base_cv_22_25)
 # Lista de colunas a remover
 colunas_excluir = [
     "Descrição Subclasse Nat Principal", "Tentado/Consumado Nat Principal", "Natureza Nomenclatura Banco",
-    "Logradouro Ocorrência", "Unid Registro Nível 8", "Latitude", "Longitude"
+    "Logradouro Ocorrência", "Unid Registro Nível 8", "Latitude", "Longitude", "Latitude SIRGAS", "Longitude SIRGAS"
 ]
 
 # Remover colunas desnecessárias
