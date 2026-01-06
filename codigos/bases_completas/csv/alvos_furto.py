@@ -197,7 +197,7 @@ df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
 df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
 
 # Caminho de saída para CSV
-caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/12 - Dez/CSV -Uso externo/Alvos - Furto - Jan 2022 a Nov 2025.csv" 
+caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/12 - Dez/CSV -Uso externo/Alvos - Furto - Jan 2022 a Dez 2025.csv" 
 
 # Formatação regional
 df = df.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)

@@ -189,7 +189,7 @@ print("Salvo em:", out1)
 print("Linhas finais:", len(df))
 
 # --- 10) Salvar em dados abertos ---
-out2 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/12 - Dez/XLSX - Uso interno/Vítimas de Homicidio Consumado - Jan 2012 a Nov 2025.xlsx"
+out2 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/12 - Dez/XLSX - Uso interno/Vítimas de Homicidio Consumado - Jan 2012 a Dez 2025.xlsx"
 df.to_excel(out2, index=False)
 print("Salvo em:", out2)
 print("Linhas finais:", len(df))
@@ -204,7 +204,7 @@ colunas_excluir = [
 df_csv = df.drop(columns=colunas_excluir, errors="ignore")
 
 # Caminho de saída para CSV
-caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/12 - Dez/CSV -Uso externo/Vítimas de Homicidio Consumado - Jan 2012 a Nov 2025.csv" 
+caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/12 - Dez/CSV -Uso externo/Vítimas de Homicidio Consumado - Jan 2012 a Dez 2025.csv" 
 
 # Formatação regional
 df_csv = df_csv.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
