@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from impala.dbapi import connect
 
-# Caminhos dos arquivos
+# Caminhos dos arquivos do BDHC
 base_cv_12_21 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/12 - Dez/XLSX - Uso interno/Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
 base_cv_22_25 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/12 - Dez/XLSX - Uso interno/Crimes Violentos - Jan 2022 a Dez 2025.xlsx"
 
