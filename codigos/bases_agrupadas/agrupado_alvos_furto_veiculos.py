@@ -148,7 +148,7 @@ try:
     "alvos": "Alvos"
     }, inplace=True)
     
-# Ordenar pelas colunas "Ano Fato", "Mês", "Município" e "Natureza"
+# Ordenar pelas colunas "Ano Fato", "Mês", "Município" e "Natureza" 12
     df = df.sort_values(
     by=["Ano Fato", "Mês", "Natureza", "Município"],
     ascending=[True, True, True, True]
