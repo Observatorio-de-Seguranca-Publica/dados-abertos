@@ -2,7 +2,7 @@ import pandas as pd
 import itertools
 from impala.dbapi import connect
 
-# Funções auxiliares ..
+# Funções auxiliares ....
 def get_credentials(file_path):
     creds = {}
     with open(file_path, 'r') as f:
