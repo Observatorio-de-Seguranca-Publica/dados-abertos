@@ -159,7 +159,7 @@ try:
                LEFT JOIN mapeamento
                     ON CAST(oco.local_imediato_codigo AS STRING) = mapeamento.codigo_local_imediato
                WHERE oco.data_hora_fato >= '2019-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2026-01-01 00:00:00.000'
+               AND oco.data_hora_fato < '2026-02-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND oco.ind_estado IN ('F', 'R')
                AND oco.natureza_consumado = 'CONSUMADO'
@@ -178,7 +178,7 @@ df.head()
 df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
 
 # Caminho de saída para CSV
-caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/12 - Dez/CSV -Uso externo/Lesão Corporal - Jan 2019 a Dez 2025.csv" 
+caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/01 - Jan/CSV -Uso externo/Lesão Corporal - Jan 2019 a Jan 2026.csv" 
 
 # Formatação regional
 df = df.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)

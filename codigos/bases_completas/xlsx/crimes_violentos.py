@@ -173,7 +173,7 @@ try:
                LEFT JOIN mapeamento
                     ON CAST(oco.local_imediato_codigo AS STRING) = mapeamento.codigo_local_imediato
                WHERE oco.data_hora_fato >= '2022-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2026-01-01 00:00:00.000'
+               AND oco.data_hora_fato < '2026-02-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND oco.ind_estado IN ('F', 'R')
                AND (
@@ -234,6 +234,6 @@ df['Longitude SIRGAS'] = pd.to_numeric(df['Longitude SIRGAS'])
 # fim da dtransformação lat long
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/Bases completas/12 - Dez/XLSX - Uso interno/Crimes Violentos - Jan 2022 a Dez 2025.xlsx",index=False)
+df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/01 - Jan/XLSX - Uso interno/Crimes Violentos - Jan 2022 a Jan 2026.xlsx",index=False)
 
 print('FINALIZOU :)')

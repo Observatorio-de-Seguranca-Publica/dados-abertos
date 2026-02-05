@@ -70,8 +70,8 @@ try:
                FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
                LEFT JOIN db_bisp_reds_reporting.tb_material_apreendido_ocorrencia AS mat
                     ON oco.numero_ocorrencia = mat.numero_ocorrencia
-               WHERE oco.data_hora_fato >= '2024-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2026-01-01 00:00:00.000'
+               WHERE oco.data_hora_fato >= '2025-01-01 00:00:00.000'
+               AND oco.data_hora_fato < '2026-02-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND mat.situacao_descricao IN ('APREENDIDO', 'RECOLHIDO')
                AND mat.tipo_objeto_descricao = 'SIMULACRO DE ARMA DE FOGO (USO RESTRITO)'
@@ -86,6 +86,6 @@ except Exception as e:
 df.head()
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/08 - Produtividade/2025/12 - Dezembro/da_simulacros_apreendidos.xlsx",index=False)
+df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/08 - Produtividade/2026/01 - Janeiro/da_simulacros_apreendidos.xlsx",index=False)
 
 print('FINALIZOU :)')

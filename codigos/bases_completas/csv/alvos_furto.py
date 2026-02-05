@@ -176,7 +176,7 @@ try:
                LEFT JOIN alvo_corrigido as alv
                     ON CAST(oco.complemento_natureza_descricao_longa AS STRING) = alv.descricao_subgrupo_complemento_nat
                WHERE oco.data_hora_fato >= '2022-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2026-01-01 00:00:00.000'
+               AND oco.data_hora_fato < '2026-02-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND oco.ind_estado IN ('F', 'R')
                AND oco.natureza_codigo IN ('C01155')
@@ -197,7 +197,7 @@ df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
 df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
 
 # Caminho de saída para CSV
-caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/12 - Dez/CSV -Uso externo/Alvos - Furto - Jan 2022 a Dez 2025.csv" 
+caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/01 - Jan/CSV -Uso externo/Alvos - Furto - Jan 2022 a Jan 2026.csv" 
 
 # Formatação regional
 df = df.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)

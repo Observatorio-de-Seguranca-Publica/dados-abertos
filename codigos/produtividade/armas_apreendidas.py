@@ -70,8 +70,8 @@ try:
                FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
                LEFT JOIN db_bisp_reds_reporting.tb_arma_ocorrencia AS arm
                     ON oco.numero_ocorrencia = arm.numero_ocorrencia
-               WHERE oco.data_hora_fato >= '2024-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2026-01-01 00:00:00.000'
+               WHERE oco.data_hora_fato >= '2025-01-01 00:00:00.000'
+               AND oco.data_hora_fato < '2026-02-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND arm.situacao_descricao NOT IN ('ARMA DE PRESSAO IGUAL FZ 7,62MM', 'ARMAS DE PRESSAO ACIMA DE 6MM', 'ARMAS DE PRESSAO IGUAL OU INFERIOR A 6MM', 'NÃO INFORMADO')
                AND arm.situacao_descricao IN ('APREENDIDO', 'RECUPERADO')
@@ -86,6 +86,6 @@ except Exception as e:
 df.head()
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/08 - Produtividade/2025/12 - Dezembro/da_armas_apreendidas.xlsx",index=False)
+df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/08 - Produtividade/2026/01 - Janeiro/da_armas_apreendidas.xlsx",index=False)
 
 print('FINALIZOU :)')
