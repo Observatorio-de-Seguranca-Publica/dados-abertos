@@ -149,12 +149,12 @@ print("Base agrupada gerada com sucesso em:", saida)
 # Caminhos dos arquivos
 agg_hc = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/01 - Janeiro/Excel/agrupado_registros_homicidio_consumado.xlsx" 
 agg_cv_12_18 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/01 - Janeiro/Excel/12_18_crimes_violentos.xlsx" 
-agg_cv_19_26 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/01 - Janeiro/Excel/agrupado_crimes_violentos.xlsx" 
+agg_cv_19_24 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/01 - Janeiro/Excel/agrupado_crimes_violentos.xlsx" 
 
 # 1️⃣ Lê as bases
 df_hc = pd.read_excel(agg_hc)
 df_cv_12_18 = pd.read_excel(agg_cv_12_18)
-df_cv_19_26 = pd.read_excel(agg_cv_19_26)
+df_cv_19_24 = pd.read_excel(agg_cv_19_24)
 
 # --- PADRONIZA TIPOS DAS TRÊS BASES ---
 
@@ -165,12 +165,12 @@ def norm_ibge(x):
         return None
 
 # Cod IBGE como texto padronizado
-for dfX in [df_hc, df_cv_12_18, df_cv_19_26]:
+for dfX in [df_hc, df_cv_12_18, df_cv_19_24]:
     if "Cód. IBGE" in dfX.columns:
         dfX["Cód. IBGE"] = dfX["Cód. IBGE"].apply(norm_ibge)
 
 # Ano Fato e Mês como inteiro (se existirem nas bases)
-for dfX in [df_hc, df_cv_12_18, df_cv_19_26]:
+for dfX in [df_hc, df_cv_12_18, df_cv_19_24]:
     if "Ano Fato" in dfX.columns:
         dfX["Ano Fato"] = pd.to_numeric(dfX["Ano Fato"], errors="coerce").astype("Int64")
     if "Mês" in dfX.columns:
@@ -193,40 +193,40 @@ print(f"Base CV 2012–2018 original: {len(df_cv_12_18)}")
 print(f"Base BDHC 2012–2018 filtrada: {len(df_vhc_filtrada_12_18)}")
 print(f"→ Base unificada 2012–2018: {len(df_final_12_18)}")
 
-# 5️⃣ Filtra a BDHC apenas entre 2019 e 2026
-df_vhc_filtrada_19_26 = df_hc[
-    (df_hc["Ano Fato"] >= 2019) & (df_hc["Ano Fato"] <= 2026)
+# 5️⃣ Filtra a BDHC apenas entre 2019 e 2024
+df_vhc_filtrada_19_24 = df_hc[
+    (df_hc["Ano Fato"] >= 2019) & (df_hc["Ano Fato"] <= 2024)
 ].copy()
 
 # 6️⃣ Garante que as colunas estão iguais (ordem e nomes)
 #    Mantém as colunas que existem nas duas bases
-df_vhc_filtrada_19_26 = df_vhc_filtrada_19_26.reindex(columns=df_cv_19_26.columns)
+df_vhc_filtrada_19_24 = df_vhc_filtrada_19_24.reindex(columns=df_cv_19_24.columns)
 
 # 7️⃣ Junta (empilha)
-#df_final_19_26 = pd.concat([df_cv_19_26, df_vhc_filtrada_19_26], ignore_index=True)
+#df_final_19_24 = pd.concat([df_cv_19_24, df_vhc_filtrada_19_24], ignore_index=True)
 
-#print(f"Base CV 2022–2026 original: {len(df_cv_19_26)}")
-#print(f"Base BDHC 2022–2026 filtrada: {len(df_vhc_filtrada_19_26)}")
-#print(f"→ Base unificada 2022–2026: {len(df_final_19_26)}")
+#print(f"Base CV 2022–2026 original: {len(df_cv_19_24)}")
+#print(f"Base BDHC 2022–2026 filtrada: {len(df_vhc_filtrada_19_24)}")
+#print(f"→ Base unificada 2022–2026: {len(df_final_19_24)}")
 
 #print(f"Total final após junção (2012–2018): {len(df_final_12_18)} registros")
-#print(f"Total final após junção (2019–2026): {len(df_final_19_26)} registros")
+#print(f"Total final após junção (2019–2026): {len(df_final_19_24)} registros")
 
-df_final_19_26 = pd.concat([df_cv_19_26, df_vhc_filtrada_19_26], ignore_index=True)
+df_final_19_24 = pd.concat([df_cv_19_24, df_vhc_filtrada_19_24], ignore_index=True)
 
-print(f"Base CV 2022–2026 original: {len(df_cv_19_26)}")
-print(f"Base BDHC 2022–2026 filtrada: {len(df_vhc_filtrada_19_26)}")
-print(f"→ Base unificada 2019–2026: {len(df_final_19_26)} registros")
+print(f"Base CV 2019–2024 original: {len(df_cv_19_24)}")
+print(f"Base BDHC 2019–2024 filtrada: {len(df_vhc_filtrada_19_24)}")
+print(f"→ Base unificada 2019–2024: {len(df_final_19_24)} registros")
 
 # 🔹 NOVO BLOCO: separa as bases em dois períodos
-df_final_19_24 = df_final_19_26[df_final_19_26["Ano Fato"] <= 2024].copy()
-df_final_25_em_diante = df_final_19_26[df_final_19_26["Ano Fato"] >= 2025].copy()
+df_final_19_24 = df_final_19_24[df_final_19_24["Ano Fato"] <= 2024].copy()
+df_final_25_em_diante = df_final_19_24[df_final_19_24["Ano Fato"] >= 2025].copy()
 
 print(f"→ Sub-base 2019–2024: {len(df_final_19_24)} registros")
 print(f"→ Sub-base 2025 em diante: {len(df_final_25_em_diante)} registros")
 
 print(f"Total final após junção (2012–2018): {len(df_final_12_18)} registros")
-print(f"Total final após junção (2019–2026): {len(df_final_19_26)} registros")
+print(f"Total final após junção (2019–2024): {len(df_final_19_24)} registros")
 
 
 
@@ -235,12 +235,12 @@ print(f"Total final após junção (2019–2026): {len(df_final_19_26)} registro
 #saida_12_18 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/01 - Janeiro/Excel/12_18_crimes_violentos.xlsx"
 #df_final_12_18.to_excel(saida_12_18, index=False)
 
-#saida_19_26 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/01 - Janeiro/Excel/agrupado_crimes_violentos.xlsx"
-#df_final_19_26.to_excel(saida_19_26, index=False)
+#saida_19_24 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/01 - Janeiro/Excel/agrupado_crimes_violentos.xlsx"
+#df_final_19_24.to_excel(saida_19_24, index=False)
 
 
 
-#print(f"✅ Bases unificadas salvas em:\n{saida_12_18} e \n{saida_19_26}")
+#print(f"✅ Bases unificadas salvas em:\n{saida_12_18} e \n{saida_19_24}")
 
 saida_12_18 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/01 - Janeiro/Excel/12_18_crimes_violentos.xlsx"
 saida_19_24 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/01 - Janeiro/Excel/agrupado_crimes_violentos_2019_2024.xlsx"
@@ -291,7 +291,7 @@ df_final_25_em_diante.to_excel(saida_25_em_diante, index=False)
 
 caminho_csv_12_18 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/01 - Janeiro/Banco de Dados CSV/Banco Crimes Violentos 2012 a 2018 - Atualizado Janeiro 2026.csv" 
 caminho_csv_19_24 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/01 - Janeiro/Banco de Dados CSV/Banco Crimes Violentos 2019 a 2024 - Atualizado Janeiro 2026.csv"
-caminho_csv_25_em_diante = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/01 - Janeiro/Banco de Dados CSV/Banco Crimes Violentos 2025 em diante - Atualizado Janeiro 2026.csv"
+caminho_csv_25_em_diante = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/01 - Janeiro/Banco de Dados CSV/Banco Crimes Violentos 2025 a 2026 - Atualizado Janeiro 2026.csv"
 
 # Função auxiliar para exportar com formatação BR
 def exporta_csv(df, caminho):
