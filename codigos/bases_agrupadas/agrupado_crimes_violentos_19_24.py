@@ -69,7 +69,7 @@ try:
                             SELECT DISTINCT YEAR(data_hora_fato) as ano_fato, MONTH(data_hora_fato) as mes_fato
                             FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
                             WHERE oco.data_hora_fato >= '2019-01-01 00:00:00.000'
-                            AND oco.data_hora_fato < '2026-02-01 00:00:00.000' 
+                            AND oco.data_hora_fato < '2025-01-01 00:00:00.000' 
                         ),
                         naturezas AS (
                             SELECT DISTINCT
@@ -119,7 +119,7 @@ try:
                             LEFT JOIN db_bisp_shared.vw_dim_tempo as temp
                               ON oco.sqtempo_fato = temp.sqtempo
                             WHERE oco.data_hora_fato >= '2019-01-01 00:00:00.000'
-                            AND oco.data_hora_fato < '2026-02-01 00:00:00.000'
+                            AND oco.data_hora_fato < '2025-01-01 00:00:00.000'
                             AND oco.ocorrencia_uf = 'MG'
                             AND oco.ind_estado IN ('F', 'R')
                             AND (
