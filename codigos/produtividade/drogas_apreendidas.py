@@ -73,8 +73,8 @@ try:
                WHERE oco.data_hora_fato >= '2025-01-01 00:00:00.000'
                AND oco.data_hora_fato < '2026-02-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
-               AND mat.situacao_descricao IN ('APREENDIDO', 'RECOLHIDO')
-               AND mat.tipo_objeto_descricao IN ('PAPELOTES DE COCAINA', 'PASTA DE COCAINA', 'COCAINA EM PO', 'PINO DE COCAINA', 'OUTROS - COCAINA', 'CRACK EM PEDRAS', 'CRACK EM QUILOGRAMAS', 'OUTROS - CRACK', 'HAXIXE EM BOLA', 'HAXIXE EM TABLETE (QUILOGRAMA)', 'OUTROS - HAXIXE', 'OUTROS - LSD', 'CLOROFORMIO', 'COLA DE SAPATEIRO', 'LANCA-PERFUME', 'LOLO', 'THINNER', 'OUTROS - INALAVEIS', 'BUCHA DE MACONHA', 'CIGARRO DE MACONHA', 'PLANTACAO (PE) DE MACONHA', 'MACONHA PRENSADA (BARRA / TABLETE)', 'SEMENTE DE MACONHA', 'OUTROS - MACONHA', 'ARTANE', 'DIAZEPAN', 'DIEMPAX', 'ECSTASY / MDMA', 'INIBEX', 'ROHYPNOL', 'XAROPE', 'DROGAS K', 'OUTROS - MEDICAMENTOS / SINTETICOS', 'MERLA', 'HEROINA', 'MORFINA', 'OPIO', 'OUTROS - OPIACEOS')
+               AND mat.situacao_codigo IN ('0100', '0600')
+               AND mat.tipo_objeto_codigo IN ('5701', '5601', '5602', '5501', '5100', '5103', '5502', '5200', '5201', '5202', '5702', '5703', '5708', '5704', '5301', '5302', '5901', '5500', '5705', '5503', '5504', '5600', '5604', '5800', '5902', '5903', '5199', '5299', '5399', '5599', '5499', '5699', '5799', '5999', '5101', '5102', '5104', '5603', '5706', '5605', '5505', '5707')
                 '''
         
     df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')

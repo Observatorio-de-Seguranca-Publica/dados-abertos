@@ -73,8 +73,8 @@ try:
                WHERE oco.data_hora_fato >= '2025-01-01 00:00:00.000'
                AND oco.data_hora_fato < '2026-02-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
-               AND mat.situacao_descricao IN ('APREENDIDO', 'RECOLHIDO')
-               AND mat.tipo_objeto_descricao = 'SIMULACRO DE ARMA DE FOGO (USO RESTRITO)'
+               AND mat.situacao_codigo IN ('0100', '0600')
+               AND mat.tipo_objeto_codigo = '2020'
                 '''
         
     df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')

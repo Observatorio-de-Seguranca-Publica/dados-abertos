@@ -72,7 +72,7 @@ try:
                WHERE oco.data_hora_fato >= '2025-01-01 00:00:00.000'
                AND oco.data_hora_fato < '2026-02-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
-               AND tipo_prisao_apreensao_descricao_longa IN ('FLAGRANTE DE ATO INFRACIONAL', 'FLAGRANTE DE CRIME / CONTRAVENCAO', 'MANDADO JUDICIAL', 'OUTRAS - PRISAO / APREENSAO', 'RECAPTURA')
+               AND env.tipo_prisao_apreensao_codigo IN ('0100', '0200', '0300', '9900', '0400')   
                 '''
         
     df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')

@@ -71,7 +71,7 @@ try:
                WHERE oco.data_hora_fato >= '2025-01-01 00:00:00.000'
                AND oco.data_hora_fato < '2026-02-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
-               AND vei.situacao_placa_descricao = 'RECUPERADO'
+               AND vei.situacao_placa_codigo = '0400'
                 '''
         
     df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')

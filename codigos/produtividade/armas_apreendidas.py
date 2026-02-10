@@ -73,8 +73,8 @@ try:
                WHERE oco.data_hora_fato >= '2025-01-01 00:00:00.000'
                AND oco.data_hora_fato < '2026-02-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
-               AND arm.situacao_descricao NOT IN ('ARMA DE PRESSAO IGUAL FZ 7,62MM', 'ARMAS DE PRESSAO ACIMA DE 6MM', 'ARMAS DE PRESSAO IGUAL OU INFERIOR A 6MM', 'NÃO INFORMADO')
-               AND arm.situacao_descricao IN ('APREENDIDO', 'RECUPERADO')
+               AND arm.tipo_arma_codigo NOT IN ('0300', '0100', '0200')
+               AND arm.situacao_codigo IN ('0100', '0700')
                 '''
         
     df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
