@@ -220,7 +220,7 @@ print(f"✅ Base unificadas salva em:\n{saida_19_24}")
 
 # Filtra a BDHC apenas entre 2025 e 2026
 df_vhc_filtrada_25_26 = df_hc[
-    (df_hc["Ano Fato"] >= 2024) & (df_hc["Ano Fato"] <= 2026)
+    (df_hc["Ano Fato"] >= 2025) & (df_hc["Ano Fato"] <= 2026)
 ].copy()
 
 # Garante que as colunas estão iguais (ordem e nomes)
