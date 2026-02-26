@@ -64,6 +64,7 @@ def query_total_armas(ano1, ano2, mes):
         WHERE YEAR(oco.data_hora_fato) IN ({ano1}, {ano2})
             AND MONTH(oco.data_hora_fato) = {mes}
             AND oco.ocorrencia_uf = 'MG'
+            AND oco.codigo_municipio = 310620
             AND arm.tipo_arma_codigo NOT IN ('0300', '0100', '0200')
             AND arm.situacao_codigo IN ('0100', '0700')
         GROUP BY YEAR(oco.data_hora_fato)
@@ -81,6 +82,7 @@ def query_registros_armas(ano1, ano2, mes):
         WHERE YEAR(oco.data_hora_fato) IN ({ano1}, {ano2})
             AND MONTH(oco.data_hora_fato) = {mes}
             AND oco.ocorrencia_uf = 'MG'
+            AND oco.codigo_municipio = 310620
             AND arm.tipo_arma_codigo NOT IN ('0300', '0100', '0200')
             AND arm.situacao_codigo IN ('0100', '0700')
         GROUP BY YEAR(oco.data_hora_fato)
@@ -98,6 +100,7 @@ def query_total_simulacros(ano1, ano2, mes):
         WHERE YEAR(oco.data_hora_fato) IN ({ano1}, {ano2})
             AND MONTH(oco.data_hora_fato) = {mes}
             AND oco.ocorrencia_uf = 'MG'
+            AND oco.codigo_municipio = 310620
             AND mat.situacao_codigo IN ('0100', '0600')
             AND mat.tipo_objeto_codigo = '2020'
         GROUP BY YEAR(oco.data_hora_fato)
@@ -115,6 +118,7 @@ def query_registros_drogas(ano1, ano2, mes):
         WHERE YEAR(oco.data_hora_fato) IN ({ano1}, {ano2})
             AND MONTH(oco.data_hora_fato) = {mes}
             AND oco.ocorrencia_uf = 'MG'
+            AND oco.codigo_municipio = 310620
             AND mat.situacao_codigo IN ('0100', '0600')
             AND mat.tipo_objeto_codigo IN ('5701', '5601', '5602', '5501', '5100', '5103', '5502', '5200', '5201', '5202', '5702', '5703', '5708', '5704', '5301', '5302', '5901', '5500', '5705', '5503', '5504', '5600', '5604', '5800', '5902', '5903', '5199', '5299', '5399', '5599', '5499', '5699', '5799', '5999', '5101', '5102', '5104', '5603', '5706', '5605', '5505', '5707')
         GROUP BY YEAR(oco.data_hora_fato)
@@ -132,6 +136,7 @@ def query_total_conduzidos(ano1, ano2, mes):
         WHERE YEAR(oco.data_hora_fato) IN ({ano1}, {ano2})
             AND MONTH(oco.data_hora_fato) = {mes}
             AND oco.ocorrencia_uf = 'MG'
+            AND oco.codigo_municipio = 310620
             AND env.tipo_prisao_apreensao_codigo IN ('0100', '0200', '0300', '9900', '0400')
         GROUP BY YEAR(oco.data_hora_fato)
         ORDER BY ano
@@ -148,6 +153,7 @@ def query_total_veiculos(ano1, ano2, mes):
         WHERE YEAR(oco.data_hora_fato) IN ({ano1}, {ano2})
             AND MONTH(oco.data_hora_fato) = {mes}
             AND oco.ocorrencia_uf = 'MG'
+            AND oco.codigo_municipio = 310620
             AND vei.situacao_placa_codigo = '0400'
         GROUP BY YEAR(oco.data_hora_fato)
         ORDER BY ano
@@ -222,13 +228,13 @@ if __name__ == "__main__":
 
     resultados = executar_indicadores()
 
-    print("\nRESULTADOS MG:")
+    print("\nRESULTADOS BH:")
     for indicador, valores in resultados.items():
         print(indicador, "->", valores)
 
     df_export = exporta_excel(resultados)
 
-    df_export.to_excel("C:/Users/x15501492/Documents/02 - Publicações/08 - Produtividade/2026/01 - Janeiro/produtividade_mg.xlsx",index=False)
+    df_export.to_excel("C:/Users/x15501492/Documents/02 - Publicações/08 - Produtividade/2026/01 - Janeiro/produtividade_bh.xlsx",index=False)
 
     print("\nArquivo Excel exportado com sucesso!")
     print("\nFINALIZOU :)")
