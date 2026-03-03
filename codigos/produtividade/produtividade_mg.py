@@ -228,7 +228,7 @@ if __name__ == "__main__":
 
     df_export = exporta_excel(resultados)
 
-    df_export.to_excel("C:/Users/x15501492/Documents/02 - Publicações/08 - Produtividade/2026/01 - Janeiro/produtividade_mg.xlsx",index=False)
+    df_export.to_excel("C:/Users/x15501492/Documents/02 - Publicações/08 - Produtividade/2026/02 - Fevereiro/produtividade_mg.xlsx",index=False)
 
     print("\nArquivo Excel exportado com sucesso!")
     print("\nFINALIZOU :)")

@@ -178,7 +178,7 @@ df.head()
 df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
 
 # Caminho de saída para CSV
-caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/01 - Jan/CSV -Uso externo/Furto - Jan 2022 a Jan 2026.csv" 
+caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/CSV -Uso externo/Furto - Jan 2022 a Fev 2026.csv" 
 
 # Formatação regional
 df = df.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)

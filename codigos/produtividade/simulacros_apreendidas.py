@@ -86,6 +86,6 @@ except Exception as e:
 df.head()
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/08 - Produtividade/2026/01 - Janeiro/da_simulacros_apreendidos.xlsx",index=False)
+df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/08 - Produtividade/2026/02 - Fevereiro/da_simulacros_apreendidos.xlsx",index=False)
 
 print('FINALIZOU :)')
