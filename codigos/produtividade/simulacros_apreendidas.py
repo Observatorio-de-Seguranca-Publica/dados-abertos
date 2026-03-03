@@ -71,7 +71,7 @@ try:
                LEFT JOIN db_bisp_reds_reporting.tb_material_apreendido_ocorrencia AS mat
                     ON oco.numero_ocorrencia = mat.numero_ocorrencia
                WHERE oco.data_hora_fato >= '2025-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2026-02-01 00:00:00.000'
+               AND oco.data_hora_fato < '2026-03-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND mat.situacao_codigo IN ('0100', '0600')
                AND mat.tipo_objeto_codigo = '2020'

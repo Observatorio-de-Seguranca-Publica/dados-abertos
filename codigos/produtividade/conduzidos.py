@@ -70,7 +70,7 @@ try:
                LEFT JOIN db_bisp_reds_reporting.tb_envolvido_ocorrencia AS env
                     ON oco.numero_ocorrencia = env.numero_ocorrencia
                WHERE oco.data_hora_fato >= '2025-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2026-02-01 00:00:00.000'
+               AND oco.data_hora_fato < '2026-03-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND env.tipo_prisao_apreensao_codigo IN ('0100', '0200', '0300', '9900', '0400')   
                 '''

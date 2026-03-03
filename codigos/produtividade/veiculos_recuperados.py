@@ -69,7 +69,7 @@ try:
                LEFT JOIN db_bisp_reds_reporting.tb_veiculo_ocorrencia AS vei
                     ON oco.numero_ocorrencia = vei.numero_ocorrencia
                WHERE oco.data_hora_fato >= '2025-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2026-02-01 00:00:00.000'
+               AND oco.data_hora_fato < '2026-03-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND vei.situacao_placa_codigo = '0400'
                 '''

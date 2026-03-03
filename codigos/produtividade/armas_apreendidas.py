@@ -71,7 +71,7 @@ try:
                LEFT JOIN db_bisp_reds_reporting.tb_arma_ocorrencia AS arm
                     ON oco.numero_ocorrencia = arm.numero_ocorrencia
                WHERE oco.data_hora_fato >= '2025-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2026-02-01 00:00:00.000'
+               AND oco.data_hora_fato < '2026-03-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND arm.tipo_arma_codigo NOT IN ('0300', '0100', '0200')
                AND arm.situacao_codigo IN ('0100', '0700')

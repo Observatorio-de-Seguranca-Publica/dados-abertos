@@ -88,7 +88,7 @@ try:
                             SELECT DISTINCT YEAR(data_hora_fato) as ano_fato, MONTH(data_hora_fato) as mes_fato
                             FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
                             WHERE oco.data_hora_fato >= '2015-01-01 00:00:00.000'
-                            AND oco.data_hora_fato < '2026-02-01 00:00:00.000' 
+                            AND oco.data_hora_fato < '2026-03-01 00:00:00.000' 
                         ),
                         naturezas AS (
                             SELECT DISTINCT oco.natureza_descricao
@@ -116,7 +116,7 @@ try:
                             LEFT JOIN alvo_corrigido as alv
                               ON CAST(oco.complemento_natureza_descricao_longa AS STRING) = alv.descricao_subgrupo_complemento_nat
                             WHERE oco.data_hora_fato >= '2015-01-01 00:00:00.000'
-                            AND oco.data_hora_fato < '2026-02-01 00:00:00.000'
+                            AND oco.data_hora_fato < '2026-03-01 00:00:00.000'
                             AND oco.ocorrencia_uf = 'MG'
                             AND oco.ind_estado IN ('F', 'R')
                             AND oco.natureza_codigo = 'C01157'
