@@ -22,7 +22,7 @@ df = df[df["REDS desconsiderado?"] == "NÃO"]
 print("Total após filtro 'NÃO' (corrigido):", len(df))
 
 
-# --- 2) Remover colunas desnecessárias (sua lista) ---
+# Listar colunas desnecessárias
 colunas_excluir = [
     "Número REDS Envolvido", "Nº REDS considerado", "Natureza do Delito Completa",
     "Logradouro Ocorrência Não Cadastrado - FATO", "Logradouro Ocorrência - FATO FINAL",
