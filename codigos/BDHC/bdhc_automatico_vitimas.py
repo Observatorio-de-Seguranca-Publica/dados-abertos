@@ -207,7 +207,7 @@ df_csv = df.drop(columns=colunas_excluir, errors="ignore")
 caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/CSV -Uso externo/Vítimas de Homicidio Consumado - Jan 2012 a Fev 2026.csv" 
 
 # Formatação regional
-df_csv = df_csv.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
+df_csv = df_csv.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
 
 # Exporta com separador ";" e encoding compatível com Excel PT-BR
 df_csv.to_csv(

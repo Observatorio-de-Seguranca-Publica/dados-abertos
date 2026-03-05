@@ -202,7 +202,7 @@ df_excel = pd.read_excel(base_excel)
 caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Banco de Dados CSV/Banco Alvos de Roubo - Atualizado Fevereiro 2026.csv"
 
 # Formatação regional
-df_excel = df_excel.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
+df_excel = df_excel.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
 
 # Exporta com separador ";" e encoding compatível com Excel PT-BR
 df_excel.to_csv(

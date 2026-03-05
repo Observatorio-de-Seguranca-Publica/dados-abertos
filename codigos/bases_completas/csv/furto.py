@@ -181,7 +181,7 @@ df.columns = [col.title() for col in df.columns]  # "número reds" → "Número 
 caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/CSV -Uso externo/Furto - Jan 2022 a Fev 2026.csv" 
 
 # Formatação regional
-df = df.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
+df = df.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
 
 # Exporta com separador ";" e encoding compatível com Excel PT-BR
 df.to_csv(

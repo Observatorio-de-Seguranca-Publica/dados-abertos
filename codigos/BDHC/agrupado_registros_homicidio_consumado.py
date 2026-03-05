@@ -252,7 +252,7 @@ caminho_csv_25_26 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Public
 
 # Função auxiliar para exportar com formatação BR
 def exporta_csv(df, caminho):
-    df_fmt = df.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
+    df_fmt = df.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
     df_fmt.to_csv(
         caminho,
         sep=';', 

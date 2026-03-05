@@ -25,7 +25,7 @@ df_cv_22_26 = df_cv_22_26.drop(columns=colunas_excluir, errors="ignore")
 caminho_csv_1 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/CSV -Uso externo/Crimes Violentos - Jan 2012 a Dez 2021.csv" 
 
 # Formatação regional
-df_cv_12_21 = df_cv_12_21.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
+df_cv_12_21 = df_cv_12_21.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
 
 # Exporta com separador ";" e encoding compatível com Excel PT-BR
 df_cv_12_21.to_csv(
@@ -39,7 +39,7 @@ df_cv_12_21.to_csv(
 caminho_csv_2 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/CSV -Uso externo/Crimes Violentos - Jan 2022 a Fev 2026.csv" 
 
 # Formatação regional
-df_cv_22_26 = df_cv_22_26.applymap(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
+df_cv_22_26 = df_cv_22_26.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
 
 # Exporta com separador ";" e encoding compatível com Excel PT-BR
 df_cv_22_26.to_csv(
