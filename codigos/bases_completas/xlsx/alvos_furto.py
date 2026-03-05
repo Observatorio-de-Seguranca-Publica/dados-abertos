@@ -60,10 +60,10 @@ def bancos_de_dados():
         conn.close()
 
 # Lê o Excel para o mapeamento para CTE 1
-df_mapeamento = pd.read_excel("C:/Users/x15501492/Documents/Sejusp/DIS/Consultas/GRUPO LOCAL IMEDIATO COM CODIGO.xlsx")
+df_mapeamento = pd.read_excel("C:/Users/x15501492/OneDrive - CAMG/DIS -  Henrique/Consultas/GRUPO LOCAL IMEDIATO COM CODIGO.xlsx")
 
 # Lê o Excel para o mapeamento para CTE 2
-df_alvo = pd.read_excel("C:/Users/x15501492/Documents/Sejusp/DIS/Consultas/alvo_corrigido.xlsx")
+df_alvo = pd.read_excel("C:/Users/x15501492/OneDrive - CAMG/DIS -  Henrique/Consultas/alvo_corrigido.xlsx")
 
 # Garante que todos os dados são strings e escapa apóstrofos
 def esc(s):

@@ -60,7 +60,7 @@ def bancos_de_dados():
         conn.close()
 
 # Lê o Excel com o mapeamento
-df_mapeamento = pd.read_excel("C:/Users/x15501492/Documents/Sejusp/DIS/Consultas/GRUPO LOCAL IMEDIATO COM CODIGO.xlsx")
+df_mapeamento = pd.read_excel("C:/Users/x15501492/OneDrive - CAMG/DIS -  Henrique/Consultas/GRUPO LOCAL IMEDIATO COM CODIGO.xlsx")
 
 # Garante que todos os dados são strings e escapa apóstrofos
 def esc(s):
