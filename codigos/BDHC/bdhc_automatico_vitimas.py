@@ -182,6 +182,13 @@ def classificar_faixa6(hora):
 # Aplica a função diretamente sem forçar o formato de tempo
 df["Faixa 6 Horas Fato"] = df["Horário Fato"].apply(classificar_faixa6)
 
+# Arruma faixa 1 hora fato
+df["Faixa 1 Hora Fato"] = (
+    df["Faixa 1 Hora Fato"]
+    .str.replace(" às ", " a ", regex=False)
+    .str.replace(" as ", " a ", regex=False)
+)
+
 # --- 8) Reordenar colunas conforme sua lista (mantendo só as que existem) ---
 ordem_colunas = [
     'Número REDS', 'Qtd Envolvidos', 'Descrição Subclasse Nat Principal', 'Tentado/Consumado Nat Principal',

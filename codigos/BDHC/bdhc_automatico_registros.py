@@ -4,9 +4,14 @@ from impala.dbapi import connect
 
 # Caminho do arquivo original
 arquivo = "C:/Users/x15501492/Downloads/bdhc.xlsx"
+sheet = "BD_HC_FATAL_ARMAZÉM"  # ajuste se necessário
 
 # Leitura da planilha
-df = pd.read_excel(arquivo, sheet_name="BD_HC_FATAL_ARMAZÉM")
+df = pd.read_excel(
+    arquivo,
+    sheet_name=sheet,
+    engine="openpyxl"
+)
 
 # Normaliza o texto da coluna antes do filtro
 df["REDS desconsiderado?"] = (
@@ -130,8 +135,21 @@ else:
     
 # --- Formatar 'Data Fato' ---
 if "Data Fato" in df.columns:
-    df["Data Fato"] = pd.to_datetime(df["Data Fato"], errors="coerce")  # converte para datetime
-    df["Data Fato"] = df["Data Fato"].dt.strftime("%d/%m/%Y")           # formata dd/mm/aaaa
+
+    # identifica linhas que são string
+    mask = df["Data Fato"].apply(lambda x: isinstance(x, str))
+
+    # converte apenas strings (formato brasileiro)
+    df.loc[mask, "Data Fato"] = pd.to_datetime(
+        df.loc[mask, "Data Fato"],
+        format="%d/%m/%Y",
+        errors="coerce"
+    )
+
+    # padroniza toda a coluna como datetime
+    df["Data Fato"] = pd.to_datetime(df["Data Fato"], errors="coerce")
+    
+print(df["Data Fato"].apply(type).value_counts())
     
 # dicionário rmbh
 mapa_rmbh = {
@@ -173,6 +191,13 @@ def classificar_faixa6(hora):
 
 # Aplica a função diretamente sem forçar o formato de tempo
 df["Faixa 6 Horas Fato"] = df["Horário Fato"].apply(classificar_faixa6)
+
+# Arruma faixa 1 hora fato
+df["Faixa 1 Hora Fato"] = (
+    df["Faixa 1 Hora Fato"]
+    .str.replace(" às ", " a ", regex=False)
+    .str.replace(" as ", " a ", regex=False)
+)
 
 # Reordenar colunas
 ordem_colunas = [
