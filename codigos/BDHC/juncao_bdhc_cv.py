@@ -47,7 +47,11 @@ print(f"→ Base unificada 2022–2026: {len(df_final_22_26)}")
 print(f"Total final após junção (2012–2021): {len(df_final_12_21)} registros")
 print(f"Total final após junção (2022–2026): {len(df_final_22_26)} registros")
 
-# 8️⃣ Salva resultado
+# 8️⃣ Junta (empilha)
+df_final_12_21 = df_final_12_21.fillna("")
+df_final_22_26 = df_final_22_26.fillna("")
+
+# 9️⃣ Salva resultado
 saida_12_21 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/XLSX - Uso interno/Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
 df_final_12_21.to_excel(saida_12_21, index=False)
 saida_22_26 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/XLSX - Uso interno/Crimes Violentos - Jan 2022 a Fev 2026.xlsx"
