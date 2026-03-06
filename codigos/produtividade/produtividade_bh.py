@@ -7,7 +7,7 @@ from impala.dbapi import connect
 
 ANO_1 = 2025
 ANO_2 = 2026
-MES = 1
+MES = 2
 
 
 # ==============================
