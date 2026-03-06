@@ -5,8 +5,12 @@ import dateutil.parser
 arquivo = "C:/Users/x15501492/Downloads/bdhc.xlsx"
 sheet = "BD_HC_FATAL_ARMAZÉM"  # ajuste se necessário
 
-# --- Ler com máxima segurança (lê tudo como texto para evitar inferências de tipos) ---
-df = pd.read_excel(arquivo, sheet_name=sheet, dtype=str)
+df = pd.read_excel(
+    arquivo,
+    sheet_name=sheet,
+    engine="openpyxl"
+)
+
 print("Total original (linhas):", len(df))
 
 # Normaliza o texto da coluna antes do filtro
@@ -122,8 +126,21 @@ else:
     
 # --- Formatar 'Data Fato' ---
 if "Data Fato" in df.columns:
-    df["Data Fato"] = pd.to_datetime(df["Data Fato"], errors="coerce")  # converte para datetime
-    df["Data Fato"] = df["Data Fato"].dt.strftime("%d/%m/%Y")           # formata dd/mm/aaaa
+
+    # identifica linhas que são string
+    mask = df["Data Fato"].apply(lambda x: isinstance(x, str))
+
+    # converte apenas strings (formato brasileiro)
+    df.loc[mask, "Data Fato"] = pd.to_datetime(
+        df.loc[mask, "Data Fato"],
+        format="%d/%m/%Y",
+        errors="coerce"
+    )
+
+    # padroniza toda a coluna como datetime
+    df["Data Fato"] = pd.to_datetime(df["Data Fato"], errors="coerce")
+    
+print(df["Data Fato"].apply(type).value_counts())
 
 # dicionário rmbh
 mapa_rmbh = {
