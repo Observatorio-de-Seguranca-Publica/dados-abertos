@@ -47,7 +47,7 @@ print(f"→ Base unificada 2022–2026: {len(df_final_22_26)}")
 print(f"Total final após junção (2012–2021): {len(df_final_12_21)} registros")
 print(f"Total final após junção (2022–2026): {len(df_final_22_26)} registros")
 
-# 8️⃣ Junta (empilha)
+# 8️⃣ Garante vazios sem "nan"
 df_final_12_21 = df_final_12_21.fillna("")
 df_final_22_26 = df_final_22_26.fillna("")
 
