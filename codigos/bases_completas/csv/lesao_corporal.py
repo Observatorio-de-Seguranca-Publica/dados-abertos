@@ -107,38 +107,8 @@ try:
                       CAST (oco.data_hora_fato as date) as "Data Fato",
                       temp.cddia_semana as "Dia da Semana Fato",
                       SUBSTRING(CAST(oco.data_hora_fato AS STRING), 12, 8) as "Horário Fato",
-                      CASE
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 0 AND 1 THEN 'De 00:00 a 00:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 1 AND 2 THEN 'De 01:00 a 01:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 2 AND 3 THEN 'De 02:00 a 02:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 3 AND 4 THEN 'De 03:00 a 03:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 4 AND 5 THEN 'De 04:00 a 04:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 5 AND 6 THEN 'De 05:00 a 05:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 6 AND 7 THEN 'De 06:00 a 06:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 7 AND 8 THEN 'De 07:00 a 07:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 8 AND 9 THEN 'De 08:00 a 08:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 9 AND 10 THEN 'De 09:00 a 09:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 10 AND 11 THEN 'De 10:00 a 10:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 11 AND 12 THEN 'De 11:00 a 11:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 12 AND 13 THEN 'De 12:00 a 12:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 13 AND 14 THEN 'De 13:00 a 13:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 14 AND 15 THEN 'De 14:00 a 14:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 15 AND 16 THEN 'De 15:00 a 15:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 16 AND 17 THEN 'De 16:00 a 16:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 17 AND 18 THEN 'De 17:00 a 17:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 18 AND 19 THEN 'De 18:00 a 18:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 19 AND 20 THEN 'De 19:00 a 19:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 20 AND 21 THEN 'De 20:00 a 20:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 21 AND 22 THEN 'De 21:00 a 21:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 22 AND 23 THEN 'De 22:00 a 22:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 23 AND 24 THEN 'De 23:00 a 23:59'
-                      END AS "Faixa 1 Hora Fato",
-                      CASE
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 0 AND 5 THEN 'De 00:00 a 05:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 6 AND 11 THEN 'De 06:00 a 11:59'
-                        WHEN EXTRACT(HOUR FROM oco.data_hora_fato) BETWEEN 12 AND 17 THEN 'De 12:00 a 17:59'
-                        ELSE 'De 18:00 a 23:59'
-                      END AS "Faixa 6 Horas Fato",
+                      temp.nmfaixa_horaria1 as "Faixa 1 Hora Fato",
+                      temp.nmfaixa_horaria2 as "Faixa 6 Horas Fato",
                       oco.motivo_presumido_descricao_longa as "Causa Presumida",
                       oco.instrumento_utilizado_descricao_longa as "Descrição Meio Utilizado",
                       mapeamento.descricao_grupo_local_imediato AS "Descrição Grupo Local Imediato",
