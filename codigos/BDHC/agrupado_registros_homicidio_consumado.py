@@ -132,7 +132,10 @@ res = res.merge(
 res = res[["Registros", "Natureza", "Município", "Cód. IBGE", "Mês", "Ano Fato", "RISP", "RMBH"]]
 res = res.sort_values(["Ano Fato", "Mês", "Natureza", "Município"]).reset_index(drop=True)
 
-# 10. Exportar para Excel
+# 10. Transforma coluna código IBGE em número
+res["Cod. IBGE"] = pd.to_numeric(res["Cod. IBGE"], errors="coerce").astype("Int64")
+
+# 11. Exportar para Excel
 saida = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/agrupado_registros_homicidio_consumado.xlsx" 
 res.to_excel(saida, index=False)
 
