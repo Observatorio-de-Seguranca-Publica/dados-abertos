@@ -60,10 +60,10 @@ query_municipios = """
 municipios = executa_query_retorna_df(query_municipios)
 
 # 3. Normaliza chaves
-municipios["Cod. IBGE"] = municipios["cod_ibge"].apply(norm_ibge)
+municipios["Cód. IBGE"] = municipios["cod_ibge"].apply(norm_ibge)
 municipios.rename(columns={"municipio": "Município", "risp": "RISP", "rmbh": "RMBH"}, inplace=True)
 
-df["Cod. IBGE"] = df["Município - Código"].apply(norm_ibge)
+df["Cód. IBGE"] = df["Município - Código"].apply(norm_ibge)
 df["Mês"] = pd.to_numeric(df["Mês Numérico Fato"], errors="coerce").astype("Int64")
 df["Ano"] = pd.to_numeric(df["Ano Fato"], errors="coerce").astype("Int64")
 df["Natureza"] = df["Natureza Nomenclatura Banco"].astype(str)
@@ -71,40 +71,41 @@ df["Natureza"] = df["Natureza Nomenclatura Banco"].astype(str)
 # 4. Listas únicas para o esqueleto
 naturezas = sorted(df["Natureza"].dropna().unique().tolist())
 periodos = df.loc[df["Mês"].notna() & df["Ano"].notna(), ["Ano", "Mês"]].drop_duplicates()
-ibges = municipios["Cod. IBGE"].dropna().unique().tolist()
+ibges = municipios["Cód. IBGE"].dropna().unique().tolist()
 
 # 5. Esqueleto completo (produto cartesiano)
 base = pd.DataFrame(
     itertools.product(naturezas, ibges, periodos.itertuples(index=False, name=None)),
-    columns=["Natureza", "Cod. IBGE", "Periodo"]
+    columns=["Natureza", "Cód. IBGE", "Periodo"]
 )
 base[["Ano", "Mês"]] = pd.DataFrame(base["Periodo"].tolist(), index=base.index)
 base.drop(columns=["Periodo"], inplace=True)
 
 # 6. Contagem a partir do Excel (só pelas chaves estáveis!)
 contagem = (
-    df.groupby(["Natureza", "Cod. IBGE", "Ano", "Mês"])["Número REDS"]
+    df.groupby(["Natureza", "Cód. IBGE", "Ano", "Mês"])["Número REDS"]
       .count()  # se quiser REDS distintos, use .nunique()
       .reset_index(name="Registros")
 )
 
 # 7. Junta o esqueleto com as contagens (APENAS pelas chaves estáveis)
-res = base.merge(contagem, how="left", on=["Natureza", "Cod. IBGE", "Ano", "Mês"])
+res = base.merge(contagem, how="left", on=["Natureza", "Cód. IBGE", "Ano", "Mês"])
 res["Registros"] = res["Registros"].fillna(0).astype(int)
 
 # 8. Anexa Município/RISP/RMBH a partir do IBGE
 res = res.merge(
-    municipios[["Cod. IBGE", "Município", "RISP", "RMBH"]],
+    municipios[["Cód. IBGE", "Município", "RISP", "RMBH"]],
     how="left",
-    on="Cod. IBGE"
+    on="Cód. IBGE"
 )
 
-# 9. Ordena colunas e linhas
-res = res[["Registros", "Natureza", "Município", "Cod. IBGE", "Mês", "Ano", "RISP", "RMBH"]]
-res = res.sort_values(["Ano", "Mês", "Natureza", "Município"]).reset_index(drop=True)
+# 9. Renomeia e ordena colunas e linhas
+res.rename(columns={"Ano": "Ano Fato"}, inplace=True)
+res = res[["Registros", "Natureza", "Município", "Cód. IBGE", "Mês", "Ano Fato", "RISP", "RMBH"]]
+res = res.sort_values(["Ano Fato", "Mês", "Natureza", "Município"]).reset_index(drop=True)
 
 # 10. Transforma coluna código IBGE em número
-res["Cod. IBGE"] = pd.to_numeric(res["Cod. IBGE"], errors="coerce").astype("Int64")
+res["Cód. IBGE"] = pd.to_numeric(res["Cód. IBGE"], errors="coerce").astype("Int64")
 
 # 11. Exportar para Excel
 saida = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/agrupado_vitimas_homicidio_consumado.xlsx" 
