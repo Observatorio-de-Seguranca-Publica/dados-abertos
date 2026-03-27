@@ -132,8 +132,8 @@ try:
                       oco.unidade_responsavel_registro_nome as "Unid Registro Nível 8",
                       mun.risp_completa as "RISP",
                       mun.rmbh as "RMBH",
-                      oco.numero_latitude as "Latitude",
-                      oco.numero_longitude as "Longitude",
+                      geo.latitude_sirgas2000 as "Latitude",
+                      geo.longitude_sirgas2000 as "Longitude",
                       oco.complemento_natureza_descricao_longa as "Descrição Subgrupo Complemento Nat"
                FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
                LEFT JOIN db_bisp_shared.tb_populacao_risp as mun
@@ -142,6 +142,8 @@ try:
                     ON oco.sqtempo_fato = temp.sqtempo
                LEFT JOIN mapeamento
                     ON CAST(oco.local_imediato_codigo AS STRING) = mapeamento.codigo_local_imediato
+               LEFT JOIN db_bisp_reds_master.tb_ocorrencia_setores_geodata as geo
+                    ON oco.numero_ocorrencia = geo.numero_ocorrencia
                WHERE oco.data_hora_fato >= '2012-01-01 00:00:00.000'
                AND oco.data_hora_fato < '2015-01-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
@@ -162,38 +164,6 @@ df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
 
 # Corrige a capitalização
 df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
-
-url = "C:/Users/x15501492/Downloads/SAD69_1.GSB"
-
-# Define o pipeline de transformação
-transformer = pyproj.Transformer.from_pipeline(
-    f"+proj=pipeline +step +proj=axisswap +order=2,1 "
-    "+step +proj=unitconvert +xy_in=deg +xy_out=rad "
-    f"+step +proj=hgridshift +grids={url} "
-    "+step +proj=unitconvert +xy_in=rad +xy_out=deg "
-    "+step +proj=axisswap +order=2,1"
-)
- 
-# Função para transformar coordenadas
-def transformar_coordenadas(lat, lon):
-    if pd.isna(lat) or pd.isna(lon):
-        return pd.Series(["", ""], index=['Latitude SIRGAS', 'Longitude SIRGAS'])
-    lat_sirgas, lon_sirgas = transformer.transform(lat, lon)
-    return pd.Series([lat_sirgas, lon_sirgas], index=['Latitude SIRGAS', 'Longitude SIRGAS'])
- 
-# Criar novas colunas com as coordenadas transformadas no DataFrame retornado pela consulta SQL
-df[['Latitude SIRGAS', 'Longitude SIRGAS']] = df.apply(
-    lambda row: transformar_coordenadas(row['Latitude'], row['Longitude']),
-    axis=1
-)
- 
-# Convertendo a coluna 'Valor' para string e substituindo ponto por vírgula
-df['Latitude SIRGAS'] = df['Latitude SIRGAS'].astype(str).str.replace("inf", '', regex=False)
-df['Longitude SIRGAS'] = df['Longitude SIRGAS'].astype(str).str.replace("inf", '', regex=False)
-df['Latitude SIRGAS'] = pd.to_numeric(df['Latitude SIRGAS'])
-df['Longitude SIRGAS'] = pd.to_numeric(df['Longitude SIRGAS'])
- 
-# fim da dtransformação lat long
 
 # Exporta a base no computador no modelo desejado 
 df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/XLSX - Uso interno/Furto - Jan 2012 a Dez 2014.xlsx",index=False)
