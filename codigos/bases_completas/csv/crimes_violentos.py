@@ -4,6 +4,7 @@ from shapely.geometry import Point
 import numpy as np
 from impala.dbapi import connect
 import pyproj
+import hashlib
 
 # Função para ler o arquivo de credenciais
 def get_credentials(file_path):
@@ -156,6 +157,17 @@ df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
 
 # Corrige a capitalização
 df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
+
+# Anonimização
+def anonimizar_chave(valor):
+    if pd.isna(valor):
+        return valor
+    valor = str(valor).strip()
+    hash_obj = hashlib.sha256(valor.encode("utf-8"))
+    # Pode reduzir tamanho se quiser
+    return hash_obj.hexdigest()[:16]  # 16 caracteres já é bem seguro
+ 
+df["Número Reds"] = df["Número Reds"].apply(anonimizar_chave)
 
 # Caminho de saída para CSV
 caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/CSV -Uso externo/Crimes Violentos - Jan 2022 a Fev 2026.csv" 
