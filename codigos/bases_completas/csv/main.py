@@ -1,16 +1,42 @@
 import os
 import subprocess
+import sys
 
-# Caminho da pasta onde estão os scripts
-#PASTA = "C:/Users/x15501492/Documents/02 - Publicações/Códigos/Agrupados"
-PASTA = "C:/Users/x15501492/Downloads/code/observatorio/dados-abertos/codigos/bases_completas/csv"
-este_arquivo = os.path.basename(__file__)  # nome do script atual
+def executar():
 
+    print("\n=== Iniciando bases completas CSV ===")
 
-for arquivo in os.listdir(PASTA):
-    if arquivo.endswith(".py") and arquivo != este_arquivo:
-        caminho_script = os.path.join(PASTA, arquivo)
-        print(f"\n--- Executando: {arquivo} ---")
-        subprocess.run(["python", caminho_script], check=True)
+    PASTA = os.path.dirname(__file__)
+    este_arquivo = os.path.basename(__file__)
 
-print("\n✅ Finalizado com sucesso!")
+    # ⭐ RAIZ DO PROJETO
+    RAIZ = os.path.abspath(
+        os.path.join(PASTA, "..", "..", "..")
+    )
+
+    arquivos = sorted(os.listdir(PASTA))
+
+    for arquivo in arquivos:
+
+        if (
+            arquivo.endswith(".py")
+            and arquivo != este_arquivo
+            and arquivo != "__init__.py"
+        ):
+
+            caminho_script = os.path.join(PASTA, arquivo)
+
+            print(f"\n--- Executando CSV: {arquivo} ---")
+
+            # ⭐ ADICIONA RAIZ AO PYTHONPATH
+            env = os.environ.copy()
+            env["PYTHONPATH"] = RAIZ
+
+            subprocess.run(
+                [sys.executable, caminho_script],
+                check=True,
+                cwd=RAIZ,
+                env=env   # ⭐ ESSENCIAL
+            )
+
+    print("\n✅ CSV finalizado!")

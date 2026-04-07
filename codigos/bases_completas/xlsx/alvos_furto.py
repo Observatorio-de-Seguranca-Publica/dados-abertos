@@ -9,7 +9,8 @@ from config.datas import (
     mes_ref,
     mes_ref_num_str,
     mes_ref_nome,
-    mes_ref_abrev
+    mes_ref_abrev,
+    mes_atual
 )
 
 # Função para ler o arquivo de credenciais
@@ -103,7 +104,7 @@ for i, row in df_alvo.iterrows():
 cte_sql = "WITH mapeamento AS (\n  " + "\n  ".join(linhas_mapeamento) + "\n),\n"
 cte_sql += "alvo_corrigido AS (\n  " + "\n  ".join(linhas_alvo) + "\n)\n"
 
-data_limite = f"{ano_ref}-{mes_ref_num_str}-01 00:00:00.000"
+data_limite = f"{ano_ref}-{mes_atual}-01 00:00:00.000"
 
 # Consulta ao banco (script do dbeaver: no exemplo abaixo há um join entre a tabela de ocorrências e envolvidos)
 try:
@@ -188,7 +189,7 @@ caminho_excel = (
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_abrev}/"
     f"XLSX - Uso interno/"
-    f"Alvos - Furto - Jan 2015 a {mes_ref_abrev} {ano_ref}.xlsx"
+    f"Alvos - Furto - Jan 2022 a {mes_ref_abrev} {ano_ref}.xlsx"
 )
 
 df.to_excel(caminho_excel, index=False)

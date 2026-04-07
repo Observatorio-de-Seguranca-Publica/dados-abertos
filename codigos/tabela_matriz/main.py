@@ -4,7 +4,7 @@ import sys
 
 def executar():
 
-    print("\n=== Iniciando produtividade ===")
+    print("\n=== Iniciando tabela matriz ===")
 
     PASTA = os.path.dirname(__file__)
     este_arquivo = os.path.basename(__file__)
@@ -26,7 +26,7 @@ def executar():
 
             caminho_script = os.path.join(PASTA, arquivo)
 
-            print(f"\n--- Executando produtividade: {arquivo} ---")
+            print(f"\n--- Executando Tabela Matriz: {arquivo} ---")
 
             # ⭐ ADICIONA RAIZ AO PYTHONPATH
             env = os.environ.copy()
@@ -39,4 +39,4 @@ def executar():
                 env=env   # ⭐ ESSENCIAL
             )
 
-    print("\n✅ Produtividade finalizado!")
+    print("\n✅ Tabela Matriz finalizada!")
