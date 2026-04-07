@@ -5,6 +5,13 @@ import numpy as np
 from impala.dbapi import connect
 import pyproj
 import hashlib
+from config.datas import (
+    ano_ref,
+    mes_ref,
+    mes_ref_num_str,
+    mes_ref_nome,
+    mes_ref_abrev
+)
 
 # Função para ler o arquivo de credenciais
 def get_credentials(file_path):
@@ -83,9 +90,11 @@ for i, row in df_mapeamento.iterrows():
 
 cte_sql = "WITH mapeamento AS (\n  " + "\n  ".join(linhas) + "\n)\n"
 
+data_limite = f"{ano_ref}-{mes_ref_num_str}-01 00:00:00.000"
+
 # Consulta ao banco (script do dbeaver: no exemplo abaixo há um join entre a tabela de ocorrências e envolvidos)
 try:
-    query = cte_sql + '''SELECT oco.numero_ocorrencia as "Número REDS",
+    query = cte_sql + f'''SELECT oco.numero_ocorrencia as "Número REDS",
                       oco.qtd_ocorrencia as "Qtde Ocorrências",
                       oco.natureza_descricao || ' ' || oco.natureza_consumado as "Natureza Principal Completa",
                       YEAR (oco.data_hora_fato) as "Ano Fato",
@@ -160,7 +169,14 @@ def anonimizar_chave(valor):
 df["Número Reds"] = df["Número Reds"].apply(anonimizar_chave)
 
 # Caminho de saída para CSV
-caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/CSV -Uso externo/Furto - Jan 2012 a Dez 2014.csv" 
+caminho_csv = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"Bases completas/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"CSV -Uso externo/"
+    f"Furto - Jan 2012 a Dez 2014.csv"
+)
 
 # Formatação regional
 df = df.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)

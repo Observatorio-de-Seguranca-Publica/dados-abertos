@@ -2,6 +2,13 @@ import pandas as pd
 import geopandas as gpd
 import numpy as np
 from impala.dbapi import connect
+from config.datas import (
+    ano_ref,
+    mes_ref,
+    mes_ref_num_str,
+    mes_ref_nome,
+    mes_ref_abrev
+)
 
 # Função para ler o arquivo de credenciais
 def get_credentials(file_path):
@@ -57,9 +64,11 @@ def bancos_de_dados():
         cursor.close()
         conn.close()
 
+data_limite = f"{ano_ref}-{mes_ref_num_str}-01 00:00:00.000"
+
 # Consulta ao banco (script do dbeaver: no exemplo abaixo há um join entre a tabela de ocorrências e envolvidos)
 try:
-    query = '''         WITH 
+    query = f'''         WITH 
                         municipios as (
                             SELECT DISTINCT oco.nome_municipio, oco.codigo_municipio
                             FROM db_bisp_reds_reporting.tb_ocorrencia as oco
@@ -69,7 +78,7 @@ try:
                             SELECT DISTINCT YEAR(data_hora_fato) as ano_fato, MONTH(data_hora_fato) as mes_fato
                             FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
                             WHERE oco.data_hora_fato >= '2025-01-01 00:00:00.000'
-                            AND oco.data_hora_fato < '2026-03-01 00:00:00.000' 
+                            AND oco.data_hora_fato < '{data_limite}' 
                         ),
                         naturezas AS (
                             SELECT DISTINCT
@@ -119,7 +128,7 @@ try:
                             LEFT JOIN db_bisp_shared.vw_dim_tempo as temp
                               ON oco.sqtempo_fato = temp.sqtempo
                             WHERE oco.data_hora_fato >= '2025-01-01 00:00:00.000'
-                            AND oco.data_hora_fato < '2026-03-01 00:00:00.000'
+                            AND oco.data_hora_fato < '{data_limite}'
                             AND oco.ocorrencia_uf = 'MG'
                             AND oco.ind_estado IN ('F', 'R')
                             AND (
@@ -196,7 +205,14 @@ except Exception as e:
 df.head()
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/25_26_agrupado_crimes_violentos.xlsx",index=False)
+caminho_excel = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"11 - Publicação SESP - Site/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"Excel/"
+    f"25_26_agrupado_crimes_violentos.xlsx"
+)
 
 # A
 # T
@@ -207,13 +223,26 @@ df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação S
 # O
 
 # Caminhos dos arquivos
-base_excel = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/25_26_agrupado_crimes_violentos.xlsx"
+base_excel = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"11 - Publicação SESP - Site/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"Excel/"
+    f"25_26_agrupado_crimes_violentos.xlsx"
+)
 
 # 1️⃣ Lê as bases
 df_excel = pd.read_excel(base_excel)
 
-# Caminho CSV
-caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Banco de Dados CSV/Banco Crimes Violentos 2025 a 2026 - Atualizado Fevereiro 2026.csv"
+caminho_csv = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"11 - Publicação SESP - Site/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"Banco de Dados CSV/"
+    f"Banco Crimes Violentos 2025 a 2026 - Atualizado {mes_ref_nome} {ano_ref}.csv"
+)
 
 # Formatação regional
 df_excel = df_excel.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)

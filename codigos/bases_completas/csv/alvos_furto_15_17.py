@@ -5,6 +5,13 @@ import numpy as np
 from impala.dbapi import connect
 import pyproj
 import hashlib
+from config.datas import (
+    ano_ref,
+    mes_ref,
+    mes_ref_num_str,
+    mes_ref_nome,
+    mes_ref_abrev
+)
 
 # Função para ler o arquivo de credenciais
 def get_credentials(file_path):
@@ -99,7 +106,7 @@ cte_sql += "alvo_corrigido AS (\n  " + "\n  ".join(linhas_alvo) + "\n)\n"
 
 # Consulta ao banco
 try:
-    query = cte_sql + '''SELECT oco.numero_ocorrencia as "Número REDS",
+    query = cte_sql + f'''SELECT oco.numero_ocorrencia as "Número REDS",
                       oco.qtd_ocorrencia as "Qtde Ocorrências",
                       oco.natureza_descricao || ' ' || oco.natureza_consumado as "Natureza Principal Completa",
                       YEAR (oco.data_hora_fato) as "Ano Fato",
@@ -162,8 +169,6 @@ except Exception as e:
 # Exibe as primeiras linhas do DataFrame
 df.head()
 
-df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
-
 # Corrige a capitalização
 df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
 
@@ -179,7 +184,14 @@ def anonimizar_chave(valor):
 df["Número Reds"] = df["Número Reds"].apply(anonimizar_chave)
 
 # Caminho de saída para CSV
-caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/CSV -Uso externo/Alvos - Furto - Jan 2015 a Dez 2017.csv" 
+caminho_csv = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"Bases completas/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"CSV -Uso externo/"
+    f"Alvos - Furto - Jan 2015 a Dez 2017.csv"
+)
 
 # Formatação regional
 df = df.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)

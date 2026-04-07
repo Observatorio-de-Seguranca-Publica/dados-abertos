@@ -5,6 +5,13 @@ import numpy as np
 from impala.dbapi import connect
 import pyproj
 import hashlib
+from config.datas import (
+    ano_ref,
+    mes_ref,
+    mes_ref_num_str,
+    mes_ref_nome,
+    mes_ref_abrev
+)
 
 # Função para ler o arquivo de credenciais
 def get_credentials(file_path):
@@ -147,7 +154,7 @@ try:
                LEFT JOIN alvo_corrigido as alv
                     ON CAST(oco.complemento_natureza_descricao_longa AS STRING) = alv.descricao_subgrupo_complemento_nat
                WHERE oco.data_hora_fato >= '2015-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2026-03-01 00:00:00.000'
+               AND oco.data_hora_fato < '{data_limite}'
                AND oco.ocorrencia_uf = 'MG'
                AND oco.ind_estado IN ('F', 'R')
                AND oco.natureza_codigo IN ('C01157')
@@ -161,8 +168,6 @@ except Exception as e:
 
 # Exibe as primeiras linhas do DataFrame
 df.head()
-
-df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
 
 # Corrige a capitalização
 df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
@@ -179,7 +184,14 @@ def anonimizar_chave(valor):
 df["Número Reds"] = df["Número Reds"].apply(anonimizar_chave)
 
 # Caminho de saída para CSV
-caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/CSV -Uso externo/Alvos - Roubo - Jan 2015 a Fev 2026.csv" 
+caminho_csv = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"Bases completas/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"CSV -Uso externo/"
+    f"Alvos - Roubo - Jan 2015 a {mes_ref_abrev} {ano_ref}.csv"
+)
 
 # Formatação regional
 df = df.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)

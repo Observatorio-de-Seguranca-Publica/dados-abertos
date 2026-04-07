@@ -2,6 +2,13 @@ import pandas as pd
 import geopandas as gpd
 import numpy as np
 from impala.dbapi import connect
+from config.datas import (
+    ano_ref,
+    mes_ref,
+    mes_ref_num_str,
+    mes_ref_nome,
+    mes_ref_abrev
+)
 
 # Função para ler o arquivo de credenciais
 def get_credentials(file_path):
@@ -57,9 +64,11 @@ def bancos_de_dados():
         cursor.close()
         conn.close()
 
+data_limite = f"{ano_ref}-{mes_ref_num_str}-01 00:00:00.000"
+
 # Consulta ao banco (script do dbeaver: no exemplo abaixo há um join entre a tabela de ocorrências e envolvidos)
 try:
-    query = '''SELECT oco.numero_ocorrencia,
+    query = f'''SELECT oco.numero_ocorrencia,
                       vei.situacao_placa_descricao,
                       YEAR (oco.data_hora_fato) as ano_fato,
                       MONTH (oco.data_hora_fato) as mes_numerico_fato,
@@ -69,7 +78,7 @@ try:
                LEFT JOIN db_bisp_reds_reporting.tb_veiculo_ocorrencia AS vei
                     ON oco.numero_ocorrencia = vei.numero_ocorrencia
                WHERE oco.data_hora_fato >= '2025-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2026-03-01 00:00:00.000'
+               AND oco.data_hora_fato < '{data_limite}'
                AND oco.ocorrencia_uf = 'MG'
                AND vei.situacao_placa_codigo = '0400'
                 '''
@@ -83,6 +92,14 @@ except Exception as e:
 df.head()
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/08 - Produtividade/2026/02 - Fevereiro/da_veiculos_recuperados.xlsx",index=False)
+caminho_excel = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"08 - Produtividade/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"da_veiculos_recuperados.xlsx"
+)
+
+df.to_excel(caminho_excel, index=False)
 
 print('FINALIZOU :)')

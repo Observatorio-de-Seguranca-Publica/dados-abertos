@@ -4,6 +4,13 @@ from shapely.geometry import Point
 import numpy as np
 from impala.dbapi import connect
 import pyproj
+from config.datas import (
+    ano_ref,
+    mes_ref,
+    mes_ref_num_str,
+    mes_ref_nome,
+    mes_ref_abrev
+)
 
 # Função para ler o arquivo de credenciais
 def get_credentials(file_path):
@@ -82,9 +89,11 @@ for i, row in df_mapeamento.iterrows():
 
 cte_sql = "WITH mapeamento AS (\n  " + "\n  ".join(linhas) + "\n)\n"
 
+data_limite = f"{ano_ref}-{mes_ref_num_str}-01 00:00:00.000"
+
 # Consulta ao banco (script do dbeaver: no exemplo abaixo há um join entre a tabela de ocorrências e envolvidos)
 try:
-    query = cte_sql + '''SELECT oco.numero_ocorrencia as "Número REDS",
+    query = cte_sql + f'''SELECT oco.numero_ocorrencia as "Número REDS",
                       oco.qtd_ocorrencia as "Qtde Ocorrências",
                       oco.natureza_descricao as "Descrição Subclasse Nat Principal",
                       oco.natureza_consumado as "Tentado/Consumado Nat Principal",
@@ -167,12 +176,19 @@ except Exception as e:
 # Exibe as primeiras linhas do DataFrame
 df.head()
 
-df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
-
 # Corrige a capitalização
 df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
 
 # Exporta a base no computador no modelo desejado 
-df.to_excel("C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/XLSX - Uso interno/Crimes Violentos - Jan 2012 a Dez 2021.xlsx",index=False)
+caminho_excel = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"Bases completas/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"XLSX - Uso interno/"
+    f"Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
+)
+
+df.to_excel(caminho_excel, index=False)
 
 print('FINALIZOU :)')

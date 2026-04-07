@@ -1,5 +1,12 @@
 import pandas as pd
 from impala.dbapi import connect
+from config.datas import (
+    ano_ref,
+    mes_ref,
+    mes_ref_num_str,
+    mes_ref_nome,
+    mes_ref_abrev
+)
 
 # ==============================
 # VARIÁVEIS

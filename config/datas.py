@@ -35,12 +35,9 @@ dict_meses = {
 
 mes_ref_nome, mes_ref_abrev = dict_meses[mes_ref]
 
-print(ano_atual)
-print(ano_ref)
-print(mes_atual)
-print(mes_num_str)
-print(mes_ref_num_str)
-print(mes_ref)
-print(mes_ref_abrev)
-print(mes_ref_nome)
-
+if __name__ == "__main__":
+    print(ano_ref)
+    print(mes_ref)
+    print(mes_ref_num_str)
+    print(mes_ref_abrev)
+    print(mes_ref_nome)
