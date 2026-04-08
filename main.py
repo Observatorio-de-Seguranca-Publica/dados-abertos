@@ -3,6 +3,7 @@ from config.datas import (
     mes_ref
 )
 
+# Importar os módulos principais
 from codigos.bases_completas.main import executar as executar_bases_completas
 from codigos.bases_agrupadas.main import executar as executar_bases_agrupadas
 from codigos.BDHC.main import executar as executar_bdhc
@@ -23,9 +24,8 @@ def executar_etapa(nome, funcao):
     except Exception as e:
 
         print(f"❌ ERRO EM {nome}")
-        print(e)
 
-        raise  # interrompe execução
+        raise e
 
 
 def main():
@@ -35,15 +35,42 @@ def main():
     print(f"Ano referência: {ano_ref}")
     print(f"Mês referência: {mes_ref}")
 
-    executar_etapa("BASES COMPLETAS", executar_bases_completas)
+    # 🔧 CONTROLE DAS ETAPAS
+    RODAR_BASES_COMPLETAS = False
+    RODAR_BASES_AGRUPADAS = False
+    RODAR_BDHC = True
+    RODAR_PRODUTIVIDADE = True
+    RODAR_TABELA_MATRIZ = True
 
-    executar_etapa("BASES AGRUPADAS", executar_bases_agrupadas)
+    if RODAR_BASES_COMPLETAS:
+        executar_etapa(
+            "BASES COMPLETAS",
+            executar_bases_completas
+        )
 
-    executar_etapa("BDHC", executar_bdhc)
+    if RODAR_BASES_AGRUPADAS:
+        executar_etapa(
+            "BASES AGRUPADAS",
+            executar_bases_agrupadas
+        )
 
-    executar_etapa("PRODUTIVIDADE", executar_produtividade)
+    if RODAR_BDHC:
+        executar_etapa(
+            "BDHC",
+            executar_bdhc
+        )
 
-    executar_etapa("TABELA MATRIZ", executar_tabela_matriz)
+    if RODAR_PRODUTIVIDADE:
+        executar_etapa(
+            "PRODUTIVIDADE",
+            executar_produtividade
+        )
+
+    if RODAR_TABELA_MATRIZ:
+        executar_etapa(
+            "TABELA MATRIZ",
+            executar_tabela_matriz
+        )
 
     print("\n=== EXECUÇÃO FINALIZADA ===")
 

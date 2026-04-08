@@ -213,6 +213,8 @@ caminho_excel = (
     f"12_18_agrupado_crimes_violentos.xlsx"
 )
 
+df.to_excel(caminho_excel, index=False)
+
 # A
 # T
 # E

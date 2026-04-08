@@ -11,7 +11,7 @@ def executar():
 
     # ⭐ RAIZ DO PROJETO
     RAIZ = os.path.abspath(
-        os.path.join(PASTA, "..", "..", "..")
+        os.path.join(PASTA, "..", "..")
     )
 
     arquivos = sorted(os.listdir(PASTA))

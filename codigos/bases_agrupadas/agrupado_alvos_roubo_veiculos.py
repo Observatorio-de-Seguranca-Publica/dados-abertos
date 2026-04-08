@@ -180,6 +180,8 @@ caminho_excel = (
     f"agrupado_roubo_veiculos.xlsx"
 )
 
+df.to_excel(caminho_excel, index=False)
+
 # A
 # T
 # E
