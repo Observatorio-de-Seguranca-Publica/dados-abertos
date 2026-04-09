@@ -105,9 +105,11 @@ for i, row in df_alvo.iterrows():
 cte_sql = "WITH mapeamento AS (\n  " + "\n  ".join(linhas_mapeamento) + "\n),\n"
 cte_sql += "alvo_corrigido AS (\n  " + "\n  ".join(linhas_alvo) + "\n)\n"
 
+data_limite = f"{ano_ref}-{mes_atual}-01 00:00:00.000"
+
 # Consulta ao banco
 try:
-    query = cte_sql + '''SELECT oco.numero_ocorrencia as "Número REDS",
+    query = cte_sql + f'''SELECT oco.numero_ocorrencia as "Número REDS",
                       oco.qtd_ocorrencia as "Qtde Ocorrências",
                       oco.natureza_descricao || ' ' || oco.natureza_consumado as "Natureza Principal Completa",
                       YEAR (oco.data_hora_fato) as "Ano Fato",
