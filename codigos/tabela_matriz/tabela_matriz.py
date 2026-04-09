@@ -1,12 +1,29 @@
 import pandas as pd
+from config.datas import (
+    ano_ref,
+    mes_ref,
+    mes_ref_num_str,
+    mes_ref_nome,
+    mes_ref_abrev,
+    mes_atual
+)
 
 # CRIMES VIOLENTOS
 # Lista de arquivos de entrada
+
+base_excel = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"11 - Publicação SESP - Site/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"Excel/"
+)
+
 arquivos_cv = [
-    "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/agrupado_furto.xlsx",
-    "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/agrupado_lesao_corporal.xlsx",
-    "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/25_26_agrupado_crimes_violentos.xlsx",
-    "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/agrupado_vitimas_homicidio_consumado.xlsx"
+    base_excel + "agrupado_furto.xlsx",
+    base_excel + "agrupado_lesao_corporal.xlsx",
+    base_excel + "25_26_agrupado_crimes_violentos.xlsx",
+    base_excel + "agrupado_vitimas_homicidio_consumado.xlsx"
 ]
 
 # Lista para armazenar os dataframes
@@ -73,10 +90,10 @@ df_cv_final = df_cv_final.sort_values(
 # ALVOS DE FURTO E ROUBO
 # Lista de arquivos de entrada
 arquivos_alvos = [
-    "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/agrupado_alvos_roubo.xlsx",
-    "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/agrupado_roubo_veiculos.xlsx",
-    "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/agrupado_alvos_furto.xlsx",
-    "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/agrupado_furto_veiculos.xlsx"
+    base_excel + "agrupado_alvos_roubo.xlsx",
+    base_excel + "agrupado_roubo_veiculos.xlsx",
+    base_excel + "agrupado_alvos_furto.xlsx",
+    base_excel + "agrupado_furto_veiculos.xlsx"
 ]
 
 # Lista para armazenar os dataframes
@@ -106,7 +123,13 @@ df_alvos_final = df_alvos_final.sort_values(
 ).reset_index(drop=True)
 
 # Caminho de saída
-caminho_saida = "C:/Users/x15501492/Documents/02 - Publicações/06 - Monitoamento SIGPLAN/2026/02 - Fevereiro/matriz_automatizada.xlsx"
+caminho_saida = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"06 - Monitoamento SIGPLAN/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"matriz_automatizada.xlsx"
+)
             
 # Exporta
 with pd.ExcelWriter(caminho_saida, engine='openpyxl') as writer:
