@@ -1,5 +1,13 @@
 import pandas as pd
 import dateutil.parser
+from config.datas import (
+    ano_ref,
+    mes_ref,
+    mes_ref_num_str,
+    mes_ref_nome,
+    mes_ref_abrev,
+    mes_atual
+)
 
 # Caminho do arquivo original
 arquivo = "C:/Users/x15501492/Downloads/bdhc.xlsx"
@@ -213,7 +221,16 @@ print("Salvo em:", out1)
 print("Linhas finais:", len(df))
 
 # --- 10) Salvar em dados abertos ---
-out2 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/XLSX - Uso interno/Vítimas de Homicidio Consumado - Jan 2012 a Fev 2026.xlsx"
+
+# Exporta a base no computador no modelo desejado 
+out2 = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"Bases completas/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"XLSX - Uso interno/"
+    f"Vítimas de Homicidio Consumado - Jan 2019 a {mes_ref_abrev} {ano_ref}.xlsx"
+)
 df.to_excel(out2, index=False)
 print("Salvo em:", out2)
 print("Linhas finais:", len(df))
@@ -228,7 +245,14 @@ colunas_excluir = [
 df_csv = df.drop(columns=colunas_excluir, errors="ignore")
 
 # Caminho de saída para CSV
-caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/CSV -Uso externo/Vítimas de Homicidio Consumado - Jan 2012 a Fev 2026.csv" 
+caminho_csv = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"Bases completas/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"CSV -Uso externo/"
+    f"Vítimas de Homicidio Consumado - Jan 2012 a {mes_ref_abrev} {ano_ref}.csv"
+)
 
 # Formatação regional
 df_csv = df_csv.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)

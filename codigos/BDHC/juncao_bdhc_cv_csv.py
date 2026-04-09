@@ -1,10 +1,33 @@
 import pandas as pd
 import numpy as np
 from impala.dbapi import connect
+from config.datas import (
+    ano_ref,
+    mes_ref,
+    mes_ref_num_str,
+    mes_ref_nome,
+    mes_ref_abrev,
+    mes_atual
+)
 
 # Caminhos dos arquivos do BDHC
-base_cv_12_21 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/XLSX - Uso interno/Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
-base_cv_22_26 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/XLSX - Uso interno/Crimes Violentos - Jan 2022 a Fev 2026.xlsx"
+base_cv_12_21 = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"Bases completas/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"XLSX - Uso interno/"
+    f"Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
+)
+
+base_cv_22_26 = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"Bases completas/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"XLSX - Uso interno/"
+    f"Crimes Violentos - Jan 2022 a {mes_ref_abrev} {ano_ref}.xlsx"
+)
 
 # 1️⃣ Lê as bases
 df_cv_12_21 = pd.read_excel(base_cv_12_21)
@@ -22,7 +45,14 @@ df_cv_22_26 = df_cv_22_26.drop(columns=colunas_excluir, errors="ignore")
 
 # 8️⃣ Salva resultado
 # Caminho de saída para CSV
-caminho_csv_1 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/CSV -Uso externo/Crimes Violentos - Jan 2012 a Dez 2021.csv" 
+caminho_csv_1 = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"Bases completas/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"CSV -Uso externo/"
+    f"Crimes Violentos - Jan 2012 a Dez 2021.csv"
+)
 
 # Formatação regional
 df_cv_12_21 = df_cv_12_21.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
@@ -36,7 +66,14 @@ df_cv_12_21.to_csv(
 )
 
 # Caminho de saída para CSV
-caminho_csv_2 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/CSV -Uso externo/Crimes Violentos - Jan 2022 a Fev 2026.csv" 
+caminho_csv_2 = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"Bases completas/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"CSV -Uso externo/"
+    f"Crimes Violentos - Jan 2022 a {mes_ref_abrev} {ano_ref}.csv"
+)
 
 # Formatação regional
 df_cv_22_26 = df_cv_22_26.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)

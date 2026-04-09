@@ -1,6 +1,15 @@
 import pandas as pd
 import itertools
 from impala.dbapi import connect
+import dateutil.parser
+from config.datas import (
+    ano_ref,
+    mes_ref,
+    mes_ref_num_str,
+    mes_ref_nome,
+    mes_ref_abrev,
+    mes_atual
+)
 
 # Funções auxiliares
 def get_credentials(file_path):
@@ -108,7 +117,15 @@ res = res.sort_values(["Ano Fato", "Mês", "Natureza", "Município"]).reset_inde
 res["Cód. IBGE"] = pd.to_numeric(res["Cód. IBGE"], errors="coerce").astype("Int64")
 
 # 11. Exportar para Excel
-saida = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/agrupado_vitimas_homicidio_consumado.xlsx" 
+saida = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"11 - Publicação SESP - Site/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"Excel/"
+    f"agrupado_vitimas_homicidio_consumado.xlsx"
+)
+
 res.to_excel(saida, index=False)
 
 # A
@@ -120,13 +137,20 @@ res.to_excel(saida, index=False)
 # O
 
 # Caminhos dos arquivos
-base_excel = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/agrupado_vitimas_homicidio_consumado.xlsx"
+base_excel = saida
 
 # 1️⃣ Lê as bases
 df_excel = pd.read_excel(base_excel)
 
 # Caminho CSV
-caminho_csv = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Banco de Dados CSV/Banco Vítimas de Homicídio Consumado Fevereiro 2026.csv"
+caminho_csv = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"11 - Publicação SESP - Site/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"Banco de Dados CSV/"
+    f"Banco Vítimas de Homicídio Consumado - Atualizado {mes_ref_nome} {ano_ref}.csv"
+)
 
 # Formatação regional
 df_excel = df_excel.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)

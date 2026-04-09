@@ -1,6 +1,15 @@
 import pandas as pd
 import itertools
 from impala.dbapi import connect
+import dateutil.parser
+from config.datas import (
+    ano_ref,
+    mes_ref,
+    mes_ref_num_str,
+    mes_ref_nome,
+    mes_ref_abrev,
+    mes_atual
+)
 
 # Funções auxiliares ....
 def get_credentials(file_path):
@@ -136,7 +145,15 @@ res = res.sort_values(["Ano Fato", "Mês", "Natureza", "Município"]).reset_inde
 res["Cód. IBGE"] = pd.to_numeric(res["Cód. IBGE"], errors="coerce").astype("Int64")
 
 # 11. Exportar para Excel
-saida = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/agrupado_registros_homicidio_consumado.xlsx" 
+saida = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"11 - Publicação SESP - Site/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"Excel/"
+    f"agrupado_registros_homicidio_consumado.xlsx"
+)
+
 res.to_excel(saida, index=False)
 
 print("Base agrupada gerada com sucesso em:", saida)
@@ -150,11 +167,41 @@ print("Base agrupada gerada com sucesso em:", saida)
 # O
 
 # Caminhos dos arquivos
-agg_hc = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/agrupado_registros_homicidio_consumado.xlsx" 
-agg_cv_12_18 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/12_18_agrupado_crimes_violentos.xlsx" 
-agg_cv_19_24 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/19_24_agrupado_crimes_violentos.xlsx" 
-agg_cv_25_26 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/25_26_agrupado_crimes_violentos.xlsx" 
+agg_hc = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"11 - Publicação SESP - Site/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"Excel/"
+    f"agrupado_registros_homicidio_consumado.xlsx"
+)
 
+agg_cv_12_18 = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"11 - Publicação SESP - Site/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"Excel/"
+    f"12_18_agrupado_crimes_violentos.xlsx"
+)
+
+agg_cv_19_24 = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"11 - Publicação SESP - Site/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"Excel/"
+    f"19_24_agrupado_crimes_violentos.xlsx"
+)
+
+agg_cv_25_26 = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"11 - Publicação SESP - Site/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"Excel/"
+    f"25_26_agrupado_crimes_violentos.xlsx"
+)
 
 # 1️⃣ Lê as bases
 df_hc = pd.read_excel(agg_hc)
@@ -198,7 +245,15 @@ print(f"Base CV 2012–2018 original: {len(df_cv_12_18)}")
 print(f"Base BDHC 2012–2018 filtrada: {len(df_vhc_filtrada_12_18)}")
 print(f"→ Base unificada 2012–2018: {len(df_final_12_18)}")
 
-saida_12_18 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/12_18_agrupado_crimes_violentos.xlsx"
+saida_12_18 = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"11 - Publicação SESP - Site/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"Excel/"
+    f"12_18_agrupado_crimes_violentos.xlsx"
+)
+
 df_final_12_18.to_excel(saida_12_18, index=False)
 print(f"✅ Base unificadas salva em:\n{saida_12_18}")
 
@@ -217,7 +272,15 @@ print(f"Base CV 2019–2024 original: {len(df_cv_19_24)}")
 print(f"Base BDHC 2019–2024 filtrada: {len(df_vhc_filtrada_19_24)}")
 print(f"→ Base unificada 2019–2024: {len(df_final_19_24)} registros")
 
-saida_19_24 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/19_24_agrupado_crimes_violentos.xlsx"
+saida_19_24 = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"11 - Publicação SESP - Site/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"Excel/"
+    f"19_24_agrupado_crimes_violentos.xlsx"
+)
+
 df_final_19_24.to_excel(saida_19_24, index=False)
 print(f"✅ Base unificadas salva em:\n{saida_19_24}")
 
@@ -236,7 +299,15 @@ print(f"Base CV 2025–2026 original: {len(df_cv_25_26)}")
 print(f"Base BDHC 2025–2026 filtrada: {len(df_vhc_filtrada_25_26)}")
 print(f"→ Base unificada 2025–2026: {len(df_final_25_26)} registros")
 
-saida_25_26 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Excel/25_26_agrupado_crimes_violentos.xlsx"
+saida_25_26 = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"11 - Publicação SESP - Site/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"Excel/"
+    f"25_26_agrupado_crimes_violentos.xlsx"
+)
+
 df_final_25_26.to_excel(saida_25_26, index=False)
 print(f"✅ Base unificadas salva em:\n{saida_25_26}")
 
@@ -249,9 +320,32 @@ print(f"✅ Base unificadas salva em:\n{saida_25_26}")
 # Ã
 # O
 
-caminho_csv_12_18 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Banco de Dados CSV/Banco Crimes Violentos 2012 a 2018 - Atualizado Fevereiro 2026.csv" 
-caminho_csv_19_24 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Banco de Dados CSV/Banco Crimes Violentos 2019 a 2024 - Atualizado Fevereiro 2026.csv"
-caminho_csv_25_26 = "C:/Users/x15501492/Documents/02 - Publicações/11 - Publicação SESP - Site/2026/02 - Fevereiro/Banco de Dados CSV/Banco Crimes Violentos 2025 a 2026 - Atualizado Fevereiro 2026.csv"
+caminho_csv_12_18 = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"11 - Publicação SESP - Site/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"Banco de Dados CSV/"
+    f"Banco Crimes Violentos 2012 a 2018 - Atualizado {mes_ref_nome} {ano_ref}.csv"
+)
+
+caminho_csv_19_24 = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"11 - Publicação SESP - Site/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"Banco de Dados CSV/"
+    f"Banco Crimes Violentos 2019 a 2024 - Atualizado {mes_ref_nome} {ano_ref}.csv"
+)
+
+caminho_csv_25_26 = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"11 - Publicação SESP - Site/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"Banco de Dados CSV/"
+    f"Banco Crimes Violentos 2025 a 2026 - Atualizado {mes_ref_nome} {ano_ref}.csv"
+)
 
 # Função auxiliar para exportar com formatação BR
 def exporta_csv(df, caminho):

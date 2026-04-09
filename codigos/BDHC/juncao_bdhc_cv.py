@@ -1,11 +1,35 @@
 import pandas as pd
 import numpy as np
 from impala.dbapi import connect
+from config.datas import (
+    ano_ref,
+    mes_ref,
+    mes_ref_num_str,
+    mes_ref_nome,
+    mes_ref_abrev,
+    mes_atual
+)
 
 # Caminhos dos arquivos
 bdhc_tratado = "C:/Users/x15501492/Downloads/BDHC_formatado_registros.xlsx"
-base_cv_12_21 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/XLSX - Uso interno/Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
-base_cv_22_26 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/XLSX - Uso interno/Crimes Violentos - Jan 2022 a Fev 2026.xlsx"
+base_cv_12_21 = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"Bases completas/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"XLSX - Uso interno/"
+    f"Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
+)
+
+base_cv_22_26 = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"Bases completas/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"XLSX - Uso interno/"
+    f"Crimes Violentos - Jan 2022 a {mes_ref_abrev} {ano_ref}.xlsx"
+)
+
 
 # 1️⃣ Lê as bases
 df_bdhc = pd.read_excel(bdhc_tratado)
@@ -52,9 +76,24 @@ df_final_12_21 = df_final_12_21.fillna("")
 df_final_22_26 = df_final_22_26.fillna("")
 
 # 9️⃣ Salva resultado
-saida_12_21 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/XLSX - Uso interno/Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
+saida_12_21 = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"Bases completas/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"XLSX - Uso interno/"
+    f"Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
+)
 df_final_12_21.to_excel(saida_12_21, index=False)
-saida_22_26 = "C:/Users/x15501492/Documents/02 - Publicações/Bases completas/2026/02 - Fev/XLSX - Uso interno/Crimes Violentos - Jan 2022 a Fev 2026.xlsx"
+
+saida_22_26 =  (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"Bases completas/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"XLSX - Uso interno/"
+    f"Crimes Violentos - Jan 2022 a {mes_ref_abrev} {ano_ref}.xlsx"
+)
 df_final_22_26.to_excel(saida_22_26, index=False)
 
 print(f"✅ Bases unificadas salvas em:\n{saida_12_21} e \n{saida_22_26}")
