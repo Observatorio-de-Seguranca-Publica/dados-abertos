@@ -36,8 +36,8 @@ def main():
     print(f"Mês referência: {mes_ref}")
 
     # 🔧 CONTROLE DAS ETAPAS
-    RODAR_BASES_COMPLETAS = False
-    RODAR_BASES_AGRUPADAS = False
+    RODAR_BASES_COMPLETAS = True
+    RODAR_BASES_AGRUPADAS = True
     RODAR_BDHC = True
     RODAR_PRODUTIVIDADE = True
     RODAR_TABELA_MATRIZ = True
