@@ -13,9 +13,9 @@ from config.datas import (
 # VARIÁVEIS
 # ==============================
 
-ANO_1 = 2025
-ANO_2 = 2026
-MES = 2
+ANO_1 = ano_ref - 1
+ANO_2 = ano_ref
+MES = mes_ref_num_str
 
 
 # ==============================
@@ -217,7 +217,7 @@ def exporta_excel(resultados):
 
     df_export = pd.DataFrame(
         linhas,
-        columns=["Indicador", "2025", "2026"]
+        columns=["Indicador", ano_ref, ano_ref - 1]
     )
 
     return df_export
@@ -235,8 +235,15 @@ if __name__ == "__main__":
         print(indicador, "->", valores)
 
     df_export = exporta_excel(resultados)
-
-    df_export.to_excel("C:/Users/x15501492/Documents/02 - Publicações/08 - Produtividade/2026/02 - Fevereiro/produtividade_mg.xlsx",index=False)
+    
+    caminho = (
+    f"C:/Users/x15501492/Documents/02 - Publicações/"
+    f"08 - Produtividade/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"produtividade_mg.xlsx"
+    )
+    df_export.to_excel(caminho, index=False)
 
     print("\nArquivo Excel exportado com sucesso!")
     print("\nFINALIZOU :)")
