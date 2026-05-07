@@ -1,3 +1,5 @@
+import time
+from datetime import datetime
 from config.datas import (
     ano_ref,
     mes_ref
@@ -11,26 +13,45 @@ from codigos.produtividade.main import executar as executar_produtividade
 from codigos.tabela_matriz.main import executar as executar_tabela_matriz
 
 
+
 def executar_etapa(nome, funcao):
 
-    print(f"\n========== {nome} ==========")
+    print(
+        f"\n[{datetime.now():%d/%m/%Y %H:%M:%S}] "
+        f"========== {nome} =========="
+    )
+
+    inicio = time.time()
 
     try:
 
         funcao()
 
-        print(f"✅ {nome} FINALIZADO")
+        duracao = round(time.time() - inicio, 2)
+
+        print(
+            f"[{datetime.now():%d/%m/%Y %H:%M:%S}] "
+            f"✅ {nome} FINALIZADO "
+            f"({duracao}s)"
+        )
 
     except Exception as e:
 
-        print(f"❌ ERRO EM {nome}")
+        print(
+            f"[{datetime.now():%d/%m/%Y %H:%M:%S}] "
+            f"❌ ERRO EM {nome} "
+            f"({duracao}s)"
+        )
 
-        raise e
+        raise
 
 
 def main():
 
-    print("=== EXECUÇÃO DO PROJETO DADOS ABERTOS ===")
+    print(
+        f"\n[{datetime.now():%d/%m/%Y %H:%M:%S}] "
+        f"=== EXECUÇÃO DO PROJETO DADOS ABERTOS ==="
+    )
 
     print(f"Ano referência: {ano_ref}")
     print(f"Mês referência: {mes_ref}")
@@ -72,7 +93,10 @@ def main():
             executar_tabela_matriz
         )
 
-    print("\n=== EXECUÇÃO FINALIZADA ===")
+    print(
+        f"\n[{datetime.now():%d/%m/%Y %H:%M:%S}] "
+        f"=== EXECUÇÃO FINALIZADA ==="
+    )
 
 
 if __name__ == "__main__":

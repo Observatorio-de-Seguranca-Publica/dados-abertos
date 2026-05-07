@@ -4,7 +4,7 @@ __pycache__/
 *.pyo
 *.pyd
 
-# Ambiente virtual (se usar depois)
+# Ambiente virtual
 venv/
 .env/
 
