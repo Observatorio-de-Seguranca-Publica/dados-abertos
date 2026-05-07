@@ -199,8 +199,12 @@ caminho_csv = (
     f"Alvos - Furto - Jan 2015 a Dez 2017.csv"
 )
 
-# Formatação regional
-df = df.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
+# Formatação regional sem afetar nulos
+df = df.map(
+    lambda x: str(x).replace('.', ',')
+    if isinstance(x, float) and pd.notna(x)
+    else x
+)
 
 # Remove NaN/None/NaT do dataframe inteiro
 df = df.fillna('')
@@ -210,7 +214,8 @@ df.to_csv(
     caminho_csv,
     sep=';',            # separador padrão BR
     index=False,        # sem índice numérico
-    encoding='utf-8-sig'  # adiciona BOM, compatível com Excel
+    encoding='utf-8-sig',  # adiciona BOM, compatível com Excel
+    na_rep=''
 )
 
 print("Arquivo CSV exportado com sucesso!")
