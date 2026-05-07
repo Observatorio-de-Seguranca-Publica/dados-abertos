@@ -68,8 +68,13 @@ def bancos_de_dados():
         cursor.close()
         conn.close()
 
-# Lê o Excel com o mapeamento
+# Lê o Excel com o mapeamento para CTE 1
 df_mapeamento = pd.read_excel("C:/Users/x15501492/OneDrive - CAMG/DIS -  Henrique/Consultas/GRUPO LOCAL IMEDIATO COM CODIGO.xlsx")
+df_mapeamento['Código Local Imediato'] = (
+    df_mapeamento['Código Local Imediato']
+    .astype(str)
+    .str.zfill(4)
+)
 
 # Garante que todos os dados são strings e escapa apóstrofos
 def esc(s):
