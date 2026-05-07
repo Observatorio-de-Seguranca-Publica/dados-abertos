@@ -54,15 +54,23 @@ caminho_csv_1 = (
     f"Crimes Violentos - Jan 2012 a Dez 2021.csv"
 )
 
-# Formatação regional
-df_cv_12_21 = df_cv_12_21.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
+# Formatação regional sem afetar nulos
+df_cv_12_21 = df_cv_12_21.map(
+    lambda x: str(x).replace('.', ',')
+    if isinstance(x, float) and pd.notna(x)
+    else x
+)
+
+# Remove NaN/None/NaT do dataframe inteiro
+df_cv_12_21 = df_cv_12_21.fillna('')
 
 # Exporta com separador ";" e encoding compatível com Excel PT-BR
 df_cv_12_21.to_csv(
     caminho_csv_1,
     sep=';',            # separador padrão BR
     index=False,        # sem índice numérico
-    encoding='utf-8-sig'  # adiciona BOM, compatível com Excel
+    encoding='utf-8-sig',  # adiciona BOM, compatível com Excel
+    na_rep=''
 )
 
 # Caminho de saída para CSV
@@ -75,15 +83,23 @@ caminho_csv_2 = (
     f"Crimes Violentos - Jan 2022 a {mes_ref_abrev} {ano_ref}.csv"
 )
 
-# Formatação regional
-df_cv_22_26 = df_cv_22_26.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
+# Formatação regional sem afetar nulos
+df_cv_22_26 = df_cv_22_26.map(
+    lambda x: str(x).replace('.', ',')
+    if isinstance(x, float) and pd.notna(x)
+    else x
+)
+
+# Remove NaN/None/NaT do dataframe inteiro
+df_cv_22_26 = df_cv_22_26.fillna('')
 
 # Exporta com separador ";" e encoding compatível com Excel PT-BR
 df_cv_22_26.to_csv(
     caminho_csv_2,
     sep=';',            # separador padrão BR
     index=False,        # sem índice numérico
-    encoding='utf-8-sig'  # adiciona BOM, compatível com Excel
+    encoding='utf-8-sig',  # adiciona BOM, compatível com Excel
+    na_rep=''
 )
 
 print("Arquivos CSV exportados com sucesso!")
