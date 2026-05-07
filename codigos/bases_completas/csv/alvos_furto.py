@@ -204,6 +204,9 @@ caminho_csv = (
 # Formatação regional
 df = df.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
 
+# Remove NaN/None/NaT do dataframe inteiro
+df = df.fillna('')
+
 # Exporta com separador ";" e encoding compatível com Excel PT-BR
 df.to_csv(
     caminho_csv,
