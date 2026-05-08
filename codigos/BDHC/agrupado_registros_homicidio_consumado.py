@@ -241,9 +241,9 @@ df_vhc_filtrada_12_18 = df_vhc_filtrada_12_18.reindex(columns=df_cv_12_18.column
 # 4️⃣ Junta (empilha)
 df_final_12_18 = pd.concat([df_cv_12_18, df_vhc_filtrada_12_18], ignore_index=True)
 
-print(f"Base CV 2012–2018 original: {len(df_cv_12_18)}")
-print(f"Base BDHC 2012–2018 filtrada: {len(df_vhc_filtrada_12_18)}")
-print(f"→ Base unificada 2012–2018: {len(df_final_12_18)}")
+print(f"Base CV 2012 a 2018 original: {len(df_cv_12_18)}")
+print(f"Base BDHC 2012 a 2018 filtrada: {len(df_vhc_filtrada_12_18)}")
+print(f"Base unificada 2012 a 2018: {len(df_final_12_18)}")
 
 saida_12_18 = (
     f"C:/Users/x15501492/Documents/02 - Publicações/"
@@ -255,7 +255,7 @@ saida_12_18 = (
 )
 
 df_final_12_18.to_excel(saida_12_18, index=False)
-print(f"✅ Base unificadas salva em:\n{saida_12_18}")
+print(f"Ok - Base unificadas salva em:\n{saida_12_18}")
 
 # 5️⃣ Filtra a BDHC apenas entre 2019 e 2024
 df_vhc_filtrada_19_24 = df_hc[
@@ -268,9 +268,9 @@ df_vhc_filtrada_19_24 = df_vhc_filtrada_19_24.reindex(columns=df_cv_19_24.column
 # 4️⃣ Junta (empilha)
 df_final_19_24 = pd.concat([df_cv_19_24, df_vhc_filtrada_19_24], ignore_index=True)
 
-print(f"Base CV 2019–2024 original: {len(df_cv_19_24)}")
-print(f"Base BDHC 2019–2024 filtrada: {len(df_vhc_filtrada_19_24)}")
-print(f"→ Base unificada 2019–2024: {len(df_final_19_24)} registros")
+print(f"Base CV 2019 a 2024 original: {len(df_cv_19_24)}")
+print(f"Base BDHC 2019 a 2024 filtrada: {len(df_vhc_filtrada_19_24)}")
+print(f"Base unificada 2019 a 2024: {len(df_final_19_24)} registros")
 
 saida_19_24 = (
     f"C:/Users/x15501492/Documents/02 - Publicações/"
@@ -282,7 +282,7 @@ saida_19_24 = (
 )
 
 df_final_19_24.to_excel(saida_19_24, index=False)
-print(f"✅ Base unificadas salva em:\n{saida_19_24}")
+print(f"Ok - Base unificadas salva em:\n{saida_19_24}")
 
 # Filtra a BDHC apenas entre 2025 e 2026
 df_vhc_filtrada_25_26 = df_hc[
@@ -297,7 +297,7 @@ df_final_25_26 = pd.concat([df_cv_25_26, df_vhc_filtrada_25_26], ignore_index=Tr
 
 print(f"Base CV 2025–2026 original: {len(df_cv_25_26)}")
 print(f"Base BDHC 2025–2026 filtrada: {len(df_vhc_filtrada_25_26)}")
-print(f"→ Base unificada 2025–2026: {len(df_final_25_26)} registros")
+print(f"Base unificada 2025–2026: {len(df_final_25_26)} registros")
 
 saida_25_26 = (
     f"C:/Users/x15501492/Documents/02 - Publicações/"
@@ -309,7 +309,7 @@ saida_25_26 = (
 )
 
 df_final_25_26.to_excel(saida_25_26, index=False)
-print(f"✅ Base unificadas salva em:\n{saida_25_26}")
+print(f"Ok - Base unificadas salva em:\n{saida_25_26}")
 
 
 # A

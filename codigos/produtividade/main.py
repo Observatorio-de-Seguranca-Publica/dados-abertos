@@ -39,4 +39,4 @@ def executar():
                 env=env   # ⭐ ESSENCIAL
             )
 
-    print("\n✅ Produtividade finalizado!")
+    print("\nOk - Produtividade finalizado!")

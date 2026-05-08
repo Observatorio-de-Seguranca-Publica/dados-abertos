@@ -39,4 +39,4 @@ def executar():
                 env=env   # ⭐ ESSENCIAL
             )
 
-    print("\n✅ Bases Agrupadas finalizadas!")
+    print("\nOk - Bases Agrupadas finalizadas!")

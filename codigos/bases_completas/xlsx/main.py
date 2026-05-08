@@ -39,4 +39,4 @@ def executar():
                 env=env   # ⭐ ESSENCIAL
             )
 
-    print("\n✅ XLSX finalizado!")
+    print("\nOk - XLSX finalizado!")

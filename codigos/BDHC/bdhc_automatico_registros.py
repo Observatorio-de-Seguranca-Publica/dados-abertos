@@ -215,4 +215,4 @@ df = df[[col for col in ordem_colunas if col in df.columns]]
 # Salvar resultado final
 df.to_excel("C:/Users/x15501492/Downloads/BDHC_formatado_registros.xlsx", index=False)
 
-print("✅ Deu bom")
+print("Ok - Deu bom")

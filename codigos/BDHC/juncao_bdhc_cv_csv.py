@@ -104,4 +104,4 @@ df_cv_22_26.to_csv(
 
 print("Arquivos CSV exportados com sucesso!")
 
-print(f"✅ Bases unificadas salvas em:\n{caminho_csv_1} e \n{caminho_csv_2}")
+print(f"Ok - Bases unificadas salvas em:\n{caminho_csv_1} e \n{caminho_csv_2}")

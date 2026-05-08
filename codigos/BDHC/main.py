@@ -55,4 +55,4 @@ def executar():
             env=env   # ⭐ ESSENCIAL
         )
 
-    print("\n✅ BDHC FINALIZADO")
+    print("\nOk - BDHC FINALIZADO")

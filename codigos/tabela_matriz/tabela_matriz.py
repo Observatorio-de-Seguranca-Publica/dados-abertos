@@ -136,4 +136,4 @@ with pd.ExcelWriter(caminho_saida, engine='openpyxl') as writer:
     df_cv_final.to_excel(writer, sheet_name='Dados CV', index=False)
     df_alvos_final.to_excel(writer, sheet_name='Dados Alvos', index=False)
 
-print("🦊🇧🇷")
+print("Deu bom")

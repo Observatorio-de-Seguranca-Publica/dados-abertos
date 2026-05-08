@@ -39,4 +39,4 @@ def executar():
                 env=env   # ⭐ ESSENCIAL
             )
 
-    print("\n✅ CSV finalizado!")
+    print("\nOk - CSV finalizado!")

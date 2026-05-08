@@ -50,7 +50,7 @@ df_final_12_21 = pd.concat([df_cv_12_21, df_bdhc_filtrada_12_21], ignore_index=T
 
 print(f"Base CV 2012–2021 original: {len(df_cv_12_21)}")
 print(f"Base BDHC 2012–2021 filtrada: {len(df_bdhc_filtrada_12_21)}")
-print(f"→ Base unificada 2012–2021: {len(df_final_12_21)}")
+print(f"Base unificada 2012–2021: {len(df_final_12_21)}")
 
 # 5️⃣ Filtra a BDHC apenas entre 2022 e 2026
 df_bdhc_filtrada_22_26 = df_bdhc[
@@ -66,7 +66,7 @@ df_final_22_26 = pd.concat([df_cv_22_26, df_bdhc_filtrada_22_26], ignore_index=T
 
 print(f"Base CV 2022–2026 original: {len(df_cv_22_26)}")
 print(f"Base BDHC 2022–2026 filtrada: {len(df_bdhc_filtrada_22_26)}")
-print(f"→ Base unificada 2022–2026: {len(df_final_22_26)}")
+print(f"Base unificada 2022–2026: {len(df_final_22_26)}")
 
 print(f"Total final após junção (2012–2021): {len(df_final_12_21)} registros")
 print(f"Total final após junção (2022–2026): {len(df_final_22_26)} registros")
@@ -96,4 +96,4 @@ saida_22_26 =  (
 )
 df_final_22_26.to_excel(saida_22_26, index=False)
 
-print(f"✅ Bases unificadas salvas em:\n{saida_12_21} e \n{saida_22_26}")
+print(f"Ok - Bases unificadas salvas em:\n{saida_12_21} e \n{saida_22_26}")

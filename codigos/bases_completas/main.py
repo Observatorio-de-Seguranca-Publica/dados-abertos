@@ -13,4 +13,4 @@ def executar():
     # Depois CSV
     executar_csv()
 
-    print("\n✅ BASES COMPLETAS FINALIZADAS")
+    print("\nOk - BASES COMPLETAS FINALIZADAS")

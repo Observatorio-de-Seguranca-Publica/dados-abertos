@@ -39,4 +39,4 @@ def executar():
                 env=env   # ⭐ ESSENCIAL
             )
 
-    print("\n✅ Tabela Matriz finalizada!")
+    print("\nOk - Tabela Matriz finalizada!")
