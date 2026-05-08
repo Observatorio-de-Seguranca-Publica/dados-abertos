@@ -217,7 +217,7 @@ def exporta_excel(resultados):
 
     df_export = pd.DataFrame(
         linhas,
-        columns=["Indicador", ano_ref, ano_ref - 1]
+        columns=["Indicador", ano_ref - 1, ano_ref]
     )
 
     return df_export
