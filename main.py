@@ -31,15 +31,17 @@ def executar_etapa(nome, funcao):
 
         print(
             f"[{datetime.now():%d/%m/%Y %H:%M:%S}] "
-            f"✅ {nome} FINALIZADO "
+            f"Ok - {nome} FINALIZADO "
             f"({duracao}s)"
         )
 
     except Exception as e:
 
+        duracao = round(time.time() - inicio, 2)
+        
         print(
             f"[{datetime.now():%d/%m/%Y %H:%M:%S}] "
-            f"❌ ERRO EM {nome} "
+            f" ERRO EM {nome} "
             f"({duracao}s)"
         )
 
@@ -57,8 +59,8 @@ def main():
     print(f"Mês referência: {mes_ref}")
 
     # 🔧 CONTROLE DAS ETAPAS
-    RODAR_BASES_COMPLETAS = True
-    RODAR_BASES_AGRUPADAS = True
+    RODAR_BASES_COMPLETAS = False
+    RODAR_BASES_AGRUPADAS = False
     RODAR_BDHC = True
     RODAR_PRODUTIVIDADE = True
     RODAR_TABELA_MATRIZ = True

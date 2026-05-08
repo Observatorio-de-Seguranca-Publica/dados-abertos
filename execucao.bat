@@ -1,5 +1,7 @@
 @echo off
 
+chcp 65001 > nul
+
 cd /d "C:\Users\x15501492\Downloads\code\observatorio\dados-abertos"
 
 if not exist logs mkdir logs
