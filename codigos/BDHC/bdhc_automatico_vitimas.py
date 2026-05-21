@@ -162,9 +162,9 @@ if "Rmbh" in df.columns:
 else:
     df["Rmbh"] = None
 
-if "Qtde Ocorrências" in df.columns:
-    df["Qtde Ocorrências"] = 1
-    df["Qtde Ocorrências"] = df["Qtde Ocorrências"].astype(int)
+if "Qtd Envolvidos" in df.columns:
+    df["Qtd Envolvidos"] = 1
+    df["Qtd Envolvidos"] = df["Qtd Envolvidos"].astype(int)
 
 # --- Conversão de horário mais tolerante ---
 def classificar_faixa6(hora):
