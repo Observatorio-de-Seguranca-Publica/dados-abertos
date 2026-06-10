@@ -11,6 +11,7 @@ from codigos.bases_agrupadas.main import executar as executar_bases_agrupadas
 from codigos.BDHC.main import executar as executar_bdhc
 from codigos.produtividade.main import executar as executar_produtividade
 from codigos.tabela_matriz.main import executar as executar_tabela_matriz
+from codigos.paper.main import executar as executar_paper
 
 
 
@@ -64,6 +65,7 @@ def main():
     RODAR_BDHC = True
     RODAR_PRODUTIVIDADE = True
     RODAR_TABELA_MATRIZ = True
+    RODAR_PAPER = True
 
     if RODAR_BASES_COMPLETAS:
         executar_etapa(
@@ -93,6 +95,11 @@ def main():
         executar_etapa(
             "TABELA MATRIZ",
             executar_tabela_matriz
+        )
+    if RODAR_PAPER:
+        executar_etapa(
+            "PAPER",
+            executar_paper
         )
 
     print(
