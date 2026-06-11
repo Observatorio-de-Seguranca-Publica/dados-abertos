@@ -69,7 +69,7 @@ def query_total_armas(ano1, ano2, mes):
         LEFT JOIN db_bisp_reds_reporting.tb_arma_ocorrencia AS arm
             ON oco.numero_ocorrencia = arm.numero_ocorrencia
         WHERE YEAR(oco.data_hora_fato) IN ({ano1}, {ano2})
-            AND MONTH(oco.data_hora_fato) = {mes}
+            AND MONTH(oco.data_hora_fato) BETWEEN 1 AND {mes}
             AND oco.ocorrencia_uf = 'MG'
             AND oco.codigo_municipio = 310620
             AND arm.tipo_arma_codigo NOT IN ('0300', '0100', '0200')
@@ -87,7 +87,7 @@ def query_registros_armas(ano1, ano2, mes):
         LEFT JOIN db_bisp_reds_reporting.tb_arma_ocorrencia AS arm
             ON oco.numero_ocorrencia = arm.numero_ocorrencia
         WHERE YEAR(oco.data_hora_fato) IN ({ano1}, {ano2})
-            AND MONTH(oco.data_hora_fato) = {mes}
+            AND MONTH(oco.data_hora_fato) BETWEEN 1 AND {mes}
             AND oco.ocorrencia_uf = 'MG'
             AND oco.codigo_municipio = 310620
             AND arm.tipo_arma_codigo NOT IN ('0300', '0100', '0200')
@@ -105,7 +105,7 @@ def query_total_simulacros(ano1, ano2, mes):
         LEFT JOIN db_bisp_reds_reporting.tb_material_apreendido_ocorrencia AS mat
             ON oco.numero_ocorrencia = mat.numero_ocorrencia
         WHERE YEAR(oco.data_hora_fato) IN ({ano1}, {ano2})
-            AND MONTH(oco.data_hora_fato) = {mes}
+            AND MONTH(oco.data_hora_fato) BETWEEN 1 AND {mes}
             AND oco.ocorrencia_uf = 'MG'
             AND oco.codigo_municipio = 310620
             AND mat.situacao_codigo IN ('0100', '0600')
@@ -123,7 +123,7 @@ def query_registros_drogas(ano1, ano2, mes):
         LEFT JOIN db_bisp_reds_reporting.tb_material_apreendido_ocorrencia AS mat
             ON oco.numero_ocorrencia = mat.numero_ocorrencia
         WHERE YEAR(oco.data_hora_fato) IN ({ano1}, {ano2})
-            AND MONTH(oco.data_hora_fato) = {mes}
+            AND MONTH(oco.data_hora_fato) BETWEEN 1 AND {mes}
             AND oco.ocorrencia_uf = 'MG'
             AND oco.codigo_municipio = 310620
             AND mat.situacao_codigo IN ('0100', '0600')
@@ -141,7 +141,7 @@ def query_total_conduzidos(ano1, ano2, mes):
         LEFT JOIN db_bisp_reds_reporting.tb_envolvido_ocorrencia AS env
             ON oco.numero_ocorrencia = env.numero_ocorrencia
         WHERE YEAR(oco.data_hora_fato) IN ({ano1}, {ano2})
-            AND MONTH(oco.data_hora_fato) = {mes}
+            AND MONTH(oco.data_hora_fato) BETWEEN 1 AND {mes}
             AND oco.ocorrencia_uf = 'MG'
             AND oco.codigo_municipio = 310620
             AND env.tipo_prisao_apreensao_codigo IN ('0100', '0200', '0300', '9900', '0400')
@@ -158,7 +158,7 @@ def query_total_veiculos(ano1, ano2, mes):
         LEFT JOIN db_bisp_reds_reporting.tb_veiculo_ocorrencia AS vei
             ON oco.numero_ocorrencia = vei.numero_ocorrencia
         WHERE YEAR(oco.data_hora_fato) IN ({ano1}, {ano2})
-            AND MONTH(oco.data_hora_fato) = {mes}
+            AND MONTH(oco.data_hora_fato) BETWEEN 1 AND {mes}
             AND oco.ocorrencia_uf = 'MG'
             AND oco.codigo_municipio = 310620
             AND vei.situacao_placa_codigo = '0400'
