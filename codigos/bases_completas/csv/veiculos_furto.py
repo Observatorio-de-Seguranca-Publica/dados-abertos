@@ -171,7 +171,7 @@ try:
                AND oco.ind_estado IN ('F', 'R')
                AND oco.natureza_codigo IN ('C01155')
                AND oco.natureza_consumado = 'CONSUMADO'
-               AND vei.situacao_placa_descricao_longa IN ('FURTADO', 'ROUBADO')
+               AND vei.situacao_placa_descricao_longa = 'FURTADO'
                AND vei.tipo_veiculo_codigo IN ('0200', '0800', '1101', '0700', '0720', '0710', '0600', '0620', '0610', '1300', '1700', '1800', '1900', '2000', '9900', '2100', '2200', '2300', '2400', '2500', '2700', '2600', '2800', '2920', '2910', '2900')
                 '''
         
