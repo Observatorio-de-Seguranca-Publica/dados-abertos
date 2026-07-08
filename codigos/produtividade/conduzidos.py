@@ -102,5 +102,6 @@ caminho_excel = (
     f"da_conduzidos.xlsx"
 )
 
+df.to_excel(caminho_excel, index=False)
 
 print('FINALIZOU :)')
