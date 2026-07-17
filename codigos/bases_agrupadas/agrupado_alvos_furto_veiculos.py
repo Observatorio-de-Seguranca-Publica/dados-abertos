@@ -171,9 +171,9 @@ except Exception as e:
 # Exibe as primeiras linhas do DataFrame
 df.head()
 
+
 caminho_excel = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"11 - Publicação SESP - Site/"
+    f"{publicacoes_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Excel/"
@@ -192,8 +192,7 @@ df.to_excel(caminho_excel, index=False)
 # O
 
 base_excel = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"11 - Publicação SESP - Site/"
+    f"{publicacoes_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Excel/"
@@ -204,8 +203,7 @@ base_excel = (
 df_excel = pd.read_excel(base_excel)
 
 caminho_csv = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"11 - Publicação SESP - Site/"
+    f"{publicacoes_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Banco de Dados CSV/"
