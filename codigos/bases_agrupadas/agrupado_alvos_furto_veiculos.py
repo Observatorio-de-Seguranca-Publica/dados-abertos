@@ -10,6 +10,7 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
+from config.paths import publicacoes_dir
 
 # Função para ler o arquivo de credenciais
 def get_credentials(file_path):
@@ -178,6 +179,7 @@ caminho_excel = (
     f"Excel/"
     f"agrupado_furto_veiculos.xlsx"
 )
+
 
 df.to_excel(caminho_excel, index=False)
 
