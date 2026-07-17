@@ -12,6 +12,7 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
+from config.paths import completas_dir
 
 # Função para ler o arquivo de credenciais
 def get_credentials(file_path):

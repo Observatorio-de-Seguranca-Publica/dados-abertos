@@ -20,10 +20,17 @@ municipios_mg = config_dir / "municipios_mg.xlsx"
 for pasta in [logs_dir, input_dir, output_dir, temp_dir]:
     pasta.mkdir(parents=True, exist_ok=True)
     
-# Diretório das publicações
+# Diretório das publicações agrupadas
 publicacoes_dir = (
     Path.home()
     / "Documents"
     / "02 - Publicações"
     / "11 - Publicação SESP - Site"
+)
+
+completas_dir = (
+    Path.home()
+    / "Documents"
+    / "02 - Publicações"
+    / "Bases completas"
 )
