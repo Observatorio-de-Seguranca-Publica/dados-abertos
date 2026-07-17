@@ -194,8 +194,7 @@ df["Número Reds"] = df["Número Reds"].apply(anonimizar_chave)
 
 # Caminho de saída para CSV
 caminho_csv = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"Bases completas/"
+    f"{completas_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_abrev}/"
     f"CSV -Uso externo/"

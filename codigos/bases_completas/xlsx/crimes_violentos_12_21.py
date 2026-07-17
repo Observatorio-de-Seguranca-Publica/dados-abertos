@@ -188,8 +188,7 @@ df.columns = [col.title() for col in df.columns]  # "número reds" → "Número 
 
 # Exporta a base no computador no modelo desejado 
 caminho_excel = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"Bases completas/"
+    f"{completas_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_abrev}/"
     f"XLSX - Uso interno/"
