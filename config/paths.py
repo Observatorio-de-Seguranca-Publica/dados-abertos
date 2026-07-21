@@ -20,6 +20,12 @@ municipios_mg = config_dir / "municipios_mg.xlsx"
 for pasta in [logs_dir, input_dir, output_dir, temp_dir]:
     pasta.mkdir(parents=True, exist_ok=True)
     
+# Diretório OneDrive
+onedrive_dir = (
+    Path.home()
+    / "OneDrive - CAMG"
+)
+
 # Diretório da publicação das bases agrupadas
 publicacoes_dir = (
     Path.home()

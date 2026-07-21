@@ -10,11 +10,12 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
+from config.paths import publicacoes_dir
+from config.paths import onedrive_dir
 
 # Lista de arquivos de entrada: planilhas de Crimes Violentos e dicionário de regiões
 base_excel = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"11 - Publicação SESP - Site/"
+    f"{publicacoes_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Excel/"
@@ -137,11 +138,16 @@ df_cv_final = df_cv_final.sort_values(
 
 # Caminho de saída
 caminho_saida = (
-    f"C:/Users/x15501492/OneDrive - CAMG/DIS -  Henrique/Paper/"
+    f"{onedrive_dir}/"
+    f"DIS -  Henrique/Paper/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"paper_automatico_{mes_ref_abrev}.xlsx"
 )
+
+f"{publicacoes_dir}/"
+f"{ano_ref}/"
+f"{mes_ref_num_str} - {mes_ref_nome}/"
             
 # Exporta
 with pd.ExcelWriter(caminho_saida, engine='openpyxl') as writer:
@@ -159,7 +165,8 @@ print("Deu bom: planilha gerada")
 
 # Pasta de destino dos papers de município
 caminho_saida_paper_municipios = (
-    f"C:/Users/x15501492/OneDrive - CAMG/DIS -  Henrique/Paper/"
+    f"{onedrive_dir}/"
+    f"DIS -  Henrique/Paper/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Municípios"
@@ -1176,7 +1183,8 @@ for municipio in lista_municipios:
 
 # Pasta de destino dos papers de RISP
 caminho_saida_paper_risps = (
-    f"C:/Users/x15501492/OneDrive - CAMG/DIS -  Henrique/Paper/"
+    f"{onedrive_dir}/"
+    f"DIS -  Henrique/Paper/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"RISP"
@@ -1331,7 +1339,8 @@ for risp in lista_risps:
 
 # Pasta de destino dos papers de Mesorregião
 caminho_saida_paper_mesorregioes = (
-    f"C:/Users/x15501492/OneDrive - CAMG/DIS -  Henrique/Paper/"
+    f"{onedrive_dir}/"
+    f"DIS -  Henrique/Paper/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Mesorregiões"
