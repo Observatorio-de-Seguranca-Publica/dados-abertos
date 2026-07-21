@@ -10,6 +10,7 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
+from config.paths import produtividade_dir
 
 # Função para ler o arquivo de credenciais
 def get_credentials(file_path):
@@ -97,8 +98,7 @@ df.head()
 
 # Exporta a base no computador no modelo desejado 
 caminho_excel = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"08 - Produtividade/"
+    f"{produtividade_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"da_simulacros_apreendidos.xlsx"

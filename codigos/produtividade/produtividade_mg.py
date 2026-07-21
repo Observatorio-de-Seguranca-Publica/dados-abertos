@@ -8,6 +8,7 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
+from config.paths import produtividade_dir
 
 # ==============================
 # VARIÁVEIS
@@ -236,12 +237,11 @@ if __name__ == "__main__":
 
     df_export = exporta_excel(resultados)
     
-    caminho = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"08 - Produtividade/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
-    f"produtividade_mg.xlsx"
+    caminho_excel = (
+        f"{produtividade_dir}/"
+        f"{ano_ref}/"
+        f"{mes_ref_num_str} - {mes_ref_nome}/"
+        f"produtividade_mg.xlsx"
     )
     df_export.to_excel(caminho, index=False)
 
