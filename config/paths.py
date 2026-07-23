@@ -50,6 +50,14 @@ produtividade_dir = (
     / "08 - Produtividade"
 )
 
+# Diretório da publicação das bases de tabela matriz
+matriz_dir = (
+    Path.home()
+    / "Documents"
+    / "02 - Publicações"
+    / "06 - Monitoramento SIGPLAN"
+)
+
 # Diretório downloads
 downloads_dir = (
     Path.home()

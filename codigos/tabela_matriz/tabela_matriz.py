@@ -7,13 +7,13 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
+from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir, matriz_dir
 
 # CRIMES VIOLENTOS
 # Lista de arquivos de entrada
 
 base_excel = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"11 - Publicação SESP - Site/"
+    f"{publicacoes_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Excel/"
@@ -124,8 +124,7 @@ df_alvos_final = df_alvos_final.sort_values(
 
 # Caminho de saída
 caminho_saida = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"06 - Monitoamento SIGPLAN/"
+    f"{matriz_dir}"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"matriz_automatizada.xlsx"
