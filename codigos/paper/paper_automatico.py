@@ -10,8 +10,7 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
-from config.paths import publicacoes_dir
-from config.paths import onedrive_dir
+from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido
 
 # Lista de arquivos de entrada: planilhas de Crimes Violentos e dicionário de regiões
 base_excel = (

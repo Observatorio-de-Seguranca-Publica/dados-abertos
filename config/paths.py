@@ -55,3 +55,7 @@ downloads_dir = (
     Path.home()
     / "Downloads"
 )
+
+# Caminho bases CTE
+grupo_local_imediato = config_dir / "grupo_local_imediato_com_codigo.xlsx"
+alvo_corrigido = config_dir / "alvo_corrigido.xlsx"
