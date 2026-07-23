@@ -1,9 +1,13 @@
 import pandas as pd
 import numpy as np
 from impala.dbapi import connect
+from config.paths import downloads_dir
 
 # Caminho do arquivo original
-arquivo = "C:/Users/x15501492/Downloads/bdhc.xlsx"
+arquivo = (
+    f"{downloads_dir}/"
+    f"bdhc.xlsx"
+)
 sheet = "BD_HC_FATAL_ARMAZÉM"  # ajuste se necessário
 
 # Leitura da planilha
@@ -213,6 +217,10 @@ ordem_colunas = [
 df = df[[col for col in ordem_colunas if col in df.columns]]
 
 # Salvar resultado final
-df.to_excel("C:/Users/x15501492/Downloads/BDHC_formatado_registros.xlsx", index=False)
+caminho = (
+    f"{downloads_dir}/"
+    f"BDHC_formatado_registros.xlsx"
+)
+df.to_excel(caminho, index=False)
 
 print("Ok - Deu bom")

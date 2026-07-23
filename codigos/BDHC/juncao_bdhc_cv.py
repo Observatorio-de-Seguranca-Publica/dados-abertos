@@ -9,12 +9,16 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
+from config.paths import completas_dir
+from config.paths import downloads_dir
 
 # Caminhos dos arquivos
-bdhc_tratado = "C:/Users/x15501492/Downloads/BDHC_formatado_registros.xlsx"
+bdhc_tratado = (
+    f"{downloads_dir}/"
+    "BDHC_formatado_registros.xlsx"
+)
 base_cv_12_21 = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"Bases completas/"
+    f"{completas_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_abrev}/"
     f"XLSX - Uso interno/"
@@ -22,8 +26,7 @@ base_cv_12_21 = (
 )
 
 base_cv_22_26 = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"Bases completas/"
+    f"{completas_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_abrev}/"
     f"XLSX - Uso interno/"
@@ -77,8 +80,7 @@ df_final_22_26 = df_final_22_26.fillna("")
 
 # 9️⃣ Salva resultado
 saida_12_21 = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"Bases completas/"
+    f"{completas_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_abrev}/"
     f"XLSX - Uso interno/"
@@ -87,8 +89,7 @@ saida_12_21 = (
 df_final_12_21.to_excel(saida_12_21, index=False)
 
 saida_22_26 =  (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"Bases completas/"
+    f"{completas_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_abrev}/"
     f"XLSX - Uso interno/"

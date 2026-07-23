@@ -10,6 +10,8 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
+from config.paths import publicacoes_dir
+from config.paths import downloads_dir
 
 # Funções auxiliares
 def get_credentials(file_path):
@@ -51,7 +53,10 @@ def norm_ibge(x):
         return None
 
 # 1. Lê a planilha
-arquivo = "C:/Users/x15501492/Downloads/BDHC_formatado_vitimas.xlsx"
+arquivo = (
+    f"{downloads_dir}/"
+    f"BDHC_formatado_vitimas.xlsx"
+)
 aba = "Sheet1"
 df = pd.read_excel(arquivo, sheet_name=aba)
 
@@ -118,8 +123,7 @@ res["Cód. IBGE"] = pd.to_numeric(res["Cód. IBGE"], errors="coerce").astype("In
 
 # 11. Exportar para Excel
 saida = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"11 - Publicação SESP - Site/"
+    f"{publicacoes_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Excel/"
@@ -144,8 +148,7 @@ df_excel = pd.read_excel(base_excel)
 
 # Caminho CSV
 caminho_csv = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"11 - Publicação SESP - Site/"
+    f"{publicacoes_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Banco de Dados CSV/"

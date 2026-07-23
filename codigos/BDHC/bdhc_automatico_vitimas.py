@@ -8,9 +8,15 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
+from config.paths import completas_dir
+from config.paths import downloads_dir
+
 
 # Caminho do arquivo original
-arquivo = "C:/Users/x15501492/Downloads/bdhc.xlsx"
+arquivo = (
+    f"{downloads_dir}/"
+    f"bdhc.xlsx"
+)
 sheet = "BD_HC_FATAL_ARMAZÉM"  # ajuste se necessário
 
 df = pd.read_excel(
@@ -215,7 +221,10 @@ colunas_finais = [c for c in ordem_colunas if c in df.columns]
 df = df[colunas_finais]
 
 # --- 9) Salvar resultado final ---
-out1 = "C:/Users/x15501492/Downloads/BDHC_formatado_vitimas.xlsx"
+out1 = (
+    f"{downloads_dir}/"
+    f"BDHC_formatado_vitimas.xlsx"
+)
 df.to_excel(out1, index=False)
 print("Salvo em:", out1)
 print("Linhas finais:", len(df))
@@ -224,8 +233,7 @@ print("Linhas finais:", len(df))
 
 # Exporta a base no computador no modelo desejado 
 out2 = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"Bases completas/"
+    f"{completas_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_abrev}/"
     f"XLSX - Uso interno/"
@@ -246,8 +254,7 @@ df_csv = df.drop(columns=colunas_excluir, errors="ignore")
 
 # Caminho de saída para CSV
 caminho_csv = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"Bases completas/"
+    f"{completas_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_abrev}/"
     f"CSV -Uso externo/"

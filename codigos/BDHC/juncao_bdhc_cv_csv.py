@@ -9,11 +9,11 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
+from config.paths import completas_dir
 
 # Caminhos dos arquivos do BDHC
 base_cv_12_21 = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"Bases completas/"
+    f"{completas_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_abrev}/"
     f"XLSX - Uso interno/"
@@ -21,8 +21,7 @@ base_cv_12_21 = (
 )
 
 base_cv_22_26 = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"Bases completas/"
+    f"{completas_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_abrev}/"
     f"XLSX - Uso interno/"
@@ -46,8 +45,7 @@ df_cv_22_26 = df_cv_22_26.drop(columns=colunas_excluir, errors="ignore")
 # 8️⃣ Salva resultado
 # Caminho de saída para CSV
 caminho_csv_1 = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"Bases completas/"
+    f"{completas_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_abrev}/"
     f"CSV -Uso externo/"
@@ -75,8 +73,7 @@ df_cv_12_21.to_csv(
 
 # Caminho de saída para CSV
 caminho_csv_2 = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"Bases completas/"
+    f"{completas_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_abrev}/"
     f"CSV -Uso externo/"

@@ -10,6 +10,8 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
+from config.paths import publicacoes_dir
+from config.paths import downloads_dir
 
 # Funções auxiliares ....
 def get_credentials(file_path):
@@ -51,7 +53,10 @@ def norm_ibge(x):
         return None
 
 # 1. Lê a planilha
-arquivo = "C:/Users/x15501492/Downloads/BDHC_formatado_registros.xlsx"
+arquivo = (
+    f"{downloads_dir}/"
+    f"BDHC_formatado_registros.xlsx"
+)
 aba = "Sheet1"
 df = pd.read_excel(arquivo, sheet_name=aba)
 
@@ -146,8 +151,7 @@ res["Cód. IBGE"] = pd.to_numeric(res["Cód. IBGE"], errors="coerce").astype("In
 
 # 11. Exportar para Excel
 saida = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"11 - Publicação SESP - Site/"
+    f"{publicacoes_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Excel/"
@@ -168,8 +172,7 @@ print("Base agrupada gerada com sucesso em:", saida)
 
 # Caminhos dos arquivos
 agg_hc = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"11 - Publicação SESP - Site/"
+    f"{publicacoes_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Excel/"
@@ -177,8 +180,7 @@ agg_hc = (
 )
 
 agg_cv_12_18 = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"11 - Publicação SESP - Site/"
+    f"{publicacoes_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Excel/"
@@ -186,8 +188,7 @@ agg_cv_12_18 = (
 )
 
 agg_cv_19_24 = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"11 - Publicação SESP - Site/"
+    f"{publicacoes_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Excel/"
@@ -195,8 +196,7 @@ agg_cv_19_24 = (
 )
 
 agg_cv_25_26 = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"11 - Publicação SESP - Site/"
+    f"{publicacoes_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Excel/"
@@ -246,8 +246,7 @@ print(f"Base BDHC 2012 a 2018 filtrada: {len(df_vhc_filtrada_12_18)}")
 print(f"Base unificada 2012 a 2018: {len(df_final_12_18)}")
 
 saida_12_18 = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"11 - Publicação SESP - Site/"
+    f"{publicacoes_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Excel/"
@@ -273,8 +272,7 @@ print(f"Base BDHC 2019 a 2024 filtrada: {len(df_vhc_filtrada_19_24)}")
 print(f"Base unificada 2019 a 2024: {len(df_final_19_24)} registros")
 
 saida_19_24 = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"11 - Publicação SESP - Site/"
+    f"{publicacoes_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Excel/"
@@ -300,8 +298,7 @@ print(f"Base BDHC 2025–2026 filtrada: {len(df_vhc_filtrada_25_26)}")
 print(f"Base unificada 2025–2026: {len(df_final_25_26)} registros")
 
 saida_25_26 = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"11 - Publicação SESP - Site/"
+    f"{publicacoes_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Excel/"
@@ -321,8 +318,7 @@ print(f"Ok - Base unificadas salva em:\n{saida_25_26}")
 # O
 
 caminho_csv_12_18 = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"11 - Publicação SESP - Site/"
+    f"{publicacoes_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Banco de Dados CSV/"
@@ -330,8 +326,7 @@ caminho_csv_12_18 = (
 )
 
 caminho_csv_19_24 = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"11 - Publicação SESP - Site/"
+    f"{publicacoes_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Banco de Dados CSV/"
@@ -339,8 +334,7 @@ caminho_csv_19_24 = (
 )
 
 caminho_csv_25_26 = (
-    f"C:/Users/x15501492/Documents/02 - Publicações/"
-    f"11 - Publicação SESP - Site/"
+    f"{publicacoes_dir}/"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"Banco de Dados CSV/"
