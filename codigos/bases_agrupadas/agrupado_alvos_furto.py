@@ -67,7 +67,7 @@ def bancos_de_dados():
         conn.close()
 
 # Lê o Excel para o mapeamento para CTE
-df_alvo = pd.read_excel("C:/Users/x15501492/OneDrive - CAMG/DIS -  Henrique/Consultas/alvo_corrigido.xlsx")
+df_alvo = pd.read_excel(alvo_corrigido)
 
 # Garante que todos os dados são strings e escapa apóstrofos
 def esc(s):
