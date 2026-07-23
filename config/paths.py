@@ -49,3 +49,9 @@ produtividade_dir = (
     / "02 - Publicações"
     / "08 - Produtividade"
 )
+
+# Diretório downloads
+downloads_dir = (
+    Path.home()
+    / "Downloads"
+)
