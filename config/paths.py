@@ -26,6 +26,9 @@ onedrive_dir = (
     / "OneDrive - CAMG"
 )
 
+# Credenciamento Python
+credenciais_db = Path.home() / "Downloads" / "Credenciamento Python.txt"
+
 # Diretório da publicação das bases agrupadas
 publicacoes_dir = (
     Path.home()
