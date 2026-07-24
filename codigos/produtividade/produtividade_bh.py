@@ -9,6 +9,12 @@ from config.datas import (
     mes_atual
 )
 from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
+from config.database import (
+    get_conn_and_cursor,
+    executa_query_retorna_df,
+    tabelas,
+    bancos_de_dados,
+)
 
 # ==============================
 # VARIÁVEIS
@@ -17,44 +23,6 @@ from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, ou
 ANO_1 = ano_ref - 1
 ANO_2 = ano_ref
 MES = mes_ref_num_str
-
-# ==============================
-# FUNÇÕES DE CONEXÃO
-# ==============================
-
-def get_credentials(file_path):
-    credentials = {}
-    with open(file_path, 'r') as file:
-        for line in file:
-            key, value = line.strip().split('=')
-            credentials[key] = value
-    return credentials
-
-
-def get_conn_and_cursor(db='db_bisp_reds_reporting',
-                        credentials_file='C:/Users/x15501492/Downloads/Credenciamento Python.txt'):
-    credentials = get_credentials(credentials_file)
-    conn = connect(
-        host='10.100.62.20',
-        port=21051,
-        use_ssl=True,
-        auth_mechanism="PLAIN",
-        user=credentials['username'],
-        password=credentials['password'],
-        database=db
-    )
-    cursor = conn.cursor()
-    return conn, cursor
-
-
-def executa_query_retorna_df(query, db='db_bisp_reds_reporting'):
-    conn, cursor = get_conn_and_cursor(db)
-    cursor.execute(query)
-    results = cursor.fetchall()
-    columns = [c[0] for c in cursor.description]
-    df = pd.DataFrame(results, columns=columns)
-    conn.close()
-    return df
 
 
 # ==============================
