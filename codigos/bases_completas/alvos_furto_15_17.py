@@ -1,9 +1,11 @@
 import pandas as pd
 import geopandas as gpd
-from shapely.geometry import Point
 import numpy as np
-from impala.dbapi import connect
 import pyproj
+import hashlib
+from shapely.geometry import Point
+from impala.dbapi import connect
+from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
 from config.datas import (
     ano_ref,
     mes_ref,
@@ -12,7 +14,6 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
-from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
 from config.database import (
     get_conn_and_cursor,
     executa_query_retorna_df,
@@ -24,11 +25,6 @@ data_limite = f"{ano_ref}-{mes_atual}-01 00:00:00.000"
 
 # Lê o Excel com o mapeamento para CTE 1
 df_mapeamento = pd.read_excel(grupo_local_imediato)
-df_mapeamento['Código Local Imediato'] = (
-    df_mapeamento['Código Local Imediato']
-    .astype(str)
-    .str.zfill(4)
-)
 df_mapeamento['Código Local Imediato'] = (
     df_mapeamento['Código Local Imediato']
     .astype(str)
@@ -72,8 +68,7 @@ cte_sql += "alvo_corrigido AS (\n  " + "\n  ".join(linhas_alvo) + "\n)\n"
 # Consulta ao banco (script do dbeaver: no exemplo abaixo há um join entre a tabela de ocorrências e envolvidos)
 try:
     query = cte_sql + f'''SELECT oco.numero_ocorrencia as "Número REDS",
-                      oco.qtd_ocorrencia as "Qtde Veículos",
-                      vei.numero_veiculo as "Número Veículo/Ocorrência",
+                      oco.qtd_ocorrencia as "Qtde Ocorrências",
                       oco.natureza_descricao as "Descrição Subclasse Nat Principal",
                       oco.natureza_consumado as "Tentado/Consumado Nat Principal",
                       oco.natureza_descricao || ' ' || oco.natureza_consumado as "Natureza Principal Completa",
@@ -99,11 +94,9 @@ try:
                       SUBSTRING(CAST(oco.data_hora_fato AS STRING), 12, 8) as "Horário Fato",
                       temp.nmfaixa_horaria1 as "Faixa 1 Hora Fato",
                       temp.nmfaixa_horaria2 as "Faixa 6 Horas Fato",
-                      vei.tipo_veiculo_descricao_longa as "Tipo Veículo",
-                      "Veículos" as "Alvo",
-                      vei.situacao_placa_descricao_longa as "Situação Veículo",
+                      alv.alvo as "Alvo",
                       oco.motivo_presumido_descricao_longa as "Causa Presumida",
-                      oco.instrumento_utilizado_descricao_longa as "Descrição Meio Utilizado",
+                      oco.instrumento_utilizado_descricao_longa as "Desc Longa Meio Utilizado",
                       mapeamento.descricao_grupo_local_imediato AS "Descrição Grupo Local Imediato",
                       oco.local_imediato_longa as "Descrição Local Imediato",
                       oco.tipo_logradouro_descricao as "Logradouro Ocorrência - Tipo",
@@ -116,7 +109,8 @@ try:
                       mun.risp_completa as "RISP",
                       mun.rmbh as "RMBH",
                       geo.latitude_sirgas2000 as "Latitude",
-                      geo.longitude_sirgas2000 as "Longitude"
+                      geo.longitude_sirgas2000 as "Longitude",
+                      oco.complemento_natureza_descricao_longa as "Descrição Subgrupo Complemento Nat"
                FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
                LEFT JOIN db_bisp_shared.tb_populacao_risp as mun
                     ON oco.codigo_municipio = mun.codigo_ibge
@@ -126,18 +120,14 @@ try:
                     ON CAST(oco.local_imediato_codigo AS STRING) = mapeamento.codigo_local_imediato
                LEFT JOIN alvo_corrigido as alv
                     ON CAST(oco.complemento_natureza_descricao_longa AS STRING) = alv.descricao_subgrupo_complemento_nat
-               LEFT JOIN db_bisp_reds_reporting.tb_veiculo_ocorrencia as vei
-                    ON oco.numero_ocorrencia = vei.numero_ocorrencia     
                LEFT JOIN db_bisp_reds_master.tb_ocorrencia_setores_geodata as geo
                     ON oco.numero_ocorrencia = geo.numero_ocorrencia
                WHERE oco.data_hora_fato >= '2015-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '{data_limite}'
+               AND oco.data_hora_fato < '2018-01-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND oco.ind_estado IN ('F', 'R')
-               AND oco.natureza_codigo IN ('C01157')
+               AND oco.natureza_codigo IN ('C01155')
                AND oco.natureza_consumado = 'CONSUMADO'
-               AND vei.situacao_placa_descricao_longa = 'ROUBADO'
-               AND vei.tipo_veiculo_codigo IN ('0200', '0800', '1101', '0700', '0720', '0710', '0600', '0620', '0610', '1300', '1700', '1800', '1900', '2000', '9900', '2100', '2200', '2300', '2400', '2500', '2700', '2600', '2800', '2920', '2910', '2900')
                 '''
         
     df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
@@ -157,9 +147,66 @@ caminho_excel = (
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_abrev}/"
     f"XLSX - Uso interno/"
-    f"Veiculos - Roubo - Jan 2015 a {mes_ref_abrev} {ano_ref}.xlsx"
+    f"Alvos - Furto - Jan 2015 a Dez 2017.xlsx"
+)
+df.to_excel(caminho_excel, index=False)
+
+# A
+# T
+# E
+# N         A partir daqui, o código exporta as bases para csv
+# Ç
+# Ã
+# O
+
+# Cria cópia para o arquivo CSV 
+df_csv = df.copy()
+
+# Anonimização do n° reds
+def anonimizar_chave(valor):
+    if pd.isna(valor):
+        return valor
+    valor = str(valor).strip()
+    hash_obj = hashlib.sha256(valor.encode("utf-8"))
+    return hash_obj.hexdigest()[:16]
+
+df_csv["Número Reds"] = df_csv["Número Reds"].apply(anonimizar_chave)
+
+# Exclui colunas do xlsx para publicação em csv
+colunas_remover = [
+    "Descrição Subclasse Nat Principal",
+    "Tentado/Consumado Nat Principal",
+    "Unid Registro Nível 8",
+    "Latitude",
+    "Longitude",
+    "Descrição Subgrupo Complemento Nat",
+]
+
+df_csv = df_csv.drop(columns=colunas_remover)
+
+# Formatação CSV (modelo para abrir em excel e exclusão de "nan")
+df_csv = df_csv.map(
+    lambda x: str(x).replace(".", ",")
+    if isinstance(x, float) and pd.notna(x)
+    else x
+)
+df_csv = df_csv.fillna("")
+
+# Caminho de saída para CSV
+caminho_csv = (
+    f"{completas_dir}/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"CSV -Uso externo/"
+    f"Alvos - Furto - Jan 2015 a Dez 2017.csv"
 )
 
-df.to_excel(caminho_excel, index=False)
+# Exporta a base no computador em csv
+df_csv.to_csv(
+    caminho_csv,
+    sep=";",
+    index=False,
+    encoding="utf-8-sig",
+)
 
 print('FINALIZOU :)')

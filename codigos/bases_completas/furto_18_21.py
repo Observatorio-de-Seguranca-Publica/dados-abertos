@@ -1,10 +1,11 @@
 import pandas as pd
 import geopandas as gpd
-from shapely.geometry import Point
 import numpy as np
-from impala.dbapi import connect
 import pyproj
 import hashlib
+from shapely.geometry import Point
+from impala.dbapi import connect
+from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
 from config.datas import (
     ano_ref,
     mes_ref,
@@ -13,7 +14,6 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
-from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
 from config.database import (
     get_conn_and_cursor,
     executa_query_retorna_df,
@@ -55,7 +55,17 @@ cte_sql = "WITH mapeamento AS (\n  " + "\n  ".join(linhas) + "\n)\n"
 try:
     query = cte_sql + f'''SELECT oco.numero_ocorrencia as "Número REDS",
                       oco.qtd_ocorrencia as "Qtde Ocorrências",
+                      oco.natureza_descricao as "Descrição Subclasse Nat Principal",
+                      oco.natureza_consumado as "Tentado/Consumado Nat Principal",
                       oco.natureza_descricao || ' ' || oco.natureza_consumado as "Natureza Principal Completa",
+                      CONCAT(
+                          UPPER(SUBSTR(oco.natureza_descricao, 1, 1)),
+                          LOWER(SUBSTR(oco.natureza_descricao, 2)),
+                          ' ',
+                          UPPER(SUBSTR(oco.natureza_consumado, 1, 1)),
+                          LOWER(SUBSTR(oco.natureza_consumado, 2))
+                          ) 
+                      as "Natureza Nomenclatura Banco",
                       YEAR (oco.data_hora_fato) as "Ano Fato",
                       CASE MONTH (oco.data_hora_fato)
                         WHEN 1 THEN 'JAN'
@@ -88,8 +98,12 @@ try:
                       oco.nome_municipio as "Município",
                       oco.codigo_municipio as "Município - Código",
                       oco.ocorrencia_uf as "UF - Sigla",
+                      oco.unidade_responsavel_registro_nome as "Unid Registro Nível 8",
                       mun.risp_completa as "RISP",
-                      mun.rmbh as "RMBH"
+                      mun.rmbh as "RMBH",
+                      geo.latitude_sirgas2000 as "Latitude",
+                      geo.longitude_sirgas2000 as "Longitude",
+                      oco.complemento_natureza_descricao_longa as "Descrição Subgrupo Complemento Nat"
                FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
                LEFT JOIN db_bisp_shared.tb_populacao_risp as mun
                     ON oco.codigo_municipio = mun.codigo_ibge
@@ -97,12 +111,14 @@ try:
                     ON oco.sqtempo_fato = temp.sqtempo
                LEFT JOIN mapeamento
                     ON CAST(oco.local_imediato_codigo AS STRING) = mapeamento.codigo_local_imediato
-               WHERE oco.data_hora_fato >= '2012-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2019-01-01 00:00:00.000'
+               LEFT JOIN db_bisp_reds_master.tb_ocorrencia_setores_geodata as geo
+                    ON oco.numero_ocorrencia = geo.numero_ocorrencia
+               WHERE oco.data_hora_fato >= '2018-01-01 00:00:00.000'
+               AND oco.data_hora_fato < '2022-01-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND oco.ind_estado IN ('F', 'R')
                AND oco.natureza_consumado = 'CONSUMADO'
-               AND oco.natureza_codigo IN ('B01129')
+               AND oco.natureza_codigo = 'C01155'
                 '''
         
     df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
@@ -116,16 +132,58 @@ df.head()
 # Corrige a capitalização
 df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
 
-# Anonimização
+# Exporta a base no computador no modelo desejado 
+caminho_excel = (
+    f"{completas_dir}/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"XLSX - Uso interno/"
+    f"Furto - Jan 2018 a Dez 2021.xlsx"
+)
+
+df.to_excel(caminho_excel, index=False)
+
+# A
+# T
+# E
+# N         A partir daqui, o código exporta as bases para csv
+# Ç
+# Ã
+# O
+
+# Cria cópia para o arquivo CSV 
+df_csv = df.copy()
+
+# Anonimização do n° reds
 def anonimizar_chave(valor):
     if pd.isna(valor):
         return valor
     valor = str(valor).strip()
     hash_obj = hashlib.sha256(valor.encode("utf-8"))
-    # Pode reduzir tamanho se quiser
-    return hash_obj.hexdigest()[:16]  # 16 caracteres já é bem seguro
- 
-df["Número Reds"] = df["Número Reds"].apply(anonimizar_chave)
+    return hash_obj.hexdigest()[:16]
+
+df_csv["Número Reds"] = df_csv["Número Reds"].apply(anonimizar_chave)
+
+# Exclui colunas do xlsx para publicação em csv
+colunas_remover = [
+    "Descrição Subclasse Nat Principal",
+    "Tentado/Consumado Nat Principal",
+    "Natureza Nomenclatura Banco",
+    "Unid Registro Nível 8",
+    "Latitude",
+    "Longitude",
+    "Descrição Subgrupo Complemento Nat",
+]
+
+df_csv = df_csv.drop(columns=colunas_remover)
+
+# Formatação CSV (modelo para abrir em excel e exclusão de "nan")
+df_csv = df_csv.map(
+    lambda x: str(x).replace(".", ",")
+    if isinstance(x, float) and pd.notna(x)
+    else x
+)
+df_csv = df_csv.fillna("")
 
 # Caminho de saída para CSV
 caminho_csv = (
@@ -133,26 +191,15 @@ caminho_csv = (
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_abrev}/"
     f"CSV -Uso externo/"
-    f"Lesão Corporal - Jan 2012 a Dez 2018.csv"
+    f"Furto - Jan 2018 a Dez 2021.csv"
 )
 
-# Formatação regional sem afetar nulos
-df = df.map(
-    lambda x: str(x).replace('.', ',')
-    if isinstance(x, float) and pd.notna(x)
-    else x
-)
-
-# Remove NaN/None/NaT do dataframe inteiro
-df = df.fillna('')
-
-# Exporta com separador ";" e encoding compatível com Excel PT-BR
-df.to_csv(
+# Exporta a base no computador em csv
+df_csv.to_csv(
     caminho_csv,
-    sep=';',            # separador padrão BR
-    index=False,        # sem índice numérico
-    encoding='utf-8-sig',  # adiciona BOM, compatível com Excel
-    na_rep=''
+    sep=";",
+    index=False,
+    encoding="utf-8-sig",
 )
 
-print("Arquivo CSV exportado com sucesso!")
+print('FINALIZOU :)')

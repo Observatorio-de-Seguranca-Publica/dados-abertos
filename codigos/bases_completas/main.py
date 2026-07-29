@@ -1,16 +1,42 @@
-from codigos.bases_completas.xlsx.main import executar as executar_xlsx
-from codigos.bases_completas.csv.main import executar as executar_csv
+import os
+import subprocess
+import sys
 
 def executar():
 
-    print("\n==============================")
-    print("INICIANDO BASES COMPLETAS")
-    print("==============================")
+    print("\n=== Iniciando bases completas ===")
 
-    # Primeiro XLSX
-    executar_xlsx()
+    PASTA = os.path.dirname(__file__)
+    este_arquivo = os.path.basename(__file__)
 
-    # Depois CSV
-    executar_csv()
+    # ⭐ RAIZ DO PROJETO
+    RAIZ = os.path.abspath(
+        os.path.join(PASTA, "..", "..", "..")
+    )
 
-    print("\nOk - BASES COMPLETAS FINALIZADAS")
+    arquivos = sorted(os.listdir(PASTA))
+
+    for arquivo in arquivos:
+
+        if (
+            arquivo.endswith(".py")
+            and arquivo != este_arquivo
+            and arquivo != "__init__.py"
+        ):
+
+            caminho_script = os.path.join(PASTA, arquivo)
+
+            print(f"\n--- Executando base completa: {arquivo} ---")
+
+            # ⭐ ADICIONA RAIZ AO PYTHONPATH
+            env = os.environ.copy()
+            env["PYTHONPATH"] = RAIZ
+
+            subprocess.run(
+                [sys.executable, caminho_script],
+                check=True,
+                cwd=RAIZ,
+                env=env   # ⭐ ESSENCIAL
+            )
+
+    print("\nOk - Bases completas finalizadas!")

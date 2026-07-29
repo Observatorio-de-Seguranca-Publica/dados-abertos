@@ -1,9 +1,11 @@
 import pandas as pd
 import geopandas as gpd
-from shapely.geometry import Point
 import numpy as np
-from impala.dbapi import connect
 import pyproj
+import hashlib
+from shapely.geometry import Point
+from impala.dbapi import connect
+from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
 from config.datas import (
     ano_ref,
     mes_ref,
@@ -12,7 +14,6 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
-from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
 from config.database import (
     get_conn_and_cursor,
     executa_query_retorna_df,
@@ -88,10 +89,11 @@ try:
                       temp.nmfaixa_horaria1 as "Faixa 1 Hora Fato",
                       temp.nmfaixa_horaria2 as "Faixa 6 Horas Fato",
                       oco.motivo_presumido_descricao_longa as "Causa Presumida",
-                      oco.instrumento_utilizado_descricao_longa as "Descrição Meio Utilizado",
+                      oco.instrumento_utilizado_descricao_longa as "Desc Longa Meio Utilizado",
                       mapeamento.descricao_grupo_local_imediato AS "Descrição Grupo Local Imediato",
                       oco.local_imediato_longa as "Descrição Local Imediato",
                       oco.tipo_logradouro_descricao as "Logradouro Ocorrência - Tipo",
+                      oco.descricao_endereco as "Logradouro Ocorrência",
                       oco.nome_bairro as "Bairro - Fato Final",
                       oco.nome_bairro || ', ' || oco.nome_municipio as "Bairro - Fato Final - Municipio",
                       oco.nome_municipio as "Município",
@@ -101,8 +103,7 @@ try:
                       mun.risp_completa as "RISP",
                       mun.rmbh as "RMBH",
                       geo.latitude_sirgas2000 as "Latitude",
-                      geo.longitude_sirgas2000 as "Longitude",
-                      oco.complemento_natureza_descricao_longa as "Descrição Subgrupo Complemento Nat"
+                      geo.longitude_sirgas2000 as "Longitude"
                FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
                LEFT JOIN db_bisp_shared.tb_populacao_risp as mun
                     ON oco.codigo_municipio = mun.codigo_ibge
@@ -112,12 +113,19 @@ try:
                     ON CAST(oco.local_imediato_codigo AS STRING) = mapeamento.codigo_local_imediato
                LEFT JOIN db_bisp_reds_master.tb_ocorrencia_setores_geodata as geo
                     ON oco.numero_ocorrencia = geo.numero_ocorrencia
-               WHERE oco.data_hora_fato >= '2018-01-01 00:00:00.000'
+               WHERE oco.data_hora_fato >= '2012-01-01 00:00:00.000'
                AND oco.data_hora_fato < '2022-01-01 00:00:00.000'
                AND oco.ocorrencia_uf = 'MG'
                AND oco.ind_estado IN ('F', 'R')
-               AND oco.natureza_consumado = 'CONSUMADO'
-               AND oco.natureza_codigo = 'C01155'
+               AND (
+                   (oco.natureza_codigo = 'D01213' AND oco.natureza_consumado IN ('CONSUMADO', 'TENTADO'))
+                   OR (oco.natureza_codigo = 'D01217' AND oco.natureza_consumado IN ('CONSUMADO', 'TENTADO'))
+                   OR (oco.natureza_codigo = 'C01158' AND oco.natureza_consumado IN ('CONSUMADO', 'TENTADO'))
+                   OR (oco.natureza_codigo = 'C01159' AND oco.natureza_consumado = 'CONSUMADO')
+                   OR (oco.natureza_codigo = 'C01157' AND oco.natureza_consumado IN ('CONSUMADO', 'TENTADO'))
+                   OR (oco.natureza_codigo = 'B01148' AND oco.natureza_consumado IN ('CONSUMADO', 'TENTADO'))
+                   OR (oco.natureza_codigo = 'B01121' AND oco.natureza_consumado = 'TENTADO')
+                   )
                 '''
         
     df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
@@ -137,9 +145,68 @@ caminho_excel = (
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_abrev}/"
     f"XLSX - Uso interno/"
-    f"Furto - Jan 2018 a Dez 2021.xlsx"
+    f"Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
 )
 
 df.to_excel(caminho_excel, index=False)
+
+# A
+# T
+# E
+# N         A partir daqui, o código exporta as bases para csv
+# Ç
+# Ã
+# O
+
+# Cria cópia para o arquivo CSV 
+df_csv = df.copy()
+
+# Anonimização do n° reds
+def anonimizar_chave(valor):
+    if pd.isna(valor):
+        return valor
+    valor = str(valor).strip()
+    hash_obj = hashlib.sha256(valor.encode("utf-8"))
+    return hash_obj.hexdigest()[:16]
+
+df_csv["Número Reds"] = df_csv["Número Reds"].apply(anonimizar_chave)
+
+# Exclui colunas do xlsx para publicação em csv
+colunas_remover = [
+    "Descrição Subclasse Nat Principal",
+    "Tentado/Consumado Nat Principal",
+    "Natureza Nomenclatura Banco",
+    "Logradouro Ocorrência",
+    "Unid Registro Nível 8",
+    "Latitude",
+    "Longitude",
+]
+
+df_csv = df_csv.drop(columns=colunas_remover)
+
+# Formatação CSV (modelo para abrir em excel e exclusão de "nan")
+df_csv = df_csv.map(
+    lambda x: str(x).replace(".", ",")
+    if isinstance(x, float) and pd.notna(x)
+    else x
+)
+df_csv = df_csv.fillna("")
+
+# Caminho de saída para CSV
+caminho_csv = (
+    f"{completas_dir}/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"CSV -Uso externo/"
+    f"Crimes Violentos - Jan 2012 a Dez 2021.csv"
+)
+
+# Exporta a base no computador em csv
+df_csv.to_csv(
+    caminho_csv,
+    sep=";",
+    index=False,
+    encoding="utf-8-sig",
+)
 
 print('FINALIZOU :)')
