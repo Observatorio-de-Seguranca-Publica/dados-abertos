@@ -11,38 +11,12 @@ from config.datas import (
     mes_atual
 )
 from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
-
-# Funções auxiliares
-def get_credentials(file_path):
-    creds = {}
-    with open(file_path, 'r') as f:
-        for line in f:
-            key, value = line.strip().split('=')
-            creds[key] = value
-    return creds
-
-def get_conn_and_cursor(db='db_bisp_reds_reporting', credentials_file='C:/Users/x15501492/Downloads/Credenciamento Python.txt'):
-    creds = get_credentials(credentials_file)
-    conn = connect(
-        host='10.100.62.20',
-        port=21051,
-        use_ssl=True,
-        auth_mechanism="PLAIN",
-        user=creds['username'],
-        password=creds['password'],
-        database=db
-    )
-    cursor = conn.cursor()
-    return conn, cursor
-
-def executa_query_retorna_df(query, db='db_bisp_reds_reporting'):
-    conn, cursor = get_conn_and_cursor(db)
-    cursor.execute(query)
-    results = cursor.fetchall()
-    columns = [c[0] for c in cursor.description]
-    df = pd.DataFrame(results, columns=columns)
-    conn.close()
-    return df
+from config.database import (
+    get_conn_and_cursor,
+    executa_query_retorna_df,
+    tabelas,
+    bancos_de_dados,
+)
 
 # --- helpers ---
 def norm_ibge(x):
