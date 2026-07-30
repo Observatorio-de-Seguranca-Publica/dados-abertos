@@ -13,9 +13,6 @@ memorando_dir = base_dir / "memorando_suint"
 municipios_mg = config_dir / "municipios_mg.xlsx"
 grupo_local_imediato = config_dir / "grupo_local_imediato_com_codigo.xlsx"
 alvo_corrigido = config_dir / "alvo_corrigido.xlsx"
-
-for pasta in [logs_dir, input_dir, output_dir, temp_dir]:
-    pasta.mkdir(parents=True, exist_ok=True)
     
 # Diretórios OneDrive
 onedrive_dir = (

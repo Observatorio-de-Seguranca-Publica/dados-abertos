@@ -10,7 +10,7 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
-from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
+from config.paths import base_dir, logs_dir, config_dir, codigos_dir, onedrive_dir, onedrive_publicacao_dir, onedrive_imagens_dir, onedrive_produtividade_dir, onedrive_quantitativo_dir, onedrive_completas_externo_dir, onedrive_completas_interno_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir, matriz_dir
 from config.database import (
     get_conn_and_cursor,
     executa_query_retorna_df,
@@ -56,6 +56,14 @@ caminho_excel = (
     f"da_drogas_apreendidas.xlsx"
 )
 
+caminho_one_drive = (
+    f"{onedrive_produtividade_dir}/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"da_drogas_apreendidas.xlsx"
+)
+
 df.to_excel(caminho_excel, index=False)
+df.to_excel(caminho_one_drive, index=False)
 
 print('FINALIZOU :)')

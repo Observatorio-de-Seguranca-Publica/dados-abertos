@@ -7,7 +7,7 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
-from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir, matriz_dir
+from config.paths import base_dir, logs_dir, config_dir, codigos_dir, onedrive_dir, onedrive_publicacao_dir, onedrive_imagens_dir, onedrive_produtividade_dir, onedrive_quantitativo_dir, onedrive_completas_externo_dir, onedrive_completas_interno_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir, matriz_dir
 
 # CRIMES VIOLENTOS
 # Lista de arquivos de entrada
@@ -122,16 +122,23 @@ df_alvos_final = df_alvos_final.sort_values(
     ascending=[True, True, True, True]
 ).reset_index(drop=True)
 
-# Caminho de saída
+# Caminhos de saída
 caminho_saida = (
     f"{matriz_dir}"
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_nome}/"
     f"matriz_automatizada.xlsx"
 )
+
+caminho_onedrive = (
+    f"{onedrive_imagens_dir}"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"matriz_automatizada.xlsx"
+)
             
 # Exporta
-with pd.ExcelWriter(caminho_saida, engine='openpyxl') as writer:
+with pd.ExcelWriter(caminho_onedrive, engine='openpyxl') as writer:
     df_cv_final.to_excel(writer, sheet_name='Dados CV', index=False)
     df_alvos_final.to_excel(writer, sheet_name='Dados Alvos', index=False)
 
