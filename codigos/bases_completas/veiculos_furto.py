@@ -1,10 +1,11 @@
 import pandas as pd
 import geopandas as gpd
-from shapely.geometry import Point
 import numpy as np
-from impala.dbapi import connect
 import pyproj
 import hashlib
+from shapely.geometry import Point
+from impala.dbapi import connect
+from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
 from config.datas import (
     ano_ref,
     mes_ref,
@@ -13,7 +14,6 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
-from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
 from config.database import (
     get_conn_and_cursor,
     executa_query_retorna_df,
@@ -69,6 +69,9 @@ cte_sql += "alvo_corrigido AS (\n  " + "\n  ".join(linhas_alvo) + "\n)\n"
 try:
     query = cte_sql + f'''SELECT oco.numero_ocorrencia as "Número REDS",
                       oco.qtd_ocorrencia as "Qtde Veículos",
+                      vei.numero_veiculo as "Número Veículo/Ocorrência",
+                      oco.natureza_descricao as "Descrição Subclasse Nat Principal",
+                      oco.natureza_consumado as "Tentado/Consumado Nat Principal",
                       oco.natureza_descricao || ' ' || oco.natureza_consumado as "Natureza Principal Completa",
                       YEAR (oco.data_hora_fato) as "Ano Fato",
                       CASE MONTH (oco.data_hora_fato)
@@ -105,8 +108,11 @@ try:
                       oco.nome_municipio as "Município",
                       oco.codigo_municipio as "Município - Código",
                       oco.ocorrencia_uf as "UF - Sigla",
+                      oco.unidade_responsavel_registro_nome as "Unid Registro Nível 8",
                       mun.risp_completa as "RISP",
-                      mun.rmbh as "RMBH"
+                      mun.rmbh as "RMBH",
+                      geo.latitude_sirgas2000 as "Latitude",
+                      geo.longitude_sirgas2000 as "Longitude"
                FROM db_bisp_reds_reporting.tb_ocorrencia AS oco
                LEFT JOIN db_bisp_shared.tb_populacao_risp as mun
                     ON oco.codigo_municipio = mun.codigo_ibge
@@ -118,6 +124,8 @@ try:
                     ON CAST(oco.complemento_natureza_descricao_longa AS STRING) = alv.descricao_subgrupo_complemento_nat
                LEFT JOIN db_bisp_reds_reporting.tb_veiculo_ocorrencia as vei
                     ON oco.numero_ocorrencia = vei.numero_ocorrencia     
+               LEFT JOIN db_bisp_reds_master.tb_ocorrencia_setores_geodata as geo
+                    ON oco.numero_ocorrencia = geo.numero_ocorrencia
                WHERE oco.data_hora_fato >= '2015-01-01 00:00:00.000'
                AND oco.data_hora_fato < '{data_limite}'
                AND oco.ocorrencia_uf = 'MG'
@@ -139,16 +147,57 @@ df.head()
 # Corrige a capitalização
 df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
 
-# Anonimização
+# Exporta a base no computador no modelo desejado 
+caminho_excel = (
+    f"{completas_dir}/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"XLSX - Uso interno/"
+    f"Veiculos - Furto - Jan 2015 a {mes_ref_abrev} {ano_ref}.xlsx"
+)
+
+df.to_excel(caminho_excel, index=False)
+
+# A
+# T
+# E
+# N         A partir daqui, o código exporta as bases para csv
+# Ç
+# Ã
+# O
+
+# Cria cópia para o arquivo CSV 
+df_csv = df.copy()
+
+# Anonimização do n° reds
 def anonimizar_chave(valor):
     if pd.isna(valor):
         return valor
     valor = str(valor).strip()
     hash_obj = hashlib.sha256(valor.encode("utf-8"))
-    # Pode reduzir tamanho se quiser
-    return hash_obj.hexdigest()[:16]  # 16 caracteres já é bem seguro
- 
-df["Número Reds"] = df["Número Reds"].apply(anonimizar_chave)
+    return hash_obj.hexdigest()[:16]
+
+df_csv["Número Reds"] = df_csv["Número Reds"].apply(anonimizar_chave)
+
+# Exclui colunas do xlsx para publicação em csv
+colunas_remover = [
+    "Número Veículo/Ocorrência",
+    "Descrição Subclasse Nat Principal",
+    "Tentado/Consumado Nat Principal",
+    "Unid Registro Nível 8",
+    "Latitude",
+    "Longitude",
+]
+
+df_csv = df_csv.drop(columns=colunas_remover)
+
+# Formatação CSV (modelo para abrir em excel e exclusão de "nan")
+df_csv = df_csv.map(
+    lambda x: str(x).replace(".", ",")
+    if isinstance(x, float) and pd.notna(x)
+    else x
+)
+df_csv = df_csv.fillna("")
 
 # Caminho de saída para CSV
 caminho_csv = (
@@ -159,23 +208,12 @@ caminho_csv = (
     f"Veiculos - Furto - Jan 2015 a {mes_ref_abrev} {ano_ref}.csv"
 )
 
-# Formatação regional sem afetar nulos
-df = df.map(
-    lambda x: str(x).replace('.', ',')
-    if isinstance(x, float) and pd.notna(x)
-    else x
-)
-
-# Remove NaN/None/NaT do dataframe inteiro
-df = df.fillna('')
-
-# Exporta com separador ";" e encoding compatível com Excel PT-BR
-df.to_csv(
+# Exporta a base no computador em csv
+df_csv.to_csv(
     caminho_csv,
-    sep=';',            # separador padrão BR
-    index=False,        # sem índice numérico
-    encoding='utf-8-sig',  # adiciona BOM, compatível com Excel
-    na_rep=''
+    sep=";",
+    index=False,
+    encoding="utf-8-sig",
 )
 
-print("Arquivo CSV exportado com sucesso!")
+print('FINALIZOU :)')

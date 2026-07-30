@@ -1,9 +1,11 @@
 import pandas as pd
 import geopandas as gpd
-from shapely.geometry import Point
 import numpy as np
-from impala.dbapi import connect
 import pyproj
+import hashlib
+from shapely.geometry import Point
+from impala.dbapi import connect
+from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
 from config.datas import (
     ano_ref,
     mes_ref,
@@ -12,7 +14,6 @@ from config.datas import (
     mes_ref_abrev,
     mes_atual
 )
-from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
 from config.database import (
     get_conn_and_cursor,
     executa_query_retorna_df,
@@ -121,8 +122,8 @@ try:
                     ON CAST(oco.complemento_natureza_descricao_longa AS STRING) = alv.descricao_subgrupo_complemento_nat
                LEFT JOIN db_bisp_reds_master.tb_ocorrencia_setores_geodata as geo
                     ON oco.numero_ocorrencia = geo.numero_ocorrencia
-               WHERE oco.data_hora_fato >= '2018-01-01 00:00:00.000'
-               AND oco.data_hora_fato < '2022-01-01 00:00:00.000'
+               WHERE oco.data_hora_fato >= '2022-01-01 00:00:00.000'
+               AND oco.data_hora_fato < '{data_limite}'
                AND oco.ocorrencia_uf = 'MG'
                AND oco.ind_estado IN ('F', 'R')
                AND oco.natureza_codigo IN ('C01155')
@@ -146,9 +147,66 @@ caminho_excel = (
     f"{ano_ref}/"
     f"{mes_ref_num_str} - {mes_ref_abrev}/"
     f"XLSX - Uso interno/"
-    f"Alvos - Furto - Jan 2018 a Dez 2021.xlsx"
+    f"Alvos - Furto - Jan 2022 a {mes_ref_abrev} {ano_ref}.xlsx"
+)
+df.to_excel(caminho_excel, index=False)
+
+# A
+# T
+# E
+# N         A partir daqui, o código exporta as bases para csv
+# Ç
+# Ã
+# O
+
+# Cria cópia para o arquivo CSV 
+df_csv = df.copy()
+
+# Anonimização do n° reds
+def anonimizar_chave(valor):
+    if pd.isna(valor):
+        return valor
+    valor = str(valor).strip()
+    hash_obj = hashlib.sha256(valor.encode("utf-8"))
+    return hash_obj.hexdigest()[:16]
+
+df_csv["Número Reds"] = df_csv["Número Reds"].apply(anonimizar_chave)
+
+# Exclui colunas do xlsx para publicação em csv
+colunas_remover = [
+    "Descrição Subclasse Nat Principal",
+    "Tentado/Consumado Nat Principal",
+    "Unid Registro Nível 8",
+    "Latitude",
+    "Longitude",
+    "Descrição Subgrupo Complemento Nat",
+]
+
+df_csv = df_csv.drop(columns=colunas_remover)
+
+# Formatação CSV (modelo para abrir em excel e exclusão de "nan")
+df_csv = df_csv.map(
+    lambda x: str(x).replace(".", ",")
+    if isinstance(x, float) and pd.notna(x)
+    else x
+)
+df_csv = df_csv.fillna("")
+
+# Caminho de saída para CSV
+caminho_csv = (
+    f"{completas_dir}/"
+    f"{ano_ref}/"
+    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"CSV -Uso externo/"
+    f"Alvos - Furto - Jan 2022 a {mes_ref_abrev} {ano_ref}.csv"
 )
 
-df.to_excel(caminho_excel, index=False)
+# Exporta a base no computador em csv
+df_csv.to_csv(
+    caminho_csv,
+    sep=";",
+    index=False,
+    encoding="utf-8-sig",
+)
 
 print('FINALIZOU :)')

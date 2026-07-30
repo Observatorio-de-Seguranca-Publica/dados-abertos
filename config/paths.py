@@ -68,5 +68,5 @@ downloads_dir = (
 )
 
 # Caminho bases CTE
-grupo_local_imediato = config_dir / "grupo_local_imediato_com_codigo.xlsx"
+grupo_local_imediato = config_dir / "grupo_local_imediato.xlsx"
 alvo_corrigido = config_dir / "alvo_corrigido.xlsx"
