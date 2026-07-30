@@ -9,27 +9,60 @@ codigos_dir = base_dir / "codigos"
 logs_dir = base_dir / "logs"
 memorando_dir = base_dir / "memorando_suint"
 
-# Diretórios que poderão ser usados futuramente
-input_dir = base_dir / "input"
-output_dir = base_dir / "output"
-temp_dir = base_dir / "temp"
-
 # Arquivos do projeto
 municipios_mg = config_dir / "municipios_mg.xlsx"
+grupo_local_imediato = config_dir / "grupo_local_imediato_com_codigo.xlsx"
+alvo_corrigido = config_dir / "alvo_corrigido.xlsx"
 
 for pasta in [logs_dir, input_dir, output_dir, temp_dir]:
     pasta.mkdir(parents=True, exist_ok=True)
     
-# Diretório OneDrive
+# Diretórios OneDrive
 onedrive_dir = (
     Path.home()
     / "OneDrive - CAMG"
 )
 
+onedrive_publicacao_dir = (
+    onedrive_dir
+    / "DIS_SOSP_SUINT_SEJUSP - DADOS ABERTOS"
+    / "Arquivos da Publicação"
+)
+
+onedrive_imagens_dir = (
+    onedrive_publicacao_dir
+    / "Arquivos para Ascom"
+    / "Imagens de monitoramento"
+)
+
+onedrive_produtividade_dir = (
+    onedrive_publicacao_dir
+    / "Arquivos para Ascom"
+    / "Produtividade policial"
+)
+
+onedrive_quantitativo_dir = (
+    onedrive_publicacao_dir
+    / "Arquivos Site"
+    / "Quantitativo de eventos por município e risp"
+)
+
+onedrive_completas_externo_dir = (
+    onedrive_publicacao_dir
+    / "Bases de Dados Completas"
+    / "Uso Externo"
+)
+
+onedrive_completas_interno_dir = (
+    onedrive_publicacao_dir
+    / "Bases de Dados Completas"
+    / "Uso interno"
+)
+
 # Credenciamento Python
 credenciais_db = Path.home() / "Downloads" / "Credenciamento Python.txt"
 
-# Diretório da publicação das bases agrupadas
+# Diretóri local o da publicação das bases agrupadas
 publicacoes_dir = (
     Path.home()
     / "Documents"
@@ -37,7 +70,7 @@ publicacoes_dir = (
     / "11 - Publicação SESP - Site"
 )
 
-# Diretório da publicação das bases completas
+# Diretório local da publicação das bases completas
 completas_dir = (
     Path.home()
     / "Documents"
@@ -45,7 +78,7 @@ completas_dir = (
     / "Bases completas"
 )
 
-# Diretório da publicação das bases de produtividade
+# Diretório local da publicação das bases de produtividade
 produtividade_dir = (
     Path.home()
     / "Documents"
@@ -53,7 +86,7 @@ produtividade_dir = (
     / "08 - Produtividade"
 )
 
-# Diretório da publicação das bases de tabela matriz
+# Diretório local da publicação das bases de tabela matriz
 matriz_dir = (
     Path.home()
     / "Documents"
