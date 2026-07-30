@@ -38,6 +38,11 @@ onedrive_produtividade_dir = (
     / "Produtividade policial"
 )
 
+onedrive_paper_dir = (
+    onedrive_publicacao_dir
+    / "Paper"
+)
+
 onedrive_quantitativo_dir = (
     onedrive_publicacao_dir
     / "Arquivos Site"
@@ -100,3 +105,11 @@ downloads_dir = (
 # Caminho bases CTE
 grupo_local_imediato = config_dir / "grupo_local_imediato.xlsx"
 alvo_corrigido = config_dir / "alvo_corrigido.xlsx"
+
+# Diretório local da publicação dos papers
+paper_dir = (
+    Path.home()
+    / "Documents"
+    / "02 - Publicações"
+    / "Paper"
+)
