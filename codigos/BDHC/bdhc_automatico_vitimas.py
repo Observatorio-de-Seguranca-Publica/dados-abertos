@@ -1,19 +1,12 @@
 import pandas as pd
 import dateutil.parser
-from config.datas import (
-    ano_ref,
-    mes_ref,
-    mes_ref_num_str,
-    mes_ref_nome,
-    mes_ref_abrev,
-    mes_atual
-)
-from config.paths import base_dir, logs_dir, config_dir, codigos_dir, paper_dir, onedrive_dir, onedrive_paper_dir, onedrive_publicacao_dir, onedrive_imagens_dir, onedrive_produtividade_dir, onedrive_quantitativo_dir, onedrive_completas_externo_dir, onedrive_completas_interno_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir, matriz_dir
+from config import datas
+from config import paths
 
 
 # Caminho do arquivo original
 arquivo = (
-    f"{downloads_dir}/"
+    f"{paths.downloads_dir}/"
     f"bdhc.xlsx"
 )
 sheet = "BD_HC_FATAL_ARMAZÉM"  # ajuste se necessário
@@ -221,7 +214,7 @@ df = df[colunas_finais]
 
 # --- 9) Salvar resultado final ---
 out1 = (
-    f"{downloads_dir}/"
+    f"{paths.downloads_dir}/"
     f"BDHC_formatado_vitimas.xlsx"
 )
 df.to_excel(out1, index=False)
@@ -232,11 +225,11 @@ print("Linhas finais:", len(df))
 
 # Exporta a base no computador no modelo desejado 
 out2 = (
-    f"{completas_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"{paths.completas_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
     f"XLSX - Uso interno/"
-    f"Vítimas de Homicidio Consumado - Jan 2019 a {mes_ref_abrev} {ano_ref}.xlsx"
+    f"Vítimas de Homicidio Consumado - Jan 2019 a {datas.mes_ref_abrev} {datas.ano_ref}.xlsx"
 )
 df.to_excel(out2, index=False)
 print("Salvo em:", out2)
@@ -253,11 +246,11 @@ df_csv = df.drop(columns=colunas_excluir, errors="ignore")
 
 # Caminho de saída para CSV
 caminho_csv = (
-    f"{completas_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"{paths.completas_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
     f"CSV -Uso externo/"
-    f"Vítimas de Homicidio Consumado - Jan 2012 a {mes_ref_abrev} {ano_ref}.csv"
+    f"Vítimas de Homicidio Consumado - Jan 2012 a {datas.mes_ref_abrev} {datas.ano_ref}.csv"
 )
 
 # Formatação regional sem afetar nulos

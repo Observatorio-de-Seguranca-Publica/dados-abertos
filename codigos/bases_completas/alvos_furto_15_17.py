@@ -5,16 +5,9 @@ import pyproj
 import hashlib
 from shapely.geometry import Point
 from impala.dbapi import connect
-from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
-from config.datas import (
-    ano_ref,
-    mes_ref,
-    mes_ref_num_str,
-    mes_ref_nome,
-    mes_ref_abrev,
-    mes_atual
-)
-from config.paths import base_dir, logs_dir, config_dir, codigos_dir, paper_dir, onedrive_dir, onedrive_paper_dir, onedrive_publicacao_dir, onedrive_imagens_dir, onedrive_produtividade_dir, onedrive_quantitativo_dir, onedrive_completas_externo_dir, onedrive_completas_interno_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir, matriz_dir
+from config import paths
+from config import datas
+from config import paths
 from config.database import (
     get_conn_and_cursor,
     executa_query_retorna_df,
@@ -22,10 +15,10 @@ from config.database import (
     bancos_de_dados,
 )
 
-data_limite = f"{ano_ref}-{mes_atual}-01 00:00:00.000"
+data_limite = f"{datas.ano_ref}-{datas.mes_atual}-01 00:00:00.000"
 
 # Lê o Excel com o mapeamento para CTE 1
-df_mapeamento = pd.read_excel(grupo_local_imediato)
+df_mapeamento = pd.read_excel(paths.grupo_local_imediato)
 df_mapeamento['Código Local Imediato'] = (
     df_mapeamento['Código Local Imediato']
     .astype(str)
@@ -33,7 +26,7 @@ df_mapeamento['Código Local Imediato'] = (
 )
 
 # Lê o Excel para o mapeamento para CTE 2
-df_alvo = pd.read_excel(alvo_corrigido)
+df_alvo = pd.read_excel(paths.alvo_corrigido)
 
 # Garante que todos os dados são strings e escapa apóstrofos
 def esc(s):
@@ -144,9 +137,9 @@ df.columns = [col.title() for col in df.columns]  # "número reds" → "Número 
 
 # Exporta a base no computador no modelo desejado 
 caminho_excel = (
-    f"{completas_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"{paths.completas_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
     f"XLSX - Uso interno/"
     f"Alvos - Furto - Jan 2015 a Dez 2017.xlsx"
 )
@@ -195,9 +188,9 @@ df_csv = df_csv.fillna("")
 
 # Caminho de saída para CSV
 caminho_csv = (
-    f"{completas_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"{paths.completas_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
     f"CSV -Uso externo/"
     f"Alvos - Furto - Jan 2015 a Dez 2017.csv"
 )

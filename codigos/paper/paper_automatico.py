@@ -2,21 +2,14 @@ import pandas as pd
 import numpy as np
 import os
 from unidecode import unidecode
-from config.datas import (
-    ano_ref,
-    mes_ref,
-    mes_ref_num_str,
-    mes_ref_nome,
-    mes_ref_abrev,
-    mes_atual
-)
-from config.paths import base_dir, logs_dir, config_dir, codigos_dir, paper_dir, onedrive_dir, onedrive_paper_dir, onedrive_publicacao_dir, onedrive_imagens_dir, onedrive_produtividade_dir, onedrive_quantitativo_dir, onedrive_completas_externo_dir, onedrive_completas_interno_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir, matriz_dir
+from config import datas
+from config import paths
 
 # Lista de arquivos de entrada: planilhas de Crimes Violentos e dicionário de regiões
 base_excel = (
-    f"{publicacoes_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.publicacoes_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
 )
 
@@ -137,23 +130,23 @@ df_cv_final = df_cv_final.sort_values(
 
 # Caminho de saída
 caminho_saida = (
-    f"{paper_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
-    f"paper_automatico_{mes_ref_abrev}.xlsx"
+    f"{paths.paper_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"paper_automatico_{datas.mes_ref_abrev}.xlsx"
 )
 
 # Caminho de saída
 caminho_saida_one_drive = (
-    f"{onedrive_paper_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
-    f"paper_automatico_{mes_ref_abrev}.xlsx"
+    f"{paths.onedrive_paper_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"paper_automatico_{datas.mes_ref_abrev}.xlsx"
 )
 
-f"{publicacoes_dir}/"
-f"{ano_ref}/"
-f"{mes_ref_num_str} - {mes_ref_nome}/"
+f"{paths.publicacoes_dir}/"
+f"{datas.ano_ref}/"
+f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
             
 # Exporta
 with pd.ExcelWriter(caminho_saida, engine='openpyxl') as writer:
@@ -174,16 +167,16 @@ print("Deu bom: planilha gerada")
 
 # Pastas de destino dos papers de município
 caminho_saida_paper_municipios = (
-    f"{paper_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.paper_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Municípios"
 )
 
 caminho_saida_paper_municipios_one_drive = (
-    f"{onedrive_paper_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.onedrive_paper_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Municípios"
 )
 
@@ -1162,7 +1155,7 @@ for municipio in lista_municipios:
             else:
                 sem_variacao.append(natureza_formatada)
 
-        texto2 += f"\nJá em uma análise dos meses de Janeiro a {mes_ref_nome} de 2026 frente ao mesmo período de 2025, o município de {municipio_formatado} "
+        texto2 += f"\nJá em uma análise dos meses de Janeiro a {datas.mes_ref_nome} de 2026 frente ao mesmo período de 2025, o município de {municipio_formatado} "
 
         if reducao:
             texto2 += f"apresentou uma redução nos crimes de {format_lista(reducao)}. "
@@ -1207,16 +1200,16 @@ for municipio in lista_municipios:
 
 # Pastas de destino dos papers de RISP
 caminho_saida_paper_risps = (
-    f"{paper_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.paper_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"RISP"
 )
 
 caminho_saida_paper_risps_one_drive = (
-    f"{onedrive_paper_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.onedrive_paper_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"RISP"
 )
 
@@ -1334,7 +1327,7 @@ for risp in lista_risps:
             else:
                 sem_variacao.append(natureza_formatada)
 
-        texto2 += f"\nJá em uma análise dos meses de Janeiro a {mes_ref_nome} de 2026 frente ao mesmo período de 2025, a {risp.title()} "
+        texto2 += f"\nJá em uma análise dos meses de Janeiro a {datas.mes_ref_nome} de 2026 frente ao mesmo período de 2025, a {risp.title()} "
 
         if reducao:
             texto2 += f"apresentou uma redução nos crimes de {format_lista(reducao)}. "
@@ -1379,16 +1372,16 @@ for risp in lista_risps:
 
 # Pasta de destino dos papers de Mesorregião
 caminho_saida_paper_mesorregioes = (
-    f"{paper_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.paper_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Mesorregiões"
 )
 
 caminho_saida_paper_mesorregioes_one_drive = (
-    f"{onedrive_paper_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.onedrive_paper_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Mesorregiões"
 )
 
@@ -1506,7 +1499,7 @@ for regiao in lista_regioes:
             else:
                 sem_variacao.append(natureza_formatada)
 
-        texto2 += f"\nJá em uma análise dos meses de Janeiro a {mes_ref_nome} de 2026 frente ao mesmo período de 2025, a mesorregião de {regiao.title()} "
+        texto2 += f"\nJá em uma análise dos meses de Janeiro a {datas.mes_ref_nome} de 2026 frente ao mesmo período de 2025, a mesorregião de {regiao.title()} "
 
         if reducao:
             texto2 += f"apresentou uma redução nos crimes de {format_lista(reducao)}. "

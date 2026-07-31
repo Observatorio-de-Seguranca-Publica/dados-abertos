@@ -1,9 +1,6 @@
 import time
 from datetime import datetime
-from config.datas import (
-    ano_ref,
-    mes_ref
-)
+from config import datas
 
 # Importar os módulos principais
 from codigos.bases_completas.main import executar as executar_bases_completas
@@ -56,8 +53,8 @@ def main():
         f"=== EXECUÇÃO DO PROJETO DADOS ABERTOS ==="
     )
 
-    print(f"Ano referência: {ano_ref}")
-    print(f"Mês referência: {mes_ref}")
+    print(f"Ano referência: {datas.ano_ref}")
+    print(f"Mês referência: {datas.mes_ref}")
 
     # 🔧 CONTROLE DAS ETAPAS
     RODAR_BASES_COMPLETAS = True

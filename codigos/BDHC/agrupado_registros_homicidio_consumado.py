@@ -2,15 +2,8 @@ import pandas as pd
 import itertools
 from impala.dbapi import connect
 import dateutil.parser
-from config.datas import (
-    ano_ref,
-    mes_ref,
-    mes_ref_num_str,
-    mes_ref_nome,
-    mes_ref_abrev,
-    mes_atual
-)
-from config.paths import base_dir, logs_dir, config_dir, codigos_dir, paper_dir, onedrive_dir, onedrive_paper_dir, onedrive_publicacao_dir, onedrive_imagens_dir, onedrive_produtividade_dir, onedrive_quantitativo_dir, onedrive_completas_externo_dir, onedrive_completas_interno_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir, matriz_dir
+from config import datas
+from config import paths
 from config.database import (
     get_conn_and_cursor,
     executa_query_retorna_df,
@@ -27,7 +20,7 @@ def norm_ibge(x):
 
 # 1. Lê a planilha
 arquivo = (
-    f"{downloads_dir}/"
+    f"{paths.downloads_dir}/"
     f"BDHC_formatado_registros.xlsx"
 )
 aba = "Sheet1"
@@ -124,9 +117,9 @@ res["Cód. IBGE"] = pd.to_numeric(res["Cód. IBGE"], errors="coerce").astype("In
 
 # 11. Exportar para Excel
 saida = (
-    f"{publicacoes_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.publicacoes_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
     f"agrupado_registros_homicidio_consumado.xlsx"
 )
@@ -145,33 +138,33 @@ print("Base agrupada gerada com sucesso em:", saida)
 
 # Caminhos dos arquivos
 agg_hc = (
-    f"{publicacoes_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.publicacoes_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
     f"agrupado_registros_homicidio_consumado.xlsx"
 )
 
 agg_cv_12_18 = (
-    f"{publicacoes_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.publicacoes_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
     f"12_18_agrupado_crimes_violentos.xlsx"
 )
 
 agg_cv_19_24 = (
-    f"{publicacoes_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.publicacoes_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
     f"19_24_agrupado_crimes_violentos.xlsx"
 )
 
 agg_cv_25_26 = (
-    f"{publicacoes_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.publicacoes_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
     f"25_26_agrupado_crimes_violentos.xlsx"
 )
@@ -219,9 +212,9 @@ print(f"Base BDHC 2012 a 2018 filtrada: {len(df_vhc_filtrada_12_18)}")
 print(f"Base unificada 2012 a 2018: {len(df_final_12_18)}")
 
 saida_12_18 = (
-    f"{publicacoes_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.publicacoes_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
     f"12_18_agrupado_crimes_violentos.xlsx"
 )
@@ -245,9 +238,9 @@ print(f"Base BDHC 2019 a 2024 filtrada: {len(df_vhc_filtrada_19_24)}")
 print(f"Base unificada 2019 a 2024: {len(df_final_19_24)} registros")
 
 saida_19_24 = (
-    f"{publicacoes_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.publicacoes_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
     f"19_24_agrupado_crimes_violentos.xlsx"
 )
@@ -271,9 +264,9 @@ print(f"Base BDHC 2025–2026 filtrada: {len(df_vhc_filtrada_25_26)}")
 print(f"Base unificada 2025–2026: {len(df_final_25_26)} registros")
 
 saida_25_26 = (
-    f"{publicacoes_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.publicacoes_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
     f"25_26_agrupado_crimes_violentos.xlsx"
 )
@@ -291,27 +284,27 @@ print(f"Ok - Base unificadas salva em:\n{saida_25_26}")
 # O
 
 caminho_csv_12_18 = (
-    f"{publicacoes_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.publicacoes_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Banco de Dados CSV/"
-    f"Banco Crimes Violentos 2012 a 2018 - Atualizado {mes_ref_nome} {ano_ref}.csv"
+    f"Banco Crimes Violentos 2012 a 2018 - Atualizado {datas.mes_ref_nome} {datas.ano_ref}.csv"
 )
 
 caminho_csv_19_24 = (
-    f"{publicacoes_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.publicacoes_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Banco de Dados CSV/"
-    f"Banco Crimes Violentos 2019 a 2024 - Atualizado {mes_ref_nome} {ano_ref}.csv"
+    f"Banco Crimes Violentos 2019 a 2024 - Atualizado {datas.mes_ref_nome} {datas.ano_ref}.csv"
 )
 
 caminho_csv_25_26 = (
-    f"{publicacoes_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.publicacoes_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Banco de Dados CSV/"
-    f"Banco Crimes Violentos 2025 a 2026 - Atualizado {mes_ref_nome} {ano_ref}.csv"
+    f"Banco Crimes Violentos 2025 a 2026 - Atualizado {datas.mes_ref_nome} {datas.ano_ref}.csv"
 )
 
 # Função auxiliar para exportar com formatação BR
