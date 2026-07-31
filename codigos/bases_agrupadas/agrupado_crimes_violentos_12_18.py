@@ -4,12 +4,7 @@ import numpy as np
 from impala.dbapi import connect
 from config import datas
 from config import paths
-from config.database import (
-    get_conn_and_cursor,
-    executa_query_retorna_df,
-    tabelas,
-    bancos_de_dados,
-)
+from config import database
 
 data_limite = f"{datas.ano_ref}-{datas.mes_atual}-01 00:00:00.000"
 
@@ -123,7 +118,7 @@ try:
                           ON m.codigo_municipio = pop.codigo_ibge
                 '''
         
-    df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
+    df = database.executa_query_retorna_df(query, db='db_bisp_reds_reporting')
 
 # Ordenar pelas colunas "Ano Fato", "Mês", "Município" e "Natureza"
     df.rename(columns={

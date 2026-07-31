@@ -42,4 +42,6 @@ from .paths import (
 from .database import (
     get_conn_and_cursor,
     executa_query_retorna_df,
+    tabelas, 
+    bancos_de_dados,
 )

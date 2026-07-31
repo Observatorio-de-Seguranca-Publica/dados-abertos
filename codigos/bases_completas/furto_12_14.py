@@ -8,12 +8,7 @@ from impala.dbapi import connect
 from config import paths
 from config import datas
 from config import paths
-from config.database import (
-    get_conn_and_cursor,
-    executa_query_retorna_df,
-    tabelas,
-    bancos_de_dados,
-)
+from config import database
 
 data_limite = f"{datas.ano_ref}-{datas.mes_atual}-01 00:00:00.000"
 
@@ -116,7 +111,7 @@ try:
                AND oco.natureza_codigo = 'C01155'
                 '''
         
-    df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
+    df = database.executa_query_retorna_df(query, db='db_bisp_reds_reporting')
 
 except Exception as e:
     print(f"Erro ao consultar a tabela 'tb_ocorrencia': {e}")

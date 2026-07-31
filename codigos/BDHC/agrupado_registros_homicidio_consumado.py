@@ -4,12 +4,7 @@ from impala.dbapi import connect
 import dateutil.parser
 from config import datas
 from config import paths
-from config.database import (
-    get_conn_and_cursor,
-    executa_query_retorna_df,
-    tabelas,
-    bancos_de_dados,
-)
+from config import database
 
 # --- helpers ---
 def norm_ibge(x):
@@ -37,7 +32,7 @@ query_municipios = """
       ON oco.codigo_municipio = mun.codigo_ibge
     WHERE oco.ocorrencia_uf = 'MG'
 """
-municipios = executa_query_retorna_df(query_municipios)
+municipios = database.executa_query_retorna_df(query_municipios)
 
 # 3. Normaliza chaves
 municipios["Cód. IBGE"] = municipios["cod_ibge"].apply(norm_ibge)

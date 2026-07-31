@@ -2,12 +2,7 @@ import pandas as pd
 from impala.dbapi import connect
 from config import datas
 from config import paths
-from config.database import (
-    get_conn_and_cursor,
-    executa_query_retorna_df,
-    tabelas,
-    bancos_de_dados,
-)
+from config import database
 
 # ==============================
 # VARIÁVEIS
@@ -148,7 +143,7 @@ def executar_indicadores():
     for nome_indicador, query in queries.items():
 
         try:
-            df = executa_query_retorna_df(query)
+            df = database.executa_query_retorna_df(query)
 
             # Extração segura dos valores
             valor_ano1 = df.loc[df["ano"] == ANO_1, "total"].values
