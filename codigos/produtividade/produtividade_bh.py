@@ -8,9 +8,9 @@ from config import database
 # VARIÁVEIS
 # ==============================
 
-ANO_1 = ano_ref - 1
-ANO_2 = ano_ref
-MES = mes_ref_num_str
+ANO_1 = datas.ano_ref - 1
+ANO_2 = datas.ano_ref
+MES = datas.mes_ref_num_str
 
 
 # ==============================
@@ -179,7 +179,7 @@ def exporta_excel(resultados):
 
     df_export = pd.DataFrame(
         linhas,
-        columns=["Indicador", ano_ref - 1, ano_ref]
+        columns=["Indicador", datas.ano_ref - 1, datas.ano_ref]
     )
 
     return df_export

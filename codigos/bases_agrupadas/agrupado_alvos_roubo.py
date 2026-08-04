@@ -105,7 +105,7 @@ try:
                           ON m.codigo_municipio = pop.codigo_ibge
                 '''
         
-    df = database.database.executa_query_retorna_df(query, db='db_bisp_reds_reporting')
+    df = database.executa_query_retorna_df(query, db='db_bisp_reds_reporting')
     
 # Ordenar pelas colunas "Ano Fato", "Mês", "Município" e "Natureza"
     df.rename(columns={
