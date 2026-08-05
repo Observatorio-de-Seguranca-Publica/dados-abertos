@@ -196,4 +196,18 @@ df_excel.to_csv(
     encoding='utf-8-sig'  # adiciona BOM, compatível com Excel
 )
 
+# Exporta a base na nuvem
+caminho_nuvem = (
+    f"{paths.onedrive_agrupadas_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"Banco Crimes Violentos 2019 a 2024 - Atualizado {datas.mes_ref_nome} {datas.ano_ref}.csv"
+)
+df_excel.to_csv(
+    caminho_nuvem,
+    sep=';',            
+    index=False,        
+    encoding='utf-8-sig'  
+)
+
 print('FINALIZOU :)')

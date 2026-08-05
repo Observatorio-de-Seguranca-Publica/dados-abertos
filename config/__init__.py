@@ -33,7 +33,7 @@ from .paths import (
     onedrive_imagens_dir,
     onedrive_produtividade_dir,
     onedrive_paper_dir,
-    onedrive_quantitativo_dir,
+    onedrive_agrupadas_dir,
     onedrive_completas_externo_dir,
     onedrive_completas_interno_dir,
 )

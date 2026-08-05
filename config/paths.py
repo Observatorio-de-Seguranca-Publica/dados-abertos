@@ -43,7 +43,7 @@ onedrive_paper_dir = (
     / "Paper"
 )
 
-onedrive_quantitativo_dir = (
+onedrive_agrupadas_dir = (
     onedrive_publicacao_dir
     / "Arquivos Site"
     / "Quantitativo de eventos por município e risp"

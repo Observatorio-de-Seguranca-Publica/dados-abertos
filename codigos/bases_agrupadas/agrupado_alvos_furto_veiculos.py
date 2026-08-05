@@ -110,17 +110,15 @@ except Exception as e:
 # Exibe as primeiras linhas do DataFrame
 df.head()
 
-
-caminho_excel = (
+# Exporta a base no PC
+caminho_local = (
     f"{paths.publicacoes_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
     f"agrupado_furto_veiculos.xlsx"
 )
-
-
-df.to_excel(caminho_excel, index=False)
+df.to_excel(caminho_local, index=False)
 
 # A
 # T
@@ -141,6 +139,10 @@ base_excel = (
 # 1️⃣ Lê as bases
 df_excel = pd.read_excel(base_excel)
 
+# Formatação regional
+df_excel = df_excel.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
+
+# Exporta a base no PC
 caminho_csv = (
     f"{paths.publicacoes_dir}/"
     f"{datas.ano_ref}/"
@@ -149,15 +151,26 @@ caminho_csv = (
     f"Banco Veículos Furtados - Atualizado {datas.mes_ref_nome} {datas.ano_ref}.csv"
 )
 
-# Formatação regional
-df_excel = df_excel.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
-
 # Exporta com separador ";" e encoding compatível com Excel PT-BR
 df_excel.to_csv(
     caminho_csv,
     sep=';',            # separador padrão BR
     index=False,        # sem índice numérico
     encoding='utf-8-sig'  # adiciona BOM, compatível com Excel
+)
+
+# Exporta a base na nuvem
+caminho_nuvem = (
+    f"{paths.onedrive_agrupadas_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"Banco Veículos Furtados - Atualizado {datas.mes_ref_nome} {datas.ano_ref}.csv"
+)
+df_excel.to_csv(
+    caminho_nuvem,
+    sep=';',            
+    index=False,        
+    encoding='utf-8-sig'  
 )
 
 print('FINALIZOU :)')
