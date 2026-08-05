@@ -136,7 +136,7 @@ df.head()
 # Corrige a capitalização
 df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
 
-# Exporta a base no computador no modelo desejado 
+# Exporta a base no computador local 
 caminho_excel = (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"
@@ -144,8 +144,17 @@ caminho_excel = (
     f"XLSX - Uso interno/"
     f"Veiculos - Furto - Jan 2015 a {datas.mes_ref_abrev} {datas.ano_ref}.xlsx"
 )
-
 df.to_excel(caminho_excel, index=False)
+
+# Exporta a base na nuvem 
+caminho_nuvem = (
+    f"{paths.onedrive_completas_interno_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
+    f"XLSX - Uso interno/"
+    f"Veiculos - Furto - Jan 2015 a {datas.mes_ref_abrev} {datas.ano_ref}.xlsx"
+)
+df.to_excel(caminho_nuvem, index=False)
 
 # A
 # T
