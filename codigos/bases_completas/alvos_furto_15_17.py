@@ -144,7 +144,7 @@ df.to_excel(caminho_excel, index=False)
 caminho_nuvem = (
     f"{paths.onedrive_completas_interno_dir}/"
     f"{datas.ano_ref}/"
-    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"XLSX - Uso interno/"
     f"Alvos - Furto - Jan 2015 a Dez 2017.xlsx"
 )
@@ -191,7 +191,7 @@ df_csv = df_csv.map(
 )
 df_csv = df_csv.fillna("")
 
-# Caminho de saída para CSV
+# Exporta a base no computador em csv
 caminho_csv = (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"
@@ -199,8 +199,6 @@ caminho_csv = (
     f"CSV -Uso externo/"
     f"Alvos - Furto - Jan 2015 a Dez 2017.csv"
 )
-
-# Exporta a base no computador em csv
 df_csv.to_csv(
     caminho_csv,
     sep=";",
