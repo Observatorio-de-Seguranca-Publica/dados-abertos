@@ -191,7 +191,7 @@ df_csv = df_csv.map(
 )
 df_csv = df_csv.fillna("")
 
-# Caminho de saída para CSV
+# Exporta a base no computador em csv
 caminho_csv = (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"
@@ -199,10 +199,22 @@ caminho_csv = (
     f"CSV -Uso externo/"
     f"Alvos - Furto - Jan 2018 a Dez 2021.csv"
 )
-
-# Exporta a base no computador em csv
 df_csv.to_csv(
     caminho_csv,
+    sep=";",
+    index=False,
+    encoding="utf-8-sig",
+)
+
+# Exporta a base na nuvem 
+caminho_csv_nuvem = (
+    f"{paths.onedrive_completas_externo_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"Alvos - Furto - Jan 2018 a Dez 2021.csv"
+)
+df_csv.to_csv(
+    caminho_csv_nuvem,
     sep=";",
     index=False,
     encoding="utf-8-sig",

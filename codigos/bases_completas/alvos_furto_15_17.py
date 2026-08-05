@@ -206,4 +206,18 @@ df_csv.to_csv(
     encoding="utf-8-sig",
 )
 
+# Exporta a base na nuvem 
+caminho_csv_nuvem = (
+    f"{paths.onedrive_completas_externo_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"Alvos - Furto - Jan 2015 a Dez 2017.csv"
+)
+df_csv.to_csv(
+    caminho_csv_nuvem,
+    sep=";",
+    index=False,
+    encoding="utf-8-sig",
+)
+
 print('FINALIZOU :)')
