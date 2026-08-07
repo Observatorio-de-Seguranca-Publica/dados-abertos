@@ -1,28 +1,16 @@
 import pandas as pd
 from impala.dbapi import connect
-from config.datas import (
-    ano_ref,
-    mes_ref,
-    mes_ref_num_str,
-    mes_ref_nome,
-    mes_ref_abrev,
-    mes_atual
-)
-from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
-from config.database import (
-    get_conn_and_cursor,
-    executa_query_retorna_df,
-    tabelas,
-    bancos_de_dados,
-)
+from config import datas
+from config import paths
+from config import database
 
 # ==============================
 # VARIÁVEIS
 # ==============================
 
-ANO_1 = ano_ref - 1
-ANO_2 = ano_ref
-MES = mes_ref_num_str
+ANO_1 = datas.ano_ref - 1
+ANO_2 = datas.ano_ref
+MES = datas.mes_ref_num_str
 
 
 # ==============================
@@ -149,7 +137,7 @@ def executar_indicadores():
     for nome_indicador, query in queries.items():
 
         try:
-            df = executa_query_retorna_df(query)
+            df = database.executa_query_retorna_df(query)
 
             # Extração segura dos valores
             valor_ano1 = df.loc[df["ano"] == ANO_1, "total"].values
@@ -185,7 +173,7 @@ def exporta_excel(resultados):
 
     df_export = pd.DataFrame(
         linhas,
-        columns=["Indicador", ano_ref - 1, ano_ref]
+        columns=["Indicador", datas.ano_ref - 1, datas.ano_ref]
     )
 
     return df_export
@@ -205,12 +193,20 @@ if __name__ == "__main__":
     df_export = exporta_excel(resultados)
     
     caminho_excel = (
-        f"{produtividade_dir}/"
-        f"{ano_ref}/"
-        f"{mes_ref_num_str} - {mes_ref_nome}/"
-        f"produtividade_mg.xlsx"
-    )
-    df_export.to_excel(caminho, index=False)
+            f"{paths.produtividade_dir}/"
+            f"{datas.ano_ref}/"
+            f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+            f"produtividade_mg.xlsx"
+        )
+    caminho_onedrive = (
+            f"{paths.onedrive_produtividade_dir}/"
+            f"{datas.ano_ref}/"
+            f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+            f"produtividade_mg.xlsx"
+        )
+        
+    df_export.to_excel(caminho_excel, index=False)
+    df_export.to_excel(caminho_onedrive, index=False)
 
     print("\nArquivo Excel exportado com sucesso!")
     print("\nFINALIZOU :)")

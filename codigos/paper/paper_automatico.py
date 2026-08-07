@@ -2,21 +2,14 @@ import pandas as pd
 import numpy as np
 import os
 from unidecode import unidecode
-from config.datas import (
-    ano_ref,
-    mes_ref,
-    mes_ref_num_str,
-    mes_ref_nome,
-    mes_ref_abrev,
-    mes_atual
-)
-from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
+from config import datas
+from config import paths
 
 # Lista de arquivos de entrada: planilhas de Crimes Violentos e dicionário de regiões
 base_excel = (
-    f"{publicacoes_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.publicacoes_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
 )
 
@@ -137,19 +130,29 @@ df_cv_final = df_cv_final.sort_values(
 
 # Caminho de saída
 caminho_saida = (
-    f"{onedrive_dir}/"
-    f"DIS -  Henrique/Paper/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
-    f"paper_automatico_{mes_ref_abrev}.xlsx"
+    f"{paths.paper_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"paper_automatico_{datas.mes_ref_abrev}.xlsx"
 )
 
-f"{publicacoes_dir}/"
-f"{ano_ref}/"
-f"{mes_ref_num_str} - {mes_ref_nome}/"
+# Caminho de saída
+caminho_saida_one_drive = (
+    f"{paths.onedrive_paper_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"paper_automatico_{datas.mes_ref_abrev}.xlsx"
+)
+
+f"{paths.publicacoes_dir}/"
+f"{datas.ano_ref}/"
+f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
             
 # Exporta
 with pd.ExcelWriter(caminho_saida, engine='openpyxl') as writer:
+    df_cv_final.to_excel(writer, sheet_name='Dados CV', index=False)
+    
+with pd.ExcelWriter(caminho_saida_one_drive, engine='openpyxl') as writer:
     df_cv_final.to_excel(writer, sheet_name='Dados CV', index=False)
 
 print("Deu bom: planilha gerada")
@@ -162,12 +165,18 @@ print("Deu bom: planilha gerada")
 # Ã
 # O
 
-# Pasta de destino dos papers de município
+# Pastas de destino dos papers de município
 caminho_saida_paper_municipios = (
-    f"{onedrive_dir}/"
-    f"DIS -  Henrique/Paper/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.paper_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"Municípios"
+)
+
+caminho_saida_paper_municipios_one_drive = (
+    f"{paths.onedrive_paper_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Municípios"
 )
 
@@ -1146,7 +1155,7 @@ for municipio in lista_municipios:
             else:
                 sem_variacao.append(natureza_formatada)
 
-        texto2 += f"\nJá em uma análise dos meses de Janeiro a {mes_ref_nome} de 2026 frente ao mesmo período de 2025, o município de {municipio_formatado} "
+        texto2 += f"\nJá em uma análise dos meses de Janeiro a {datas.mes_ref_nome} de 2026 frente ao mesmo período de 2025, o município de {municipio_formatado} "
 
         if reducao:
             texto2 += f"apresentou uma redução nos crimes de {format_lista(reducao)}. "
@@ -1163,14 +1172,23 @@ for municipio in lista_municipios:
             
     # Se algum texto foi gerado, salva
     if texto or texto2:
-        caminho_txt = os.path.join(caminho_saida_paper_municipios, f"{municipio_formatado.upper()}.txt")
-        with open(caminho_txt, "w", encoding="utf-8") as f:
-            f.write(texto.strip() + "\n\n" + texto2.strip())
+        caminhos_saida = [
+            caminho_saida_paper_municipios,
+            caminho_saida_paper_municipios_one_drive
+        ]
+        
+        for caminho_saida in caminhos_saida:
+            caminho_txt = os.path.join(
+                caminho_saida,
+                f"{municipio_formatado.upper()}.txt"
+            )
+        
+            with open(caminho_txt, "w", encoding="utf-8") as f:
+                f.write(texto.strip() + "\n\n" + texto2.strip())
 
         print(f"Relatório gerado para: {municipio_formatado}")
     else:
         print(f"Sem dados para: {municipio_formatado}")
-        
         
 # A
 # T
@@ -1180,12 +1198,18 @@ for municipio in lista_municipios:
 # Ã
 # O
 
-# Pasta de destino dos papers de RISP
+# Pastas de destino dos papers de RISP
 caminho_saida_paper_risps = (
-    f"{onedrive_dir}/"
-    f"DIS -  Henrique/Paper/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.paper_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"RISP"
+)
+
+caminho_saida_paper_risps_one_drive = (
+    f"{paths.onedrive_paper_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"RISP"
 )
 
@@ -1303,7 +1327,7 @@ for risp in lista_risps:
             else:
                 sem_variacao.append(natureza_formatada)
 
-        texto2 += f"\nJá em uma análise dos meses de Janeiro a {mes_ref_nome} de 2026 frente ao mesmo período de 2025, a {risp.title()} "
+        texto2 += f"\nJá em uma análise dos meses de Janeiro a {datas.mes_ref_nome} de 2026 frente ao mesmo período de 2025, a {risp.title()} "
 
         if reducao:
             texto2 += f"apresentou uma redução nos crimes de {format_lista(reducao)}. "
@@ -1319,14 +1343,24 @@ for risp in lista_risps:
             texto2 += f"Os demais crimes violentos se mantiveram com o mesmo número de registros nos dois anos analisados: {format_lista(sem_variacao)}."
 
     # Se algum texto foi gerado, salva
-    if texto or texto2:
-        caminho_txt = os.path.join(caminho_saida_paper_risps, f"{risp_upper}.txt")
-        with open(caminho_txt, "w", encoding="utf-8") as f:
-            f.write(texto.strip() + "\n\n" + texto2.strip())
-
-        print(f"Relatório gerado para: {risp}")
-    else:
-        print(f"Sem dados para: {risp}")
+        if texto or texto2:
+            caminhos_saida = [
+                caminho_saida_paper_risps,
+                caminho_saida_paper_risps_one_drive
+            ]
+            
+            for caminho_saida in caminhos_saida:
+                caminho_txt = os.path.join(
+                    caminho_saida,
+                    f"{risp_upper.upper()}.txt"
+                )
+            
+                with open(caminho_txt, "w", encoding="utf-8") as f:
+                    f.write(texto.strip() + "\n\n" + texto2.strip())
+    
+            print(f"Relatório gerado para: {risp}")
+        else:
+            print(f"Sem dados para: {risp}")
         
 # A
 # T
@@ -1338,10 +1372,16 @@ for risp in lista_risps:
 
 # Pasta de destino dos papers de Mesorregião
 caminho_saida_paper_mesorregioes = (
-    f"{onedrive_dir}/"
-    f"DIS -  Henrique/Paper/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.paper_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"Mesorregiões"
+)
+
+caminho_saida_paper_mesorregioes_one_drive = (
+    f"{paths.onedrive_paper_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Mesorregiões"
 )
 
@@ -1459,7 +1499,7 @@ for regiao in lista_regioes:
             else:
                 sem_variacao.append(natureza_formatada)
 
-        texto2 += f"\nJá em uma análise dos meses de Janeiro a {mes_ref_nome} de 2026 frente ao mesmo período de 2025, a mesorregião de {regiao.title()} "
+        texto2 += f"\nJá em uma análise dos meses de Janeiro a {datas.mes_ref_nome} de 2026 frente ao mesmo período de 2025, a mesorregião de {regiao.title()} "
 
         if reducao:
             texto2 += f"apresentou uma redução nos crimes de {format_lista(reducao)}. "
@@ -1475,11 +1515,21 @@ for regiao in lista_regioes:
             texto2 += f"Os demais crimes violentos se mantiveram com o mesmo número de registros nos dois anos analisados: {format_lista(sem_variacao)}."
 
     # Se algum texto foi gerado, salva
-    if texto or texto2:
-        caminho_txt = os.path.join(caminho_saida_paper_mesorregioes, f"{regiao_upper}.txt")
-        with open(caminho_txt, "w", encoding="utf-8") as f:
-            f.write(texto.strip() + "\n\n" + texto2.strip())
-
-        print(f"Relatório gerado para: {regiao}")
-    else:
-        print(f"Sem dados para: {regiao}")
+            if texto or texto2:
+                caminhos_saida = [
+                    caminho_saida_paper_mesorregioes,
+                    caminho_saida_paper_mesorregioes_one_drive
+                ]
+                
+                for caminho_saida in caminhos_saida:
+                    caminho_txt = os.path.join(
+                        caminho_saida,
+                        f"{regiao_upper.upper()}.txt"
+                    )
+                
+                    with open(caminho_txt, "w", encoding="utf-8") as f:
+                        f.write(texto.strip() + "\n\n" + texto2.strip())
+        
+                print(f"Relatório gerado para: {regiao}")
+            else:
+                print(f"Sem dados para: {regiao}")

@@ -5,26 +5,15 @@ import pyproj
 import hashlib
 from shapely.geometry import Point
 from impala.dbapi import connect
-from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
-from config.datas import (
-    ano_ref,
-    mes_ref,
-    mes_ref_num_str,
-    mes_ref_nome,
-    mes_ref_abrev,
-    mes_atual
-)
-from config.database import (
-    get_conn_and_cursor,
-    executa_query_retorna_df,
-    tabelas,
-    bancos_de_dados,
-)
+from config import paths
+from config import datas
+from config import paths
+from config import database
 
-data_limite = f"{ano_ref}-{mes_atual}-01 00:00:00.000"
+data_limite = f"{datas.ano_ref}-{datas.mes_atual}-01 00:00:00.000"
 
 # Lê o Excel com o mapeamento para CTE 1
-df_mapeamento = pd.read_excel(grupo_local_imediato)
+df_mapeamento = pd.read_excel(paths.grupo_local_imediato)
 df_mapeamento['Código Local Imediato'] = (
     df_mapeamento['Código Local Imediato']
     .astype(str)
@@ -32,7 +21,7 @@ df_mapeamento['Código Local Imediato'] = (
 )
 
 # Lê o Excel para o mapeamento para CTE 2
-df_alvo = pd.read_excel(alvo_corrigido)
+df_alvo = pd.read_excel(paths.alvo_corrigido)
 
 # Garante que todos os dados são strings e escapa apóstrofos
 def esc(s):
@@ -136,7 +125,7 @@ try:
                AND vei.tipo_veiculo_codigo IN ('0200', '0800', '1101', '0700', '0720', '0710', '0600', '0620', '0610', '1300', '1700', '1800', '1900', '2000', '9900', '2100', '2200', '2300', '2400', '2500', '2700', '2600', '2800', '2920', '2910', '2900')
                 '''
         
-    df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
+    df = database.executa_query_retorna_df(query, db='db_bisp_reds_reporting')
 
 except Exception as e:
     print(f"Erro ao consultar a tabela 'tb_ocorrencia': {e}")
@@ -147,16 +136,25 @@ df.head()
 # Corrige a capitalização
 df.columns = [col.title() for col in df.columns]  # "número reds" → "Número Reds"
 
-# Exporta a base no computador no modelo desejado 
+# Exporta a base no computador local 
 caminho_excel = (
-    f"{completas_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"{paths.completas_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
     f"XLSX - Uso interno/"
-    f"Veiculos - Furto - Jan 2015 a {mes_ref_abrev} {ano_ref}.xlsx"
+    f"Veiculos - Furto - Jan 2015 a {datas.mes_ref_abrev} {datas.ano_ref}.xlsx"
 )
-
 df.to_excel(caminho_excel, index=False)
+
+# Exporta a base na nuvem 
+caminho_nuvem = (
+    f"{paths.onedrive_completas_interno_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"XLSX - Uso interno/"
+    f"Veiculos - Furto - Jan 2015 a {datas.mes_ref_abrev} {datas.ano_ref}.xlsx"
+)
+df.to_excel(caminho_nuvem, index=False)
 
 # A
 # T
@@ -199,18 +197,31 @@ df_csv = df_csv.map(
 )
 df_csv = df_csv.fillna("")
 
-# Caminho de saída para CSV
-caminho_csv = (
-    f"{completas_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_abrev}/"
-    f"CSV -Uso externo/"
-    f"Veiculos - Furto - Jan 2015 a {mes_ref_abrev} {ano_ref}.csv"
-)
-
 # Exporta a base no computador em csv
+caminho_csv = (
+    f"{paths.completas_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
+    f"CSV -Uso externo/"
+    f"Veiculos - Furto - Jan 2015 a {datas.mes_ref_abrev} {datas.ano_ref}.csv"
+)
 df_csv.to_csv(
     caminho_csv,
+    sep=";",
+    index=False,
+    encoding="utf-8-sig",
+)
+
+
+# Exporta a base na nuvem 
+caminho_csv_nuvem = (
+    f"{paths.onedrive_completas_externo_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"Veiculos - Furto - Jan 2015 a {datas.mes_ref_abrev} {datas.ano_ref}.csv"
+)
+df_csv.to_csv(
+    caminho_csv_nuvem,
     sep=";",
     index=False,
     encoding="utf-8-sig",

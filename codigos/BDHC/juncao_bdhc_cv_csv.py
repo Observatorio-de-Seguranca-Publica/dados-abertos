@@ -1,31 +1,24 @@
 import pandas as pd
 import numpy as np
 from impala.dbapi import connect
-from config.datas import (
-    ano_ref,
-    mes_ref,
-    mes_ref_num_str,
-    mes_ref_nome,
-    mes_ref_abrev,
-    mes_atual
-)
-from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
+from config import datas
+from config import paths
 
 # Caminhos dos arquivos do BDHC
 base_cv_12_21 = (
-    f"{completas_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"{paths.completas_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
     f"XLSX - Uso interno/"
     f"Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
 )
 
 base_cv_22_26 = (
-    f"{completas_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"{paths.completas_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
     f"XLSX - Uso interno/"
-    f"Crimes Violentos - Jan 2022 a {mes_ref_abrev} {ano_ref}.xlsx"
+    f"Crimes Violentos - Jan 2022 a {datas.mes_ref_abrev} {datas.ano_ref}.xlsx"
 )
 
 # 1️⃣ Lê as bases
@@ -45,9 +38,9 @@ df_cv_22_26 = df_cv_22_26.drop(columns=colunas_excluir, errors="ignore")
 # 8️⃣ Salva resultado
 # Caminho de saída para CSV
 caminho_csv_1 = (
-    f"{completas_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"{paths.completas_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
     f"CSV -Uso externo/"
     f"Crimes Violentos - Jan 2012 a Dez 2021.csv"
 )
@@ -73,11 +66,11 @@ df_cv_12_21.to_csv(
 
 # Caminho de saída para CSV
 caminho_csv_2 = (
-    f"{completas_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_abrev}/"
+    f"{paths.completas_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
     f"CSV -Uso externo/"
-    f"Crimes Violentos - Jan 2022 a {mes_ref_abrev} {ano_ref}.csv"
+    f"Crimes Violentos - Jan 2022 a {datas.mes_ref_abrev} {datas.ano_ref}.csv"
 )
 
 # Formatação regional sem afetar nulos

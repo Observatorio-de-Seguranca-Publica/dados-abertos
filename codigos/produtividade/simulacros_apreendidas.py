@@ -2,23 +2,11 @@ import pandas as pd
 import geopandas as gpd
 import numpy as np
 from impala.dbapi import connect
-from config.datas import (
-    ano_ref,
-    mes_ref,
-    mes_ref_num_str,
-    mes_ref_nome,
-    mes_ref_abrev,
-    mes_atual
-)
-from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
-from config.database import (
-    get_conn_and_cursor,
-    executa_query_retorna_df,
-    tabelas,
-    bancos_de_dados,
-)
+from config import datas
+from config import paths
+from config import database
 
-data_limite = f"{ano_ref}-{mes_atual}-01 00:00:00.000"
+data_limite = f"{datas.ano_ref}-{datas.mes_atual}-01 00:00:00.000"
 
 # Consulta ao banco (script do dbeaver: no exemplo abaixo há um join entre a tabela de ocorrências e envolvidos)
 try:
@@ -40,7 +28,7 @@ try:
                AND mat.tipo_objeto_codigo = '2020'
                 '''
         
-    df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
+    df = database.executa_query_retorna_df(query, db='db_bisp_reds_reporting')
 
 except Exception as e:
     print(f"Erro ao consultar a tabela 'tb_ocorrencia': {e}")
@@ -50,12 +38,20 @@ df.head()
 
 # Exporta a base no computador no modelo desejado 
 caminho_excel = (
-    f"{produtividade_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.produtividade_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"da_simulacros_apreendidos.xlsx"
+)
+
+caminho_one_drive = (
+    f"{paths.onedrive_produtividade_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"da_simulacros_apreendidos.xlsx"
 )
 
 df.to_excel(caminho_excel, index=False)
+df.to_excel(caminho_one_drive, index=False)
 
 print('FINALIZOU :)')

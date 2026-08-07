@@ -2,26 +2,14 @@ import pandas as pd
 import geopandas as gpd
 import numpy as np
 from impala.dbapi import connect
-from config.datas import (
-    ano_ref,
-    mes_ref,
-    mes_ref_num_str,
-    mes_ref_nome,
-    mes_ref_abrev,
-    mes_atual
-)
-from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
-from config.database import (
-    get_conn_and_cursor,
-    executa_query_retorna_df,
-    tabelas,
-    bancos_de_dados,
-)
+from config import datas
+from config import paths
+from config import database
 
-data_limite = f"{ano_ref}-{mes_atual}-01 00:00:00.000"
+data_limite = f"{datas.ano_ref}-{datas.mes_atual}-01 00:00:00.000"
 
 # Lê o Excel para o mapeamento para CTE
-df_alvo = pd.read_excel(alvo_corrigido)
+df_alvo = pd.read_excel(paths.alvo_corrigido)
 
 # Garante que todos os dados são strings e escapa apóstrofos
 def esc(s):
@@ -117,7 +105,7 @@ try:
                           ON m.codigo_municipio = pop.codigo_ibge
                 '''
         
-    df = executa_query_retorna_df(query, db='db_bisp_reds_reporting')
+    df = database.executa_query_retorna_df(query, db='db_bisp_reds_reporting')
     
 # Ordenar pelas colunas "Ano Fato", "Mês", "Município" e "Natureza"
     df.rename(columns={
@@ -146,9 +134,9 @@ df.head()
 
 # Exporta a base no computador no modelo desejado 
 caminho_excel = (
-    f"{publicacoes_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.publicacoes_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
     f"agrupado_alvos_furto.xlsx"
 )
@@ -164,9 +152,9 @@ df.to_excel(caminho_excel, index=False)
 
 # Caminhos dos arquivos
 base_excel = (
-    f"{publicacoes_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.publicacoes_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
     f"agrupado_alvos_furto.xlsx"
 )
@@ -176,11 +164,11 @@ df_excel = pd.read_excel(base_excel)
 
 # Caminho CSV
 caminho_csv = (
-    f"{publicacoes_dir}/"
-    f"{ano_ref}/"
-    f"{mes_ref_num_str} - {mes_ref_nome}/"
+    f"{paths.publicacoes_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Banco de Dados CSV/"
-    f"Banco Alvos de Furto - Atualizado {mes_ref_nome} {ano_ref}.csv"
+    f"Banco Alvos de Furto - Atualizado {datas.mes_ref_nome} {datas.ano_ref}.csv"
 )
 
 # Formatação regional
@@ -192,6 +180,20 @@ df_excel.to_csv(
     sep=';',            # separador padrão BR
     index=False,        # sem índice numérico
     encoding='utf-8-sig'  # adiciona BOM, compatível com Excel
+)
+
+# Exporta a base na nuvem
+caminho_nuvem = (
+    f"{paths.onedrive_agrupadas_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"Banco Alvos de Furto - Atualizado {datas.mes_ref_nome} {datas.ano_ref}.csv"
+)
+df_excel.to_csv(
+    caminho_nuvem,
+    sep=';',            
+    index=False,        
+    encoding='utf-8-sig'  
 )
 
 print('FINALIZOU :)')

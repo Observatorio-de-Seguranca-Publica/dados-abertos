@@ -1,11 +1,11 @@
 import pandas as pd
 import numpy as np
 from impala.dbapi import connect
-from config.paths import base_dir, logs_dir, temp_dir, input_dir, config_dir, output_dir, codigos_dir, onedrive_dir, memorando_dir, publicacoes_dir, completas_dir, downloads_dir, produtividade_dir, grupo_local_imediato, alvo_corrigido, matriz_dir
+from config import paths
 
 # Caminho do arquivo original
 arquivo = (
-    f"{downloads_dir}/"
+    f"{paths.downloads_dir}/"
     f"bdhc.xlsx"
 )
 sheet = "BD_HC_FATAL_ARMAZÉM"  # ajuste se necessário
@@ -218,7 +218,7 @@ df = df[[col for col in ordem_colunas if col in df.columns]]
 
 # Salvar resultado final
 caminho = (
-    f"{downloads_dir}/"
+    f"{paths.downloads_dir}/"
     f"BDHC_formatado_registros.xlsx"
 )
 df.to_excel(caminho, index=False)
