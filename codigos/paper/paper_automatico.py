@@ -1120,7 +1120,7 @@ for municipio in lista_municipios:
     df_mun_2 = df_cv_final[
         (df_cv_final['municipio'] == municipio_upper) &
         (df_cv_final['ano fato'].isin([2025, 2026])) &
-        (df_cv_final['mes'] == mes_ref)
+        (df_cv_final['mes'] == datas.mes_ref)
     ]
 
     if not df_mun_2.empty:
@@ -1292,7 +1292,7 @@ for risp in lista_risps:
     df_risp_2 = df_cv_final[
         (df_cv_final['risp'].str.upper() == risp_upper) &
         (df_cv_final['ano fato'].isin([2025, 2026])) &
-        (df_cv_final['mes'] == mes_ref)
+        (df_cv_final['mes'] == datas.mes_ref)
     ]
 
     if not df_risp_2.empty:
@@ -1464,7 +1464,7 @@ for regiao in lista_regioes:
     df_reg_2 = df_cv_final[
         (df_cv_final['regiao'].str.upper() == regiao_upper) &
         (df_cv_final['ano fato'].isin([2025, 2026])) &
-        (df_cv_final['mes'] == mes_ref)
+        (df_cv_final['mes'] == datas.mes_ref)
     ]
 
     if not df_reg_2.empty:

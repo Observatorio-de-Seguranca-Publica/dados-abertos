@@ -117,20 +117,24 @@ df_alvos_final = df_alvos_final.sort_values(
 
 # Caminhos de saída
 caminho_saida = (
-    f"{paths.matriz_dir}"
+    f"{paths.matriz_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"matriz_automatizada.xlsx"
 )
 
 caminho_onedrive = (
-    f"{paths.onedrive_imagens_dir}"
+    f"{paths.onedrive_imagens_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"matriz_automatizada.xlsx"
 )
             
 # Exporta
+with pd.ExcelWriter(caminho_saida, engine='openpyxl') as writer:
+    df_cv_final.to_excel(writer, sheet_name='Dados CV', index=False)
+    df_alvos_final.to_excel(writer, sheet_name='Dados Alvos', index=False)
+
 with pd.ExcelWriter(caminho_onedrive, engine='openpyxl') as writer:
     df_cv_final.to_excel(writer, sheet_name='Dados CV', index=False)
     df_alvos_final.to_excel(writer, sheet_name='Dados Alvos', index=False)
