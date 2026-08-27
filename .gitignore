@@ -29,3 +29,6 @@ Thumbs.db
 publicacoes/**/*.xlsx
 publicacoes/**/*.csv
 publicacoes/**/*.jpg
+
+# settings
+config/settings_local.py
