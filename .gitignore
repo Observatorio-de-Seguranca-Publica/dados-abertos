@@ -26,4 +26,4 @@ venv/
 Thumbs.db
 
 # Arquivos da publicação
-publicacoes/
+publicacoes/*
