@@ -1,7 +1,7 @@
 import pandas as pd
 from impala.dbapi import connect
 from config.paths import credenciais_db
-from config.settings import db_host, db_port
+from config.settings_local import db_host, db_port
 
 # Função para ler o arquivo de credenciais
 def get_credentials(file_path):
