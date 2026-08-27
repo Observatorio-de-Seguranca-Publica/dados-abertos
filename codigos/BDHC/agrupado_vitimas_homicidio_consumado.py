@@ -107,8 +107,11 @@ base_excel = saida
 # 1️⃣ Lê as bases
 df_excel = pd.read_excel(base_excel)
 
-# Caminho CSV
-caminho_csv = (
+# Formatação regional
+df_excel = df_excel.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
+
+# Caminhos CSV
+caminho_csv_local = (
     f"{paths.agrupadas_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
@@ -116,12 +119,25 @@ caminho_csv = (
     f"Banco Vítimas de Homicídio Consumado - Atualizado {datas.mes_ref_nome} {datas.ano_ref}.csv"
 )
 
-# Formatação regional
-df_excel = df_excel.map(lambda x: str(x).replace('.', ',') if isinstance(x, float) else x)
+# Caminhos CSV
+caminho_csv_nuvem = (
+    f"{paths.onedrive_agrupadas_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"Banco Vítimas de Homicídio Consumado - Atualizado {datas.mes_ref_nome} {datas.ano_ref}.csv"
+)
 
-# Exporta com separador ";" e encoding compatível com Excel PT-BR
+# Exporta local com separador ";" e encoding compatível com Excel PT-BR
 df_excel.to_csv(
-    caminho_csv,
+    caminho_csv_local,
+    sep=';',            # separador padrão BR
+    index=False,        # sem índice numérico
+    encoding='utf-8-sig'  # adiciona BOM, compatível com Excel
+)
+
+# Exporta nuvem com separador ";" e encoding compatível com Excel PT-BR
+df_excel.to_csv(
+    caminho_csv_nuvem,
     sep=';',            # separador padrão BR
     index=False,        # sem índice numérico
     encoding='utf-8-sig'  # adiciona BOM, compatível com Excel

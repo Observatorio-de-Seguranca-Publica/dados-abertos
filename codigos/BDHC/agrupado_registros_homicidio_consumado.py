@@ -206,7 +206,7 @@ print(f"Base CV 2012 a 2018 original: {len(df_cv_12_18)}")
 print(f"Base BDHC 2012 a 2018 filtrada: {len(df_vhc_filtrada_12_18)}")
 print(f"Base unificada 2012 a 2018: {len(df_final_12_18)}")
 
-saida_12_18 = (
+saida_12_18_local = (
     f"{paths.agrupadas_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
@@ -214,8 +214,9 @@ saida_12_18 = (
     f"12_18_agrupado_crimes_violentos.xlsx"
 )
 
-df_final_12_18.to_excel(saida_12_18, index=False)
-print(f"Ok - Base unificadas salva em:\n{saida_12_18}")
+df_final_12_18.to_excel(saida_12_18_local, index=False)
+
+print(f"Ok - Base unificadas salva em:\n{saida_12_18_local}")
 
 # 5️⃣ Filtra a BDHC apenas entre 2019 e 2024
 df_vhc_filtrada_19_24 = df_hc[
@@ -278,27 +279,43 @@ print(f"Ok - Base unificadas salva em:\n{saida_25_26}")
 # Ã
 # O
 
-caminho_csv_12_18 = (
+caminho_csv_12_18_local = (
     f"{paths.agrupadas_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Banco de Dados CSV/"
     f"Banco Crimes Violentos 2012 a 2018 - Atualizado {datas.mes_ref_nome} {datas.ano_ref}.csv"
 )
-
-caminho_csv_19_24 = (
+caminho_csv_12_18_nuvem = (
+    f"{paths.onedrive_agrupadas_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"Banco Crimes Violentos 2012 a 2018 - Atualizado {datas.mes_ref_nome} {datas.ano_ref}.csv"
+)
+caminho_csv_19_24_local = (
     f"{paths.agrupadas_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Banco de Dados CSV/"
     f"Banco Crimes Violentos 2019 a 2024 - Atualizado {datas.mes_ref_nome} {datas.ano_ref}.csv"
 )
-
-caminho_csv_25_26 = (
+caminho_csv_19_24_nuvem = (
+    f"{paths.onedrive_agrupadas_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"Banco Crimes Violentos 2019 a 2024 - Atualizado {datas.mes_ref_nome} {datas.ano_ref}.csv"
+)
+caminho_csv_25_26_local = (
     f"{paths.agrupadas_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Banco de Dados CSV/"
+    f"Banco Crimes Violentos 2025 a 2026 - Atualizado {datas.mes_ref_nome} {datas.ano_ref}.csv"
+)
+caminho_csv_25_26_nuvem = (
+    f"{paths.onedrive_agrupadas_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Banco Crimes Violentos 2025 a 2026 - Atualizado {datas.mes_ref_nome} {datas.ano_ref}.csv"
 )
 
@@ -313,8 +330,12 @@ def exporta_csv(df, caminho):
     )
 
 # Exporta todas as bases
-exporta_csv(df_final_12_18, caminho_csv_12_18)
-exporta_csv(df_final_19_24, caminho_csv_19_24)
-exporta_csv(df_final_25_26, caminho_csv_25_26)
+exporta_csv(df_final_12_18, caminho_csv_12_18_local)
+exporta_csv(df_final_12_18, caminho_csv_12_18_nuvem)
+exporta_csv(df_final_19_24, caminho_csv_19_24_local)
+exporta_csv(df_final_19_24, caminho_csv_19_24_nuvem)
+exporta_csv(df_final_25_26, caminho_csv_25_26_local)
+exporta_csv(df_final_25_26, caminho_csv_25_26_nuvem)
+
 
 print("Arquivos CSV exportados com sucesso!")
