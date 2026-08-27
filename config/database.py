@@ -1,6 +1,7 @@
 import pandas as pd
 from impala.dbapi import connect
 from config.paths import credenciais_db
+from config.settings import db_host, db_port
 
 # Função para ler o arquivo de credenciais
 def get_credentials(file_path):
@@ -12,9 +13,9 @@ def get_credentials(file_path):
     return credentials
 
 # Função para conectar ao banco de dados
-def get_conn_and_cursor(db='db_bisp_reds_reporting', credentials_file='C:/Users/x15501492/Downloads/Credenciamento Python.txt'):
-    credentials = get_credentials(credentials_file)
-    conn = connect(host='10.100.62.20', port=21051, use_ssl=True, auth_mechanism="PLAIN",
+def get_conn_and_cursor(db='db_bisp_reds_reporting'):
+    credentials = get_credentials(credenciais_db)
+    conn = connect(host=db_host, port=db_port, use_ssl=True, auth_mechanism="PLAIN",
                    user=credentials['username'], password=credentials['password'], database=db)
     cursor = conn.cursor()
     return conn, cursor
