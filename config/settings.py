@@ -1,3 +1,2 @@
-# Configurações do banco de dados
-db_host = "10.100.62.20"
-db_port = 21051
+# Configurações locais do banco de dados
+from config.settings_local import db_host, db_port
