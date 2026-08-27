@@ -145,7 +145,6 @@ caminho_nuvem = (
     f"{paths.onedrive_completas_interno_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
-    f"XLSX - Uso interno/"
     f"Alvos - Roubo - Jan 2015 a {datas.mes_ref_abrev} {datas.ano_ref}.xlsx"
 )
 df.to_excel(caminho_nuvem, index=False)

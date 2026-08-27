@@ -62,7 +62,6 @@ df_final_22_26 = pd.concat([df_cv_22_26, df_bdhc_filtrada_22_26], ignore_index=T
 print(f"Base CV 2022–2026 original: {len(df_cv_22_26)}")
 print(f"Base BDHC 2022–2026 filtrada: {len(df_bdhc_filtrada_22_26)}")
 print(f"Base unificada 2022–2026: {len(df_final_22_26)}")
-
 print(f"Total final após junção (2012–2021): {len(df_final_12_21)} registros")
 print(f"Total final após junção (2022–2026): {len(df_final_22_26)} registros")
 
@@ -71,22 +70,36 @@ df_final_12_21 = df_final_12_21.fillna("")
 df_final_22_26 = df_final_22_26.fillna("")
 
 # 9️⃣ Salva resultado
-saida_12_21 = (
+saida_12_21_local = (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"XLSX - Uso interno/"
     f"Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
 )
-df_final_12_21.to_excel(saida_12_21, index=False)
-
-saida_22_26 =  (
+saida_12_21_nuvem = (
+    f"{paths.onedrive_completas_interno_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
+)
+saida_22_26_local = (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"XLSX - Uso interno/"
     f"Crimes Violentos - Jan 2022 a {datas.mes_ref_abrev} {datas.ano_ref}.xlsx"
 )
-df_final_22_26.to_excel(saida_22_26, index=False)
+saida_22_26_nuvem = (
+    f"{paths.onedrive_completas_interno_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"Crimes Violentos - Jan 2022 a {datas.mes_ref_abrev} {datas.ano_ref}.xlsx"
+)
 
-print(f"Ok - Bases unificadas salvas em:\n{saida_12_21} e \n{saida_22_26}")
+df_final_12_21.to_excel(saida_12_21_local, index=False)
+df_final_12_21.to_excel(saida_12_21_nuvem, index=False)
+df_final_22_26.to_excel(saida_22_26_local, index=False)
+df_final_22_26.to_excel(saida_22_26_nuvem, index=False)
+
+print(f"Ok - Bases unificadas salvas em:\n{saida_12_21_local}, \n{saida_12_21_nuvem}, \n{saida_22_26_local} e \n{saida_22_26_nuvem}")

@@ -1,5 +1,6 @@
 import pandas as pd
 import dateutil.parser
+import hashlib
 from config import datas
 from config import paths
 
@@ -237,6 +238,25 @@ df.to_excel(out2, index=False)
 print("Salvo em:", out2)
 print("Linhas finais:", len(df))
 
+# Exporta a base na nuvem
+out3 = (
+    f"{paths.onedrive_completas_interno_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
+    f"Vítimas de Homicidio Consumado - Jan 2019 a {datas.mes_ref_abrev} {datas.ano_ref}.xlsx"
+)
+df.to_excel(out3, index=False)
+print("Salvo em:", out3)
+print("Linhas finais:", len(df))
+
+# A
+# T
+# E
+# N         A partir daqui, o código exporta as bases para csv
+# Ç
+# Ã
+# O
+
 # Lista de colunas a remover
 colunas_excluir = [
     "Descrição Subclasse Nat Principal", "Tentado/Consumado Nat Principal", "Natureza Nomenclatura Banco",
@@ -246,12 +266,30 @@ colunas_excluir = [
 # Remover colunas desnecessárias
 df_csv = df.drop(columns=colunas_excluir, errors="ignore")
 
+# Anonimização do n° reds
+def anonimizar_chave(valor):
+    if pd.isna(valor):
+        return valor
+    valor = str(valor).strip()
+    hash_obj = hashlib.sha256(valor.encode("utf-8"))
+    return hash_obj.hexdigest()[:16]
+
+df_csv["Número Reds"] = df_csv["Número Reds"].apply(anonimizar_chave)
+
 # Caminho de saída para CSV
-caminho_csv = (
+caminho_csv_local = (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"CSV -Uso externo/"
+    f"Vítimas de Homicidio Consumado - Jan 2012 a {datas.mes_ref_abrev} {datas.ano_ref}.csv"
+)
+
+# Caminho de saída para CSV na nuvem
+caminho_csv_nuvem = (
+    f"{paths.onedrive_completas_externo_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Vítimas de Homicidio Consumado - Jan 2012 a {datas.mes_ref_abrev} {datas.ano_ref}.csv"
 )
 
@@ -267,7 +305,16 @@ df_csv = df_csv.fillna('')
 
 # Exporta com separador ";" e encoding compatível com Excel PT-BR
 df_csv.to_csv(
-    caminho_csv,
+    caminho_csv_local,
+    sep=';',            # separador padrão BR
+    index=False,        # sem índice numérico
+    encoding='utf-8-sig',  # adiciona BOM, compatível com Excel
+    na_rep=''
+)
+
+# Exporta com separador ";" e encoding compatível com Excel PT-BR
+df_csv.to_csv(
+    caminho_csv_nuvem,
     sep=';',            # separador padrão BR
     index=False,        # sem índice numérico
     encoding='utf-8-sig',  # adiciona BOM, compatível com Excel
