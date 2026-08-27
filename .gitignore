@@ -26,5 +26,6 @@ venv/
 Thumbs.db
 
 # Arquivos da publicação
-publicacoes/*
-!publicacoes/.gitkeep
+publicacoes/**/*.xlsx
+publicacoes/**/*.csv
+publicacoes/**/*.jpg
