@@ -45,6 +45,13 @@ pip install -r requirements.txt
 
 ## 4. Configuração
 ### 4.1 Credenciamento Python
+O credenciamento Python é o arquivo que contém senha e usuário da Bisp. Aqui neste projeto, ele está referenciado dessa forma:
+```python
+# Credenciamento Python
+credenciais_db = Path.home() / "Downloads" / "Credenciamento Python.txt"
+```
+
+Ou seja, ele está indicando para a pasta de Downloads do computador. Dessa forma, se seu arquivo não está armazenado em Downloads, mova-o para lá ou troque o caminho relativo no arquivo paths.py deste repo.
 
 ### 4.2 Configuração de datas
 As datas utilizadas na execução do projeto são relativas e automáticas, isto é, a cada execução (mensal) o código capta a data corrente e já executa com base nesta data, referenciando o mês anterior. Importante ter atenção na virada de ano, que pode ter alguma quebra não visualizada.
@@ -80,20 +87,15 @@ O arquivo BAT é utilizado para execução automática da rotina. Quando ele é 
 A execução do projeto pode ser agendada para o início de cada mês por meio do Agendador de Tarefas do Windows.
 
 ## 7. Arquivos gerados
+Os arquivos produtos dessa rotina ficam armazenados na pasta "publicacoes". Eles estão destacados no gitignore, portanto, jamais irão subir ao GitHub. Além disso, conforme dito anteriormente, parte dos produtos também vai para o OneDrive. Quando o usuário faz o clone, a pasta com os anos e meses vem vazia e pronta para usos futuros.
 
-## 8. Solução de problemas
+Depois disso, é necessário subir os arquivos no Google Drive da Diretoria para publicação pela Ascom.
 
 # todo
 Repositório destinado ao armazenamento de códigos utilizados para publicação da rotina de dados abertos no site da Secretaria de Estado de Segurança Pública de Minas Gerais (SEJUSP).
 
-O que devo resolver:
-caminho relativo do credenciamento
-caminho relativo do bat
 
 O que devo detalhar: 
-- Credenciamento Python
 - One Drive
 - arquivo bat
 - agendador de tarefas
-- saídas/publicacao
-
