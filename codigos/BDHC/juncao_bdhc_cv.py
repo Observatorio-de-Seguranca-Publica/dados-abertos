@@ -6,13 +6,13 @@ from config import paths
 
 # Caminhos dos arquivos
 bdhc_tratado = (
-    f"{paths.downloads_dir}/"
+    f"{paths.publicacoes_dir}/"
     "BDHC_formatado_registros.xlsx"
 )
 base_cv_12_21 = (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"
-    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"XLSX - Uso interno/"
     f"Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
 )
@@ -20,7 +20,7 @@ base_cv_12_21 = (
 base_cv_22_26 = (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"
-    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"XLSX - Uso interno/"
     f"Crimes Violentos - Jan 2022 a {datas.mes_ref_abrev} {datas.ano_ref}.xlsx"
 )
@@ -74,7 +74,7 @@ df_final_22_26 = df_final_22_26.fillna("")
 saida_12_21 = (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"
-    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"XLSX - Uso interno/"
     f"Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
 )
@@ -83,7 +83,7 @@ df_final_12_21.to_excel(saida_12_21, index=False)
 saida_22_26 =  (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"
-    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"XLSX - Uso interno/"
     f"Crimes Violentos - Jan 2022 a {datas.mes_ref_abrev} {datas.ano_ref}.xlsx"
 )

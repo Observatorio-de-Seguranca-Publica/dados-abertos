@@ -1,11 +1,12 @@
 import pandas as pd
 import numpy as np
 from impala.dbapi import connect
+from config import datas
 from config import paths
 
 # Caminho do arquivo original
 arquivo = (
-    f"{paths.downloads_dir}/"
+    f"{paths.bdhc_dir}/"
     f"bdhc.xlsx"
 )
 sheet = "BD_HC_FATAL_ARMAZÉM"  # ajuste se necessário
@@ -218,9 +219,11 @@ df = df[[col for col in ordem_colunas if col in df.columns]]
 
 # Salvar resultado final
 caminho = (
-    f"{paths.downloads_dir}/"
+    f"{paths.bdhc_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"BDHC_formatado_registros.xlsx"
 )
 df.to_excel(caminho, index=False)
 
-print("Ok - Deu bom")
+print("Deu bom")

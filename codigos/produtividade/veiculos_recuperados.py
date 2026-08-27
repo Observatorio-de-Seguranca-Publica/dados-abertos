@@ -51,4 +51,4 @@ caminho_one_drive = (
 df.to_excel(caminho_excel, index=False)
 df.to_excel(caminho_one_drive, index=False)
 
-print('FINALIZOU :)')
+print('Deu bom')

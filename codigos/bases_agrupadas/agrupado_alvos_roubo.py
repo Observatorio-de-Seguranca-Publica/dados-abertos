@@ -134,7 +134,7 @@ df.head()
 
 # Exporta a base no computador no modelo desejado 
 caminho_excel = (
-    f"{paths.publicacoes_dir}/"
+    f"{paths.agrupadas_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
@@ -153,7 +153,7 @@ df.to_excel(caminho_excel, index=False)
 
 # Caminhos dos arquivos
 base_excel = (
-    f"{paths.publicacoes_dir}/"
+    f"{paths.agrupadas_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
@@ -165,7 +165,7 @@ df_excel = pd.read_excel(base_excel)
 
 # Caminho CSV
 caminho_csv = (
-    f"{paths.publicacoes_dir}/"
+    f"{paths.agrupadas_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Banco de Dados CSV/"
@@ -197,4 +197,4 @@ df_excel.to_csv(
     encoding='utf-8-sig'  
 )
 
-print('FINALIZOU :)')
+print('Deu bom')

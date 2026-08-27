@@ -140,7 +140,7 @@ df.columns = [col.title() for col in df.columns]  # "número reds" → "Número 
 caminho_excel = (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"
-    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"XLSX - Uso interno/"
     f"Veiculos - Furto - Jan 2015 a {datas.mes_ref_abrev} {datas.ano_ref}.xlsx"
 )
@@ -201,7 +201,7 @@ df_csv = df_csv.fillna("")
 caminho_csv = (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"
-    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"CSV -Uso externo/"
     f"Veiculos - Furto - Jan 2015 a {datas.mes_ref_abrev} {datas.ano_ref}.csv"
 )
@@ -227,4 +227,4 @@ df_csv.to_csv(
     encoding="utf-8-sig",
 )
 
-print('FINALIZOU :)')
+print('Deu bom')

@@ -7,7 +7,7 @@ from config import paths
 
 # Lista de arquivos de entrada: planilhas de Crimes Violentos e dicionário de regiões
 base_excel = (
-    f"{paths.publicacoes_dir}/"
+    f"{paths.agrupadas_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
@@ -144,7 +144,7 @@ caminho_saida_one_drive = (
     f"paper_automatico_{datas.mes_ref_abrev}.xlsx"
 )
 
-f"{paths.publicacoes_dir}/"
+f"{paths.agrupadas_dir}/"
 f"{datas.ano_ref}/"
 f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
             

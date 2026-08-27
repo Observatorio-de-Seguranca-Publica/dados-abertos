@@ -112,7 +112,7 @@ df.head()
 
 # Exporta a base no PC
 caminho_local = (
-    f"{paths.publicacoes_dir}/"
+    f"{paths.agrupadas_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
@@ -129,7 +129,7 @@ df.to_excel(caminho_local, index=False)
 # O
 
 base_excel = (
-    f"{paths.publicacoes_dir}/"
+    f"{paths.agrupadas_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
@@ -144,7 +144,7 @@ df_excel = df_excel.map(lambda x: str(x).replace('.', ',') if isinstance(x, floa
 
 # Exporta a base no PC
 caminho_csv = (
-    f"{paths.publicacoes_dir}/"
+    f"{paths.agrupadas_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Banco de Dados CSV/"
@@ -173,4 +173,4 @@ df_excel.to_csv(
     encoding='utf-8-sig'  
 )
 
-print('FINALIZOU :)')
+print('Deu bom')

@@ -8,7 +8,7 @@ from config import paths
 base_cv_12_21 = (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"
-    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"XLSX - Uso interno/"
     f"Crimes Violentos - Jan 2012 a Dez 2021.xlsx"
 )
@@ -16,7 +16,7 @@ base_cv_12_21 = (
 base_cv_22_26 = (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"
-    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"XLSX - Uso interno/"
     f"Crimes Violentos - Jan 2022 a {datas.mes_ref_abrev} {datas.ano_ref}.xlsx"
 )
@@ -40,7 +40,7 @@ df_cv_22_26 = df_cv_22_26.drop(columns=colunas_excluir, errors="ignore")
 caminho_csv_1 = (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"
-    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"CSV -Uso externo/"
     f"Crimes Violentos - Jan 2012 a Dez 2021.csv"
 )
@@ -68,7 +68,7 @@ df_cv_12_21.to_csv(
 caminho_csv_2 = (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"
-    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"CSV -Uso externo/"
     f"Crimes Violentos - Jan 2022 a {datas.mes_ref_abrev} {datas.ano_ref}.csv"
 )

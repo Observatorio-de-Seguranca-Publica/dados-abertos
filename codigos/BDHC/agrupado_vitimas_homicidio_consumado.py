@@ -15,7 +15,7 @@ def norm_ibge(x):
 
 # 1. Lê a planilha
 arquivo = (
-    f"{paths.downloads_dir}/"
+    f"{paths.publicacoes_dir}/"
     f"BDHC_formatado_vitimas.xlsx"
 )
 aba = "Sheet1"
@@ -84,7 +84,7 @@ res["Cód. IBGE"] = pd.to_numeric(res["Cód. IBGE"], errors="coerce").astype("In
 
 # 11. Exportar para Excel
 saida = (
-    f"{paths.publicacoes_dir}/"
+    f"{paths.agrupadas_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"
@@ -109,7 +109,7 @@ df_excel = pd.read_excel(base_excel)
 
 # Caminho CSV
 caminho_csv = (
-    f"{paths.publicacoes_dir}/"
+    f"{paths.agrupadas_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Banco de Dados CSV/"
@@ -127,4 +127,4 @@ df_excel.to_csv(
     encoding='utf-8-sig'  # adiciona BOM, compatível com Excel
 )
 
-print('FINALIZOU :)')
+print('Deu bom')

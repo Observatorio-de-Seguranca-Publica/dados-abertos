@@ -6,7 +6,7 @@ from config import paths
 # Lista de arquivos de entrada
 
 base_excel = (
-    f"{paths.publicacoes_dir}/"
+    f"{paths.agrupadas_dir}/"
     f"{datas.ano_ref}/"
     f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"Excel/"

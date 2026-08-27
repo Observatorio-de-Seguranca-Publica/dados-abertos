@@ -13,7 +13,63 @@ memorando_dir = base_dir / "memorando_suint"
 municipios_mg = config_dir / "municipios_mg.xlsx"
 grupo_local_imediato = config_dir / "grupo_local_imediato_com_codigo.xlsx"
 alvo_corrigido = config_dir / "alvo_corrigido.xlsx"
-    
+
+# Credenciamento Python
+credenciais_db = Path.home() / "Downloads" / "Credenciamento Python.txt"
+
+# Diretório local da publicação
+publicacoes_dir = (
+    base_dir
+    / "publicacoes"
+)
+
+# Diretório local da publicação das bases agrupadas
+agrupadas_dir = (
+    base_dir
+    / "publicacoes"
+    / "agrupadas"
+)
+
+# Diretório local da publicação das bases completas
+completas_dir = (
+    base_dir
+    / "publicacoes"
+    / "completas"
+)
+
+# Diretório local da publicação das bases de produtividade
+produtividade_dir = (
+    base_dir
+    / "publicacoes"
+    / "produtividade"
+)
+
+# Diretório local da publicação das bases de tabela matriz
+matriz_dir = (
+    base_dir
+    / "publicacoes"
+    / "imagens"
+)
+
+# Diretório local da publicação do bdhc
+bdhc_dir = (
+    base_dir
+    / "publicacoes"
+    / "bdhc"
+)
+
+# Caminho bases CTE
+grupo_local_imediato = config_dir / "grupo_local_imediato.xlsx"
+alvo_corrigido = config_dir / "alvo_corrigido.xlsx"
+
+# Diretório local da publicação dos papers
+paper_dir = (
+    Path.home()
+    / "Documents"
+    / "02 - Publicações"
+    / "Paper"
+)
+
 # Diretórios OneDrive
 onedrive_dir = (
     Path.home()
@@ -59,57 +115,4 @@ onedrive_completas_interno_dir = (
     onedrive_publicacao_dir
     / "Bases de Dados Completas"
     / "Uso interno"
-)
-
-# Credenciamento Python
-credenciais_db = Path.home() / "Downloads" / "Credenciamento Python.txt"
-
-# Diretóri local o da publicação das bases agrupadas
-publicacoes_dir = (
-    Path.home()
-    / "Documents"
-    / "02 - Publicações"
-    / "11 - Publicação SESP - Site"
-)
-
-# Diretório local da publicação das bases completas
-completas_dir = (
-    Path.home()
-    / "Documents"
-    / "02 - Publicações"
-    / "Bases completas"
-)
-
-# Diretório local da publicação das bases de produtividade
-produtividade_dir = (
-    Path.home()
-    / "Documents"
-    / "02 - Publicações"
-    / "08 - Produtividade"
-)
-
-# Diretório local da publicação das bases de tabela matriz
-matriz_dir = (
-    Path.home()
-    / "Documents"
-    / "02 - Publicações"
-    / "06 - Monitoramento SIGPLAN"
-)
-
-# Diretório downloads
-downloads_dir = (
-    Path.home()
-    / "Downloads"
-)
-
-# Caminho bases CTE
-grupo_local_imediato = config_dir / "grupo_local_imediato.xlsx"
-alvo_corrigido = config_dir / "alvo_corrigido.xlsx"
-
-# Diretório local da publicação dos papers
-paper_dir = (
-    Path.home()
-    / "Documents"
-    / "02 - Publicações"
-    / "Paper"
 )

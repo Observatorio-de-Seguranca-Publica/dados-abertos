@@ -6,7 +6,7 @@ from config import paths
 
 # Caminho do arquivo original
 arquivo = (
-    f"{paths.downloads_dir}/"
+    f"{paths.bdhc_dir}/"
     f"bdhc.xlsx"
 )
 sheet = "BD_HC_FATAL_ARMAZÉM"  # ajuste se necessário
@@ -214,7 +214,9 @@ df = df[colunas_finais]
 
 # --- 9) Salvar resultado final ---
 out1 = (
-    f"{paths.downloads_dir}/"
+    f"{paths.bdhc_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"BDHC_formatado_vitimas.xlsx"
 )
 df.to_excel(out1, index=False)
@@ -227,7 +229,7 @@ print("Linhas finais:", len(df))
 out2 = (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"
-    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"XLSX - Uso interno/"
     f"Vítimas de Homicidio Consumado - Jan 2019 a {datas.mes_ref_abrev} {datas.ano_ref}.xlsx"
 )
@@ -248,7 +250,7 @@ df_csv = df.drop(columns=colunas_excluir, errors="ignore")
 caminho_csv = (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"
-    f"{datas.mes_ref_num_str} - {datas.mes_ref_abrev}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"CSV -Uso externo/"
     f"Vítimas de Homicidio Consumado - Jan 2012 a {datas.mes_ref_abrev} {datas.ano_ref}.csv"
 )
