@@ -29,6 +29,7 @@ Thumbs.db
 publicacoes/**/*.xlsx
 publicacoes/**/*.csv
 publicacoes/**/*.jpg
+publicacoes/**/*.png
 publicacoes/**/*.txt
 
 # settings
