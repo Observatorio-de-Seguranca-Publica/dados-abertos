@@ -62,6 +62,30 @@ Aqui tem um ponto sensível do projeto, o BDHC é gerado manualmente e disponibi
 ### 4.4 OneDrive
 Outro ponto sensível do projeto são as saídas direto no OneDrive. Pelo projeto, as bases são colocadas diretamente no OneDrive. Para isso acontecer, é necessário que o OneDrive esteja ativado no PC e o canal "DIS_SOSP_SUINT_SEJUSP - DADOS ABERTOS" esteja acoplado no explorador de arquivos do usuário, como uma pasta sincronizada.
 
+Aqui vai um passo a passo de como fazer o setup:
+1) Vá até a barra de canais no teams:
+https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/barra_teams.png
+
+2) Dentro da equipe DIS, selecione "Ver todos os canais":
+https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/equipe_dis.png
+
+3) Selecione o canal dados abertos e vá na aba compartilhado:
+https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/canal_dados_abertos.png
+
+4) Confira se a sincronização do OneDrive está ativa:
+https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/sincronizacao_2.png
+
+5) É possível verificá-la pelo Teams também:
+https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/sincronizacao_1.png
+
+6) Pelo teams, selecione "Adicionar atalho ao OneDrive":
+https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/atalho_onedrive.png
+
+7) No explorador de arquivos, o canal deve aparecer à esquerda dentro de OneDrive:
+https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/barra_tarefas.png
+
+Casa não apareça, ver se está com outro nome, como Sharepoint, CAMG ou similar.
+
 ## 5. Estrutura do projeto
 Esse projeto está dividido em 5 pastas:
 - codigos: é onde os códigos estão armazenados, o coração do projeto, divididos por pastas referentes aos produtos gerados (bases agrupadas, completas, etc).
