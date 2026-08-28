@@ -67,7 +67,7 @@ Aqui vai um passo a passo de como fazer o setup:
 https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/barra_teams.png
 
 2) Dentro da equipe DIS, selecione "Ver todos os canais":
-https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/equipe_dis.png
+![equipe_dis](https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/equipe_dis.png)
 
 3) Selecione o canal dados abertos e vá na aba compartilhado:
 https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/canal_dados_abertos.png
