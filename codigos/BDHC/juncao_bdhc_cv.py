@@ -6,7 +6,9 @@ from config import paths
 
 # Caminhos dos arquivos
 bdhc_tratado = (
-    f"{paths.publicacoes_dir}/"
+    f"{paths.bdhc_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     "BDHC_formatado_registros.xlsx"
 )
 base_cv_12_21 = (

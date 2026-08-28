@@ -274,7 +274,7 @@ def anonimizar_chave(valor):
     hash_obj = hashlib.sha256(valor.encode("utf-8"))
     return hash_obj.hexdigest()[:16]
 
-df_csv["Número Reds"] = df_csv["Número Reds"].apply(anonimizar_chave)
+df_csv["Número REDS"] = df_csv["Número REDS"].apply(anonimizar_chave)
 
 # Caminho de saída para CSV
 caminho_csv_local = (

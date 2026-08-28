@@ -4,7 +4,7 @@ from impala.dbapi import connect
 from config import datas
 from config import paths
 
-# Caminhos dos arquivos do BDHC
+# Caminhos dos arquivos de CV
 base_cv_12_21 = (
     f"{paths.completas_dir}/"
     f"{datas.ano_ref}/"

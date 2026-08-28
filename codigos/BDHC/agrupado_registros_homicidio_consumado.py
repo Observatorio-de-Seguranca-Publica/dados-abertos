@@ -15,7 +15,9 @@ def norm_ibge(x):
 
 # 1. Lê a planilha
 arquivo = (
-    f"{paths.publicacoes_dir}/"
+    f"{paths.bdhc_dir}/"
+    f"{datas.ano_ref}/"
+    f"{datas.mes_ref_num_str} - {datas.mes_ref_nome}/"
     f"BDHC_formatado_registros.xlsx"
 )
 aba = "Sheet1"
