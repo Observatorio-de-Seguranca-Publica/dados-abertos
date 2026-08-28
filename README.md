@@ -64,25 +64,25 @@ Outro ponto sensível do projeto são as saídas direto no OneDrive. Pelo projet
 
 Aqui vai um passo a passo de como fazer o setup:
 1) Vá até a barra de canais no teams:
-https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/barra_teams.png
+![barra_teams](https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/barra_teams.png)
 
 2) Dentro da equipe DIS, selecione "Ver todos os canais":
 ![equipe_dis](https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/equipe_dis.png)
 
 3) Selecione o canal dados abertos e vá na aba compartilhado:
-https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/canal_dados_abertos.png
+![canal_dados_abertos](https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/canal_dados_abertos.png)
 
 4) Confira se a sincronização do OneDrive está ativa:
-https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/sincronizacao_2.png
+![sincronizacao_2](https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/sincronizacao_2.png)
 
 5) É possível verificá-la pelo Teams também:
-https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/sincronizacao_1.png
+![sincronizacao_1](https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/sincronizacao_1.png)
 
 6) Pelo teams, selecione "Adicionar atalho ao OneDrive":
-https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/atalho_onedrive.png
+![atalho_onedrive](https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/atalho_onedrive.png)
 
 7) No explorador de arquivos, o canal deve aparecer à esquerda dentro de OneDrive:
-https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/barra_tarefas.png
+![barra_tarefas](https://github.com/Observatorio-de-Seguranca-Publica/dados-abertos/blob/main/config/assets/barra_tarefas.png)
 
 Casa não apareça, ver se está com outro nome, como Sharepoint, CAMG ou similar.
 
@@ -117,9 +117,3 @@ Depois disso, é necessário subir os arquivos no Google Drive da Diretoria para
 
 # todo
 Repositório destinado ao armazenamento de códigos utilizados para publicação da rotina de dados abertos no site da Secretaria de Estado de Segurança Pública de Minas Gerais (SEJUSP).
-
-
-O que devo detalhar: 
-- One Drive
-- arquivo bat
-- agendador de tarefas
