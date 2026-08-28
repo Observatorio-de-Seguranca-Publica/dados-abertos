@@ -58,17 +58,17 @@ bdhc_dir = (
     / "bdhc"
 )
 
+# Diretório local da publicação dos papers
+paper_dir = (
+    base_dir
+    / "publicacoes"
+    / "paper"
+)
+
 # Caminho bases CTE
 grupo_local_imediato = config_dir / "grupo_local_imediato.xlsx"
 alvo_corrigido = config_dir / "alvo_corrigido.xlsx"
 
-# Diretório local da publicação dos papers
-paper_dir = (
-    Path.home()
-    / "Documents"
-    / "02 - Publicações"
-    / "Paper"
-)
 
 # Diretórios OneDrive
 onedrive_dir = (
